@@ -1,0 +1,33 @@
+name: OpenIPC coupler
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+
+jobs:
+  build_core:
+    name: OpenIPC coupler for XM devices
+    runs-on: ubuntu-18.04
+
+    steps:
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
+
+      - name: Install build dependencies
+        id: install
+        run: |
+          make install-deps
+          mkdir -p tmp
+      - name: Free disk space
+        id: freshing
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
