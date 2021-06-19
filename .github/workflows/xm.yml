@@ -22,6 +22,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Install dependencies
+        run: sudo apt-get install u-boot-tools zip
       - name: Fetch Latest Release
         uses: thebritican/fetch-latest-release@v2.0.0
         with:
@@ -29,3 +31,5 @@ jobs:
           #github_token: # optional, default is ${{ github.token }}
           # Provide a "owner/repo" string for fetching from a different repo.
           repo_path: OpenIPC/openipc-2.1
+      - name: step
+        run: ls
