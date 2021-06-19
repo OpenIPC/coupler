@@ -24,17 +24,9 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo apt-get install u-boot-tools zip
-      - name: Fetch Github Release Assets
-        # You may pin to the exact commit or the version.
-        # uses: Itsblue/download-release-assets-action@8033582b96241f77e3d9644b0d03d26ba9fa9dcf
-        uses: Itsblue/download-release-assets-action@v4
-        with:
-          # org/repo to download from
-          repo: OpenIPC/openipc-2.1
-          # Version of the release to download from
-          version: latest
-          # Pattern of the files in the release to download (regex)
-          file: openipc*.tgz
-          #path: # optional, default is .
+      - name: fetch
+        run: |
+          curl -s https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
+          curl -s https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
       - name: step
         run: ls
