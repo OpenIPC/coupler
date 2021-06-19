@@ -3,7 +3,7 @@ name: OpenIPC coupler
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - "v*"
 
