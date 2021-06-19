@@ -26,7 +26,7 @@ jobs:
         run: sudo apt-get install u-boot-tools zip
       - name: fetch
         run: |
-          curl -s https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
-          curl -s https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
+          wget https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
+          wget https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
       - name: step
         run: ls
