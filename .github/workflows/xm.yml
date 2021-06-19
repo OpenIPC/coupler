@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+#   # Triggers the workflow on push or pull request events but only for the main branch
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Fetch Latest Release
+        uses: thebritican/fetch-latest-release@v2.0.0
+        with:
+          # A Github token for the repo, usually `{{ github.token }}`.
+          #github_token: # optional, default is ${{ github.token }}
+          # Provide a "owner/repo" string for fetching from a different repo.
+          repo_path: OpenIPC/openipc-2.1
