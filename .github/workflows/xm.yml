@@ -64,7 +64,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: out/*
+          file: out/000529B2_OpenIPC_HI3516EV300_85H50AI_2021-06-20.bin
           asset_name: "XM"
           tag: ${{ env.TAG_NAME }}
           overwrite: true
