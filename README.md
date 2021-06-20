@@ -28,6 +28,8 @@ After reboot camera will get IP from DHCP server, check out [project site ](http
 ### Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
 
+Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-automatic mode.
+
 -----
 
 ### Supporting
