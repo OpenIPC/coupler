@@ -126,4 +126,4 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
 cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd ..
-#rm -rf ${WORKDIR}
+rm -rf ${WORKDIR}
