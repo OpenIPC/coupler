@@ -39,5 +39,5 @@ jobs:
          run: |
             cd $GITHUB_WORKSPACE/.workflows
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" ./_xm2oipc.sh
-        - name: step3
-          run: ls -la
+       - name: step3
+         run: ls -la
