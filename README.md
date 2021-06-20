@@ -9,7 +9,7 @@ Releases contain automatically generated firmware files for transition from stoc
 ## XiongMai
 ### Device ID's:
 #### Hi3516EV200 + IMX307/SC2315E
-* 559A7
+* [559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38_2021-06-20.bin)
 * 559B0
 * 559CD
 #### Hi3516EV300 + IMX335
