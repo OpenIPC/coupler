@@ -29,8 +29,15 @@ OUTPUTDIR="${OUTPUTDIR:-..}"
 ###
 
 IFS=" "
+
 mkdir -p ${WORKDIR}
 mkdir -p ${OUTPUTDIR}
+
+tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/
+
+# Check if give files exceed partition boundaries
+[[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A+2000)) ]] && echo "Filesize exceeds boundaries" && exit 1
+
 # Generate InstallDesc
 JSON=$(cat <<-EOF
 {
@@ -104,8 +111,7 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
   mkimage -A arm -O linux -T standalone -n "rootfs_data" -a ${ROOTFS_E} -e ${FLASH_SIZE} -d ${WORKDIR}/mtd-x ${WORKDIR}/mtd-x.jffs2.img
 
 # Generate firmware file
-tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/ &&
-  mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
-  mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
-  cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}_${TAG}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc && cd ..
+mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
+mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
+cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}_${TAG}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc && cd ..
 rm -rf ${WORKDIR}
