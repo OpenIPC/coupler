@@ -11,31 +11,30 @@ Releases contain automatically generated firmware files for transition from stoc
 
 It's highly **recommended** to upgrade to latest available stock firmware before transition.
 
-### Device ID's:
+## Device ID's
 
 Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or web (Device Config->Info->Version) 
+to find out "**System version**" 
 
-to find out "**System version**"
+For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
-For example:
+## Download
 
-V5.00.R02.**000559A7**.10010.040400.0020000
-
-#### Hi3516EV200 + IMX307/SC2315E
+### Hi3516EV200 + IMX307/SC2315E
 * [000559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38_2021-06-20.bin)
 * [000559B0](https://github.com/OpenIPC/coupler/releases/download/latest/000559B0_OpenIPC_HI3516EV200_85H30AI_S38_2021-06-20.bin)
 * [000559CD](https://github.com/OpenIPC/coupler/releases/download/latest/000559CD_OpenIPC_HI3516EV200_85HF30T_S38_2021-06-20.bin)
 
-#### Hi3516EV300 + IMX335
+### Hi3516EV300 + IMX335
 * [000529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI_2021-06-20.bin)
 
-### Flashing
+## Flashing
 Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
 
-### Usage
+## Usage
 After reboot camera will get IP from DHCP server, check out [project site ](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info
 
-### Rollback
+## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
 
 Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-automatic mode.
