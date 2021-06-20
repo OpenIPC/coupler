@@ -64,7 +64,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: "out/*"
+          file: "$GITHUB_WORKSPACE/out/*"
           asset_name: "XM"
           tag: ${{ env.TAG_NAME }}
           overwrite: true
