@@ -10,7 +10,7 @@ jobs:
       - name: setenv
         run: |
           TAG_NAME="latest"
-          RELEASE_NAME="Test Build"
+          RELEASE_NAME="OpenIPC Firmware"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
