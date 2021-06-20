@@ -33,10 +33,7 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get install u-boot-tools zip
       - name: Checkout
-        uses: actions/checkout@v2.3.4
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3        
+        uses: actions/checkout@v2.3.4     
       - name: fetch
         run: |
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
@@ -47,7 +44,7 @@ jobs:
       - name: step2
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
-            export OUTPUTDIR="out"
+            export OUTPUTDIR="$GITHUB_WORKSPACE/out"
             chmod +x $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_85H30AI_S38" DEVID="000559B0" FLASH_SIZE="0x800000" $RUN
@@ -71,3 +68,6 @@ jobs:
           asset_name: "XM"
           tag: ${{ env.TAG_NAME }}
           overwrite: true
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3   
