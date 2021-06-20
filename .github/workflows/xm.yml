@@ -24,11 +24,13 @@ jobs:
     steps:
       - name: Install dependencies
         run: sudo apt-get install u-boot-tools zip
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
       - name: fetch
         run: |
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
       - name: step
-        run: ls $GITHUB_ACTION_PATH
+        run: ls $GITHUB_ACTION_PATH $GITHUB_WORKSPACE
       - name: step2
         run: SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" ${GITHUB_ACTION_PATH}/_xm2oipc.sh
