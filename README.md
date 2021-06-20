@@ -13,7 +13,7 @@ Releases contain automatically generated firmware files for transition from stoc
 * 559B0
 * 559CD
 ### Flashing
-Use vendor-specific software (DeviceManager, IPCam_DMS) or flash file via web
+Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
 ### Usage
 After reboot camera will get IP from DHCP server, check out project site for [more info](https://openipc.org/firmware/)
 ### Rollback
