@@ -40,7 +40,8 @@ jobs:
           ls -la .github
       - name: step2
         run: |
-            chmod +x $GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh
-            SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" $GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh
+            export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
+            chmod +x $RUN
+            SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" $RUN
       - name: step3
         run: ls -la
