@@ -47,7 +47,7 @@ jobs:
       - name: step2
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
-            export OUTPUTDIR="$(pwd)/out"
+            export OUTPUTDIR="out"
             chmod +x $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_85H30AI_S38" DEVID="000559B0" FLASH_SIZE="0x800000" $RUN
