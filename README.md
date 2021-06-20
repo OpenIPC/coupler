@@ -1,4 +1,5 @@
 # Coupler
+[![XM to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/xm.yml/badge.svg)](https://github.com/OpenIPC/coupler/actions/workflows/xm.yml)
 
 Releases contain automatically generated firmware files for transition from stock to OpenIPC
 
