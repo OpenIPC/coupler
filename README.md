@@ -9,6 +9,8 @@ Releases contain automatically generated firmware files for transition from stoc
 
 ## XiongMai
 
+It's highly **recommended** to upgrade to latest available stock firmware before transition.
+
 ### Device ID's:
 
 #### Hi3516EV200 + IMX307/SC2315E
