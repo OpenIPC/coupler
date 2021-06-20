@@ -10,10 +10,10 @@ Releases contain automatically generated firmware files for transition from stoc
 ### Device ID's:
 #### Hi3516EV200 + IMX307/SC2315E
 * [559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38_2021-06-20.bin)
-* 559B0
-* 559CD
+* [559B0](https://github.com/OpenIPC/coupler/releases/download/latest/000559B0_OpenIPC_HI3516EV200_85H30AI_S38_2021-06-20.bin)
+* [559CD](https://github.com/OpenIPC/coupler/releases/download/latest/000559CD_OpenIPC_HI3516EV200_85HF30T_S38_2021-06-20.bin)
 #### Hi3516EV300 + IMX335
-* 529B2
+* [529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI_2021-06-20.bin)
 ### Flashing
 Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
 ### Usage
