@@ -6,7 +6,7 @@
 #####
 
 ###
-TAG=$(date +"%Y-%m-%d")
+TAG=$(date +"%Y-%m-%d %H:%M:%S")
 
 KERNEL_A="${KERNEL_A:-0x50000}"
 KERNEL_E="${KERNEL_E:-0x250000}"
@@ -37,6 +37,18 @@ tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/
 
 # Check if give files exceed partition boundaries
 [[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A+2000)) ]] && echo "Filesize exceeds boundaries" && exit 1
+
+# Generate Readme
+README=$(cat <<-EOF
+
+DevID:\t\t${DEVID}
+Hardware:\t${HARDWARE}
+Flash:\t\t${FLASH_SIZE}
+Built:\t\t${TAG}
+
+EOF
+)
+echo -e ${README} > ${WORKDIR}/Readme.txt
 
 # Generate InstallDesc
 JSON=$(cat <<-EOF
@@ -113,5 +125,5 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
 # Generate firmware file
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
-cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}_${TAG}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc && cd ..
-rm -rf ${WORKDIR}
+cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd ..
+#rm -rf ${WORKDIR}
