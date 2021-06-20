@@ -25,10 +25,12 @@ FLASH_SIZE="${FLASH_SIZE:-0x800000}"
 ROOTFS_DATA="${ROOTFS_DATA:-$(($FLASH_SIZE - $ROOTFS_E ))}"
 
 WORKDIR="workdir"
+OUTPUTDIR="${OUTPUTDIR:-..}"
 ###
 
 IFS=" "
 mkdir -p ${WORKDIR}
+mkdir -p ${OUTPUTDIR}
 # Generate InstallDesc
 JSON=$(cat <<-EOF
 {
@@ -105,5 +107,5 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
 tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/ &&
   mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
   mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
-  cd ${WORKDIR} && zip ../${DEVID}_OpenIPC_${HARDWARE}_${TAG}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc && cd ..
+  cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}_${TAG}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc && cd ..
 rm -rf ${WORKDIR}
