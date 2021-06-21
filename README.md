@@ -1,5 +1,9 @@
 # Coupler
 [![XM to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/xm.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases)
+![GitHub repo size](https://img.shields.io/github/repo-size/OpenIPC/coupler)
+![GitHub issues](https://img.shields.io/github/issues/OpenIPC/coupler)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/OpenIPC/coupler)
+[![License](https://img.shields.io/github/license/OpenIPC/openipc-2.1)](https://opensource.org/licenses/MIT)
 
 Releases contain automatically generated firmware files for transition from stock to [OpenIPC](https://openipc.org)
 
