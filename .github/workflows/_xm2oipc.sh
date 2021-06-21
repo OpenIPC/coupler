@@ -36,7 +36,7 @@ mkdir -p ${OUTPUTDIR}
 tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/
 
 # Check if give files exceed partition boundaries
-[[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A+2000)) ]] && echo "Filesize exceeds boundaries" && exit 1
+[[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A)) ]] && echo "Filesize exceeds boundaries" && exit 1
 
 # Generate Readme
 README=$(cat <<-EOF
