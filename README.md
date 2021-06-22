@@ -43,6 +43,13 @@ To rollback firmware to stock, you will have to connect UART console and do TFTP
 
 Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-automatic mode.
 
+##### Alternative TFTP recovery:
+* Setup a TFTP server
+* Download appropriate recovery.img from Releases page, place it to TFTP root and rename to update.img
+* ```ipctool --printenv (review serverip and ipaddr)```
+* ```ipctool --setenv="run up && re; setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 0x50000 0x200000; bootm 0x42000000"```
+* ```reboot```
+
 -----
 
 ### Supporting
