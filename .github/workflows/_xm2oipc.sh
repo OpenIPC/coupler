@@ -81,7 +81,7 @@ EOF
 echo ${JSON} > ${WORKDIR}/InstallDesc
 
 # Generate U-Boot ENV
-ENV=$(cat <<-EOF
+ENV_hi3516ev200=$(cat <<-EOF
 bootdelay=0
 baudrate=115200
 ethaddr=00:00:23:34:45:66
@@ -115,6 +115,136 @@ verify=n
 
 EOF
 )
+
+ENV_gk7205v200=$(cat <<-EOF
+bootdelay=0
+baudrate=115200
+ethaddr=00:00:23:34:45:66
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.0.0
+gatewayip=192.168.1.1
+bootfile="uImage"
+da=mw.b 0x42000000 ff 1000000;tftp 0x42000000 u-boot.bin.img;sf probe 0;flwrite
+de=mw.b 0x42000000 ff 1000000;tftp 0x42000000 u-boot.env.img;sf probe 0;flwrite
+dl=mw.b 0x42000000 ff 1000000;tftp 0x42000000 logo-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x42000000 ff 1000000;tftp 0x42000000 romfs-x.cramfs.img;sf probe 0;flwrite
+du=mw.b 0x42000000 ff 1000000;tftp 0x42000000 user-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x42000000 ff 1000000;tftp 0x42000000 custom-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x42000000 ff 1000000;tftp 0x42000000 web-x.cramfs.img;sf probe 0;flwrite
+dd=mw.b 0x42000000 ff 1000000;tftp 0x42000000 mtd-x.jffs2.img;sf probe 0;flwrite
+up=mw.b 0x42000000 ff 1000000;tftp 0x42000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x42000000 ff 1000000;tftp 0x42000000 upall_verify.img;sf probe 0;flwrite
+tk=tftp 0x42000000 uImage;setenv setargs setenv bootargs \${bootargs};run setargs;bootm 0x42000000
+uk=mw.b 0x42000000 ff 1000000;tftp 0x42000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x42000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x42000000 ff 1000000;tftp 0x42000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x42000000 ${ROOTFS_A} \${filesize}
+bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 ${KERNEL_A} 0x200000; bootm 0x42000000';sa;re
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
+ENV_nt98562=$(cat <<-EOF
+arch=arm
+baudrate=115200
+board=nvt-na51055
+board_name=nvt-na51055
+bootdelay=0
+cpu=armv7
+ethaddr=00:00:23:34:45:66
+eth1addr=00:00:23:34:45:77
+ethprime=eth0
+fdt_high=0x04000000
+gatewayip=192.168.1.1
+hostname=oaalnx
+ipaddr=192.168.1.10
+netmask=255.255.255.0
+serverip=192.168.1.254
+ld=mw.b 0x01000000 ff 100000;tftpboot 0x01000000 loader.bin.img;flwrite
+df=mw.b 0x01000000 ff 100000;tftpboot 0x01000000 fdt.bin.img;flwrite
+da=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 u-boot.bin.img;sf probe 0;flwrite
+de=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 u-boot.env.img;sf probe 0;flwrite
+dl=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 logo-x.squashfs.img;sf probe 0;flwrite
+dr=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 romfs-x.squashfs.img;sf probe 0;flwrite
+du=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 user-x.squashfs.img;sf probe 0;flwrite
+dc=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 custom-x.squashfs.img;sf probe 0;flwrite
+dw=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 web-x.squashfs.img;sf probe 0;flwrite
+dd=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 mtd-x.jffs2.img;sf probe 0;flwrite
+up=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 upall_verify.img;sf probe 0;flwrite
+tk=tftpboot 0x01000000 uImage;setenv setargs setenv bootargs ${bootargs};run setargs;nvt_boot 0x01000000
+loadlogo=sf probe 0;sf read 0x02000000  ;logoload 0x02000000;decjpg 0;bootlogo
+loadromfs=sf probe 0;sf read 0x02000000 0x40000 0x2E0000;squashfsload;nvt_boot
+uk=mw.b 0x42000000 ff 1000000;tftp 0x42000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x42000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x42000000 ff 1000000;tftp 0x42000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x01000000 ${KERNEL_A} 0x200000; bootm 0x01000000';sa;re
+bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),192k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stderr=ns16550_serial
+stdin=ns16550_serial
+stdout=ns16550_serial
+vendor=novatek
+
+EOF
+)
+
+ENV_xm530=$(cat <<-EOF
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x80007fc0 0x50000 0x200000; bootm 0x80007fc0';saveenv;re
+bootdelay=1
+baudrate=115200
+cramfsaddr=0x60040000
+da=mw.b 0x81000000 ff 800000;tftp 0x81000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x81000000 ff 800000;tftp 0x81000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x81000000 ff 800000;tftp 0x81000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x81000000 ff 800000;tftp 0x81000000 web-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x81000000 ff 800000;tftp 0x81000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x81000000 ff 800000;tftp 0x81000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x81000000 ff 800000;tftp 0x81000000 upall_verify.img;sf probe 0;flwrite
+tk=mw.b 0x81000000 ff 800000;tftp 0x81000000 uImage; bootm 0x81000000
+dd=mw.b 0x81000000 ff 800000;tftp 0x81000000 mtd-x.jffs2.img;sf probe 0;flwrite
+uk=mw.b 0x81000000 ff 1000000;tftp 0x81000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x81000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x81000000 ff 1000000;tftp 0x81000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x81000000 ${ROOTFS_A} \${filesize}
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.0.0
+gatewayip=192.168.1.1
+ethaddr=00:00:23:34:45:66
+bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=xm_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
+case $SOC in
+  *"xm530"*)
+    ENV=${ENV_xm530}
+    ;;
+  *"hi3516ev"*)
+    ENV=${ENV_hi3516ev200}
+    ;;
+  *"gk7205v"*)
+    ENV=${ENV_gk7205v200}
+    ;;
+  *"nvt-na51055"*)
+    ENV=${ENV_nt98562}
+    ;;
+esac
+
 echo -ne ${ENV} | mkenvimage -s 0x10000 -o ${WORKDIR}/u-boot.env - &&
   mkimage -A arm -O linux -T kernel -n "uboot_env" -a 0x30000 -e 0x40000 -d ${WORKDIR}/u-boot.env ${WORKDIR}/u-boot.env.img
 
