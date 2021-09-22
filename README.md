@@ -32,6 +32,12 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 ### Hi3516EV300 + IMX335
 * [000529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI.bin)
 
+### XM510/XM530/XM550
+**WARNING!** UNTESTED! Manual Rollback only!
+* [00030678](https://github.com/OpenIPC/coupler/releases/download/latest/00030678_OpenIPC_XM530_80X20_8M.bin)
+* [00030679](https://github.com/OpenIPC/coupler/releases/download/latest/00030679_OpenIPC_XM530_80X50_8M.bin)
+* [000309ED](https://github.com/OpenIPC/coupler/releases/download/latest/000309ED_OpenIPC_XM530_80X30T_8M.bin)
+
 ## Flashing
 Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
 
