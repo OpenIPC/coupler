@@ -16,6 +16,7 @@ ROOTFS_E="${ROOTFS_E:-0x750000}"
 
 HARDWARE="${HARDWARE:-HI3516EV200_85H30AI_S38}"
 DEVID="${DEVID:-000559B0}"
+COMPAT="${COMPAT:-2}"
 
 OSMEM="${OSMEM:-32M}"
 TOTALMEM="${TOTALMEM:-64M}"
@@ -73,7 +74,7 @@ JSON=$(cat <<-EOF
   ],
   "Hardware": "${HARDWARE}",
   "DevID": "${DEVID}XXXXX000000000000",
-  "CompatibleVersion" : 2,
+  "CompatibleVersion" : ${COMPAT},
   "Vendor": "SkipCheck"
 }
 EOF
@@ -198,7 +199,7 @@ EOF
 )
 
 ENV_xm530=$(cat <<-EOF
-bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x80007fc0 0x50000 0x200000; bootm 0x80007fc0';saveenv;re
+bootcmd=sf probe 0; sf read 0x80007fc0 0x50000 0x200000; bootm 0x80007fc0
 bootdelay=1
 baudrate=115200
 cramfsaddr=0x60040000
@@ -219,7 +220,7 @@ netmask=255.255.0.0
 gatewayip=192.168.1.1
 ethact=dwmac.10010000
 ethaddr=00:00:23:34:45:66
-bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=xm_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=32M console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=xm_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
