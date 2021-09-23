@@ -53,9 +53,12 @@ Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-au
 * Setup a TFTP server
 * Download appropriate recovery.img from Releases page, place it to TFTP root and rename to update.img
 * ```ipctool --printenv (review serverip and ipaddr)```
+###### HiSilicon
 * ```ipctool --setenv bootcmd="run up && re; setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 0x50000 0x200000; bootm 0x42000000"```
 * ```reboot```
-
+###### XM530
+* ```ipctool --setenv bootcmd="run up;re" ```
+* ```reboot```
 -----
 
 ### Supporting
