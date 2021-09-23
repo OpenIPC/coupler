@@ -60,7 +60,6 @@ Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-au
 * ```ipctool --setenv bootargs="mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=cramfs mtdparts=xm_sfc:256K(boot),1536K(kernel),1280K(romfs),4544K(user),256K(custom),320K(mtd)"```
 * ```ipctool --setenv bootcmd="run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
-* 
 -----
 
 ### Supporting
