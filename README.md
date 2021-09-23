@@ -57,8 +57,10 @@ Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-au
 * ```ipctool --setenv bootcmd="run up && re; setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 0x50000 0x200000; bootm 0x42000000"```
 * ```reboot```
 ###### XM530
-* ```ipctool --setenv bootcmd="run up;re" ```
+* ```ipctool --setenv bootargs="mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=cramfs mtdparts=xm_sfc:256K(boot),1536K(kernel),1280K(romfs),4544K(user),256K(custom),320K(mtd)"```
+* ```ipctool --setenv bootcmd="run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
+* 
 -----
 
 ### Supporting
