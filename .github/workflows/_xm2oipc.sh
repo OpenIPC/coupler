@@ -254,7 +254,7 @@ netmask=255.255.0.0
 gatewayip=192.168.1.1
 ethaddr=00:00:23:34:45:66
 bootargs=mem=18M console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=xm_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
-osmem=${OSMEM}
+osmem=18M
 totalmem=${TOTALMEM}
 soc=${SOC}
 stdin=serial
