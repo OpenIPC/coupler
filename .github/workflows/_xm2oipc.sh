@@ -264,6 +264,7 @@ verify=n
 
 EOF
 )
+
 case $SOC in
   *"xm530"*)
     ENV=${ENV_xm530}
@@ -275,6 +276,9 @@ case $SOC in
     ENV=${ENV_hi3516ev200}
     ;;
   *"gk7205v"*)
+    ENV=${ENV_gk7205v200}
+    ;;
+  *"gk7605v"*)
     ENV=${ENV_gk7205v200}
     ;;
   *"nvt-na51055"*)

@@ -32,6 +32,10 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 ### Hi3516EV300 + IMX335
 * [000529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI.bin)
 
+### GK7205V200 + IMX307/SC2315E/SC2239
+* [000659A7](https://github.com/OpenIPC/coupler/releases/download/latest/000659A7_OpenIPC_IPC_GK7205V200_50H20AI_S38.bin)
+* [000659CD](https://github.com/OpenIPC/coupler/releases/download/latest/000659CD_OpenIPC_IPC_GK7205V200_85HF30T_S38.bin)
+
 ### XM510/XM530/XM550
 **WARNING!** UNTESTED! Manual Rollback only!
 * [00023650](https://github.com/OpenIPC/coupler/releases/download/latest/00023650_OpenIPC_50X10_32M.bin)
