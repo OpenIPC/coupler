@@ -34,6 +34,9 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 ### XM510/XM530/XM550
 **WARNING!** UNTESTED! Manual Rollback only!
+* [00023650](https://github.com/OpenIPC/coupler/releases/download/latest/00023650_OpenIPC_50X10_32M.bin)
+* [00023651](https://github.com/OpenIPC/coupler/releases/download/latest/00023651_OpenIPC_53X13_32M.bin)
+
 * [00030678](https://github.com/OpenIPC/coupler/releases/download/latest/00030678_OpenIPC_XM530_80X20_8M.bin)
 * [00030679](https://github.com/OpenIPC/coupler/releases/download/latest/00030679_OpenIPC_XM530_80X50_8M.bin)
 * [000309ED](https://github.com/OpenIPC/coupler/releases/download/latest/000309ED_OpenIPC_XM530_80X30T_8M.bin)
