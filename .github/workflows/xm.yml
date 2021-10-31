@@ -26,6 +26,7 @@ jobs:
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v200-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.xm530-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.xm510-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.nt98562-br.tgz
       - name: Create firmwares
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
@@ -49,6 +50,8 @@ jobs:
 
             SOC="xm510" TOTALMEM="32M" HARDWARE="50X10_32M" DEVID="00023650" FLASH_SIZE="0x800000" COMPAT="2" $RUN
             SOC="xm510" TOTALMEM="32M" HARDWARE="53X13_32M" DEVID="00023651" FLASH_SIZE="0x800000" COMPAT="2" $RUN
+
+            SOC="nt98562" TOTALMEM="64M" HARDWARE="IPC_NT98562_80N40_S38" DEVID="000629G3" FLASH_SIZE="0x800000" $RUN
 
         continue-on-error: true
       - name: Create release

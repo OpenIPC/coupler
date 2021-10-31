@@ -183,10 +183,10 @@ ua=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 upall_verify.img;sf probe 0;f
 tk=tftpboot 0x01000000 uImage;setenv setargs setenv bootargs ${bootargs};run setargs;nvt_boot 0x01000000
 loadlogo=sf probe 0;sf read 0x02000000  ;logoload 0x02000000;decjpg 0;bootlogo
 loadromfs=sf probe 0;sf read 0x02000000 0x40000 0x2E0000;squashfsload;nvt_boot
-uk=mw.b 0x42000000 ff 1000000;tftp 0x42000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x42000000 ${KERNEL_A} \${filesize}
-ur=mw.b 0x42000000 ff 1000000;tftp 0x42000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
-bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x01000000 ${KERNEL_A} 0x200000; bootm 0x01000000';sa;re
-bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),192k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+uk=mw.b 0x01000000 ff 1000000;tftp 0x01000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x01000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x01000000 ff 1000000;tftp 0x01000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x03500000 ${KERNEL_A} 0x200000; nvt_boot';sa;re
+bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),256k(boot),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
@@ -246,8 +246,8 @@ up=mw.b 0x81000000 ff 800000;tftp 0x81000000 update.img;sf probe 0;flwrite
 ua=mw.b 0x81000000 ff 800000;tftp 0x81000000 upall_verify.img;sf probe 0;flwrite
 tk=mw.b 0x81000000 ff 800000;tftp 0x81000000 uImage; bootm 0x81000000
 dd=mw.b 0x81000000 ff 800000;tftp 0x81000000 mtd-x.jffs2.img;sf probe 0;flwrite
-uk=mw.b 0x81000000 ff 1000000;tftp 0x81000000 uImage.\${soc};sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x81000000 ${KERNEL_A} \${filesize}
-ur=mw.b 0x81000000 ff 1000000;tftp 0x81000000 rootfs.squashfs.\${soc};sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x81000000 ${ROOTFS_A} \${filesize}
+uk=mw.b 0x81000000 ff 800000;tftp 0x81000000 uImage.\${soc};sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x81000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x81000000 ff 800000;tftp 0x81000000 rootfs.squashfs.\${soc};sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x81000000 ${ROOTFS_A} \${filesize}
 ipaddr=192.168.1.10
 serverip=192.168.1.254
 netmask=255.255.0.0
@@ -281,7 +281,7 @@ case $SOC in
   *"gk7605v"*)
     ENV=${ENV_gk7205v200}
     ;;
-  *"nvt-na51055"*)
+  *"nt98562"*)
     ENV=${ENV_nt98562}
     ;;
 esac
@@ -293,6 +293,7 @@ echo -ne ${ENV} | mkenvimage -s 0x10000 -o ${WORKDIR}/u-boot.env - &&
 dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x &&
   mkimage -A arm -O linux -T standalone -n "rootfs_data" -a ${ROOTFS_E} -e ${FLASH_SIZE} -d ${WORKDIR}/mtd-x ${WORKDIR}/mtd-x.jffs2.img
 
+echo $ENV
 # Generate firmware file
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
