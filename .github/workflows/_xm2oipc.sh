@@ -82,6 +82,74 @@ EOF
 echo ${JSON} > ${WORKDIR}/InstallDesc
 
 # Generate U-Boot ENV
+ENV_hi3518ev200=$(cat <<-EOF
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
+bootdelay=1
+baudrate=115200
+bootfile="uImage"
+da=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x82000000 ff 1000000;tftp 0x82000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x82000000 ff 1000000;tftp 0x82000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x82000000 ff 1000000;tftp 0x82000000 web-x.cramfs.img;sf probe 0;flwrite
+dl=mw.b 0x82000000 ff 1000000;tftp 0x82000000 logo-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
+tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage; bootm 0x82000000
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
+dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.255.0
+gatewayip=192.168.1.1
+ethaddr=00:0b:3f:00:00:01
+bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
+ENV_hi3516cv300=$(cat <<-EOF
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
+bootdelay=1
+baudrate=115200
+ethaddr=00:00:23:34:45:66
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.0.0
+gatewayip=192.168.1.1
+bootfile="uImage"
+da=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x82000000 ff 1000000;tftp 0x82000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x82000000 ff 1000000;tftp 0x82000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x82000000 ff 1000000;tftp 0x82000000 web-x.cramfs.img;sf probe 0;flwrite
+dl=mw.b 0x82000000 ff 1000000;tftp 0x82000000 logo-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
+tk=tftp 0x82000000 uImage;setenv setargs setenv bootargs ${bootargs};run setargs;bootm 0x82000000
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
+dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
+bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
 ENV_hi3516ev200=$(cat <<-EOF
 bootdelay=0
 baudrate=115200
@@ -275,6 +343,15 @@ case $SOC in
   *"hi3516ev"*)
     ENV=${ENV_hi3516ev200}
     ;;
+  *"hi3516cv300"*)
+    ENV=${ENV_hi3516cv300}
+    ;;
+  *"hi3516ev100"*)
+    ENV=${ENV_hi3516cv300}
+    ;;
+  *"hi3518ev200"*)
+    ENV=${ENV_hi3518ev200}
+    ;;
   *"gk7205v"*)
     ENV=${ENV_gk7205v200}
     ;;
@@ -293,7 +370,6 @@ echo -ne ${ENV} | mkenvimage -s 0x10000 -o ${WORKDIR}/u-boot.env - &&
 dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x &&
   mkimage -A arm -O linux -T standalone -n "rootfs_data" -a ${ROOTFS_E} -e ${FLASH_SIZE} -d ${WORKDIR}/mtd-x ${WORKDIR}/mtd-x.jffs2.img
 
-echo $ENV
 # Generate firmware file
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&

@@ -21,6 +21,10 @@ jobs:
         uses: actions/checkout@v2.3.4     
       - name: Fetch OpenIPC release
         run: |
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516cv200-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3518ev200-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516cv300-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v200-br.tgz
@@ -34,11 +38,21 @@ jobs:
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
             export OUTPUTDIR="$GITHUB_WORKSPACE/out"
             chmod +x $RUN
+            #SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H10L_S38" DEVID="00018510" FLASH_SIZE="0x800000" $RUN
+            #SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H20L_18EV200_S38" DEVID="00018520" FLASH_SIZE="0x800000" $RUN
+            #SOC="hi3516cv200" TOTALMEM="64M" HARDWARE="53H20L_16CV200_S38" DEVID="00018532" FLASH_SIZE="0x800000" $RUN
+
+            SOC="hi3516ev100" TOTALMEM="64M" HARDWARE="HI3516EV100_50H20L_S38" DEVID="00035520" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3516cv300" TOTALMEM="128M" HARDWARE="50H20L" DEVID="00022520" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3516cv300" TOTALMEM="128M" HARDWARE="50H20L" DEVID="00031520" FLASH_SIZE="0x1000000" $RUN
+
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_50H20AI_S38" DEVID="000559A7" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_85H30AI_S38" DEVID="000559B0" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516ev200" TOTALMEM="64M" HARDWARE="HI3516EV200_85HF30T_S38" DEVID="000559CD" FLASH_SIZE="0x800000" $RUN
+
             SOC="hi3516ev300" TOTALMEM="128M" HARDWARE="HI3516EV300_85H50AI" DEVID="000529B2" FLASH_SIZE="0x1000000" $RUN
             SOC="hi3516ev300" TOTALMEM="128M" HARDWARE="HI3516EV300_N80050YA" DEVID="000529D9" FLASH_SIZE="0x1000000" $RUN
+            SOC="hi3516ev300" TOTALMEM="128M" HARDWARE="HI3516EV300_83H50AI_S38" DEVID="000589C9" FLASH_SIZE="0x800000" $RUN
 
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_50H20AI_S38" DEVID="000659A7" FLASH_SIZE="0x800000" $RUN
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_85HF30T_S38" DEVID="000659CD" FLASH_SIZE="0x800000" $RUN
