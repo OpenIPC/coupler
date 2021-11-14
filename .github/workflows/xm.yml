@@ -27,6 +27,7 @@ jobs:
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3536dv100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v200-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7605v100-br.tgz
@@ -54,6 +55,8 @@ jobs:
             SOC="hi3516ev300" TOTALMEM="128M" HARDWARE="HI3516EV300_N80050YA" DEVID="000529D9" FLASH_SIZE="0x1000000" $RUN
             SOC="hi3516ev300" TOTALMEM="128M" HARDWARE="HI3516EV300_83H50AI_S38" DEVID="000589C9" FLASH_SIZE="0x800000" $RUN
 
+            SOC="hi3536dv100" TOTALMEM="512M" HARDWARE="NBD8008R-PL" DEVID="00000202" FLASH_SIZE="0x1000000" COMPAT="1" $RUN
+
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_50H20AI_S38" DEVID="000659A7" FLASH_SIZE="0x800000" $RUN
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_85HF30T_S38" DEVID="000659CD" FLASH_SIZE="0x800000" $RUN
 
@@ -61,7 +64,8 @@ jobs:
 
             SOC="gk7605v100" TOTALMEM="256M" HARDWARE="IPC_GK7605V100_83K50W_S38" DEVID="000669HC" FLASH_SIZE="0x800000" $RUN
 
-            SOC="xm530" TOTALMEM="64M" HARDWARE="XM530_80X20_8M" DEVID="00030678" FLASH_SIZE="0x800000" $RUN
+            SOC="xm530" TOTALMEM="64M" HARDWARE="XM530_80X20_8M" DEVID="00030678" FLASH_SIZE="0x800000" COMPAT="3" $RUN
+            SOC="xm530" TOTALMEM="64M" HARDWARE="XM530_85X20_8M" DEVID="0003068b" FLASH_SIZE="0x800000" COMPAT="3" $RUN
             SOC="xm530" TOTALMEM="64M" HARDWARE="XM530_85X20T_8M" DEVID="000309E5" FLASH_SIZE="0x800000" COMPAT="3" $RUN
             SOC="xm530" TOTALMEM="64M" HARDWARE="XM530_80X30T_8M" DEVID="000309ED" FLASH_SIZE="0x800000" $RUN
 
