@@ -27,6 +27,7 @@ jobs:
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev200-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3536cv100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3536dv100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v200-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.gk7205v300-br.tgz
