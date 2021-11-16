@@ -8,6 +8,9 @@
 ###
 TAG=$(date +"%Y-%m-%d %H:%M:%S")
 
+ENV_A="0x30000"
+ENV_E="0x40000"
+
 KERNEL_A="${KERNEL_A:-0x50000}"
 KERNEL_E="${KERNEL_E:-0x250000}"
 
@@ -73,6 +76,7 @@ JSON=$(cat <<-EOF
     }
   ],
   "Hardware": "${HARDWARE}",
+  "HardWareVersion": 1,
   "DevID": "${DEVID}XXXXX000000000000",
   "CompatibleVersion" : ${COMPAT},
   "Vendor": "SkipCheck"
@@ -206,7 +210,7 @@ dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
 de=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.env.bin.img;sf probe 0;flwrite
 uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
 ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
-bootargs=mem=512M console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=${TOTALMEM} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
@@ -386,7 +390,14 @@ case $SOC in
   *"hi3518ev200"*)
     ENV=${ENV_hi3518ev200}
     ;;
+  *"hi3536cv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x50000"
+    ENV=${ENV_hi3536dv100}
+    ;;
   *"hi3536dv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x50000"
     ENV=${ENV_hi3536dv100}
     ;;
   *"gk7205v"*)
@@ -401,7 +412,7 @@ case $SOC in
 esac
 
 echo -ne ${ENV} | mkenvimage -s 0x10000 -o ${WORKDIR}/u-boot.env - &&
-  mkimage -A arm -O linux -T kernel -n "uboot_env" -a 0x30000 -e 0x40000 -d ${WORKDIR}/u-boot.env ${WORKDIR}/u-boot.env.img
+  mkimage -A arm -O linux -T kernel -n "uboot_env" -a ${ENV_A} -e ${ENV_E} -d ${WORKDIR}/u-boot.env ${WORKDIR}/u-boot.env.img
 
 # Generate JFFS2 placeholder
 dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x &&
