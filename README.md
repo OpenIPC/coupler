@@ -24,17 +24,30 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 ## Download
 
-### Hi3516EV200 + IMX307/SC2315E
+### Hi3516CV300/EV100
+* [00022520](https://github.com/OpenIPC/coupler/releases/download/latest/00022520_OpenIPC_50H20L.bin)
+* [00031520](https://github.com/OpenIPC/coupler/releases/download/latest/00031520_OpenIPC_50H20L.bin)
+* [00035520](https://github.com/OpenIPC/coupler/releases/download/latest/00035520_OpenIPC_HI3516EV100_50H20L_S38.bin)
+
+### Hi3516EV200 + IMX307/SC2315E/SC2239
 * [000559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38.bin)
 * [000559B0](https://github.com/OpenIPC/coupler/releases/download/latest/000559B0_OpenIPC_HI3516EV200_85H30AI_S38.bin)
 * [000559CD](https://github.com/OpenIPC/coupler/releases/download/latest/000559CD_OpenIPC_HI3516EV200_85HF30T_S38.bin)
 
-### Hi3516EV300 + IMX335
+### Hi3516EV300 +IMX335/SC4236/SC2239
 * [000529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI.bin)
+* [000529D9](https://github.com/OpenIPC/coupler/releases/download/latest/000529D9_OpenIPC_HI3516EV300_N80050YA.bin)
+* [000589C9](https://github.com/OpenIPC/coupler/releases/download/latest/000589C9_OpenIPC_HI3516EV300_83H50AI_S38.bin)
 
 ### GK7205V200 + IMX307/SC2315E/SC2239
 * [000659A7](https://github.com/OpenIPC/coupler/releases/download/latest/000659A7_OpenIPC_IPC_GK7205V200_50H20AI_S38.bin)
 * [000659CD](https://github.com/OpenIPC/coupler/releases/download/latest/000659CD_OpenIPC_IPC_GK7205V200_85HF30T_S38.bin)
+
+### GK7205V300 + IMX335
+* [000669H7](https://github.com/OpenIPC/coupler/releases/download/latest/000669H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
+
+### GK7605V100 + SC2239
+* [000669HC](https://github.com/OpenIPC/coupler/releases/download/latest/000669HC_OpenIPC_IPC_GK7605V100_83K50W_S38.bin)
 
 ### XM510/XM530/XM550
 **WARNING!** UNTESTED! Manual Rollback only!
@@ -43,6 +56,9 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 * [00030678](https://github.com/OpenIPC/coupler/releases/download/latest/00030678_OpenIPC_XM530_80X20_8M.bin)
 * [00030679](https://github.com/OpenIPC/coupler/releases/download/latest/00030679_OpenIPC_XM530_80X50_8M.bin)
+* [0003068b](https://github.com/OpenIPC/coupler/releases/download/latest/0003068b_OpenIPC_XM530_85X20_8M.bin)
+* [00030695](https://github.com/OpenIPC/coupler/releases/download/latest/00030695_OpenIPC_XM530_R80X20-PQ_8M.bin)
+* [000309E5](https://github.com/OpenIPC/coupler/releases/download/latest/000309E5_OpenIPC_XM530_85X20T_8M.bin)
 * [000309ED](https://github.com/OpenIPC/coupler/releases/download/latest/000309ED_OpenIPC_XM530_80X30T_8M.bin)
 
 ## Flashing
