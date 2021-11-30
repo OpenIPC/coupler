@@ -22,6 +22,7 @@ jobs:
       - name: Fetch OpenIPC release
         run: |
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516cv200-br.tgz
+          wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516dv100-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3518ev200-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516cv300-br.tgz
           wget -q https://github.com/OpenIPC/openipc-2.1/releases/download/latest/openipc.hi3516ev100-br.tgz
@@ -40,9 +41,13 @@ jobs:
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
             export OUTPUTDIR="$GITHUB_WORKSPACE/out"
             chmod +x $RUN
-            #SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H10L_S38" DEVID="00018510" FLASH_SIZE="0x800000" $RUN
-            #SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H20L_18EV200_S38" DEVID="00018520" FLASH_SIZE="0x800000" $RUN
-            #SOC="hi3516cv200" TOTALMEM="64M" HARDWARE="53H20L_16CV200_S38" DEVID="00018532" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H10L_S38" DEVID="00018510" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H20L_18EV200_S38" DEVID="00018520" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3516cv200" TOTALMEM="64M" HARDWARE="53H20L_16CV200_S38" DEVID="00018532" FLASH_SIZE="0x800000" $RUN
+
+            SOC="hi3516dv100" TOTALMEM="128M" HARDWARE="HI3516D_83H40" DEVID="00014840" FLASH_SIZE="0x1000000" $RUN
+            SOC="hi3516dv100" TOTALMEM="128M" HARDWARE="HI3516D_83H20" DEVID="00014911" FLASH_SIZE="0x1000000" $RUN
+            SOC="hi3516dv100" TOTALMEM="128M" HARDWARE="HI3516D_83H50N" DEVID="00014927" FLASH_SIZE="0x1000000" $RUN
 
             SOC="hi3516ev100" TOTALMEM="64M" HARDWARE="HI3516EV100_50H20L_S38" DEVID="00035520" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516cv300" TOTALMEM="128M" HARDWARE="50H20L" DEVID="00022520" FLASH_SIZE="0x800000" $RUN

@@ -154,6 +154,45 @@ verify=n
 EOF
 )
 
+ENV_hi3516dv100=$(cat <<-EOF
+bootdelay=0
+baudrate=115200
+mdio_intf=rmii
+ethaddr=00:00:23:34:45:66
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.0.0
+gatewayip=192.168.1.1
+bootfile="uImage"
+da=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x82000000 ff 1000000;tftp 0x82000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x82000000 ff 1000000;tftp 0x82000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x82000000 ff 1000000;tftp 0x82000000 web-x.cramfs.img;sf probe 0;flwrite
+dl=mw.b 0x82000000 ff 1000000;tftp 0x82000000 logo-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
+tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.img; bootm 0x82000000
+dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
+de=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.env.bin.img;sf probe 0;flwrite
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.${SOC} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.${SOC} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
+bootargs=mem=${TOTALMEM} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),256k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
+muxctl0=0x200f0080
+muxval0=0
+gpio0=0x94
+gpioval0=0x0
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
 ENV_hi3516ev200=$(cat <<-EOF
 bootdelay=0
 baudrate=115200
@@ -378,8 +417,20 @@ case $SOC in
   *"xm510"*)
     ENV=${ENV_xm510}
     ;;
+  *"hi3516dv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x80000"
+    KERNEL_A="0x80000"
+    KERNEL_E="0x280000"
+    ROOTFS_A="0x280000"
+    ROOTFS_E="0x780000"
+    ENV=${ENV_hi3536dv100}
+    ;;
   *"hi3516ev"*)
     ENV=${ENV_hi3516ev200}
+    ;;
+  *"hi3516cv200"*)
+    ENV=${ENV_hi3518ev200}
     ;;
   *"hi3516cv300"*)
     ENV_A="0x20000"
