@@ -424,6 +424,7 @@ case $SOC in
     KERNEL_E="0x280000"
     ROOTFS_A="0x280000"
     ROOTFS_E="0x780000"
+    ENVSIZE="0x40000"
     ENV=${ENV_hi3536dv100}
     ;;
   *"hi3516ev"*)
@@ -466,7 +467,7 @@ case $SOC in
     ;;
 esac
 
-echo -ne ${ENV} | mkenvimage -s 0x10000 -o ${WORKDIR}/u-boot.env - &&
+echo -ne ${ENV} | mkenvimage -s ${ENVSIZE:-0x10000} -o ${WORKDIR}/u-boot.env - &&
   mkimage -A arm -O linux -T kernel -n "uboot_env" -a ${ENV_A} -e ${ENV_E} -d ${WORKDIR}/u-boot.env ${WORKDIR}/u-boot.env.img
 
 # Generate JFFS2 placeholder
