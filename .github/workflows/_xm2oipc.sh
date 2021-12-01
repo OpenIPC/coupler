@@ -176,7 +176,7 @@ dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
 de=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.env.bin.img;sf probe 0;flwrite
 uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.${SOC} && sf probe 0;sf erase 0x80000 0x200000; sf write 0x82000000 0x80000 \${filesize}
 ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.${SOC} && sf probe 0;sf erase 0x280000 0x500000; sf write 0x82000000 0x280000 \${filesize}
-bootargs=mem=${TOTALMEM} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),256k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=${OSMEM} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),256k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x82000000 0x80000 0x200000; bootm 0x82000000';sa;re
 muxctl0=0x200f0080
 muxval0=0
