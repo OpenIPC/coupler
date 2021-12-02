@@ -24,11 +24,6 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 ## Download
 
-### Hi3516CV300/EV100
-* [00022520](https://github.com/OpenIPC/coupler/releases/download/latest/00022520_OpenIPC_50H20L.bin)
-* [00031520](https://github.com/OpenIPC/coupler/releases/download/latest/00031520_OpenIPC_50H20L.bin)
-* [00035520](https://github.com/OpenIPC/coupler/releases/download/latest/00035520_OpenIPC_HI3516EV100_50H20L_S38.bin)
-
 ### Hi3516EV200 + IMX307/SC2315E/SC2239
 * [000559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38.bin)
 * [000559B0](https://github.com/OpenIPC/coupler/releases/download/latest/000559B0_OpenIPC_HI3516EV200_85H30AI_S38.bin)
