@@ -142,7 +142,7 @@ tk=tftp 0x82000000 uImage;setenv setargs setenv bootargs ${bootargs};run setargs
 uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
 ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
 dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
-bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=\${osmem} totalmem=\${totalmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
