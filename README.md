@@ -1,3 +1,5 @@
+![OpenIPC Logo](https://cdn.themactep.com/images/logo_openipc.png)
+
 # Coupler
 [![XM to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/xm.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases)
 ![GitHub repo size](https://img.shields.io/github/repo-size/OpenIPC/coupler)
