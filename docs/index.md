@@ -26,24 +26,36 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 ## Download
 
-### Hi3516EV200 + IMX307/SC2315E/SC2239
+### Hi3516Cv200/Hi3518Ev200
+* [00018510](https://github.com/OpenIPC/coupler/releases/download/latest/00018510_OpenIPC_50H10L_S38.bin)
+* [00018520](https://github.com/OpenIPC/coupler/releases/download/latest/00018520_OpenIPC_50H20L_18EV200_S38.bin)
+* [00018532](https://github.com/OpenIPC/coupler/releases/download/latest/00018532_OpenIPC_53H20L_16CV200_S38.bin)
+* 
+### Hi3516Cv300/Hi3516Ev100 + IMX291/IMX307/SC2235
+* [00022520](https://github.com/OpenIPC/coupler/releases/download/latest/00022520_OpenIPC_50H20L.bin)
+* [00031520](https://github.com/OpenIPC/coupler/releases/download/latest/00031520_OpenIPC_50H20L.bin)
+* [00035520](https://github.com/OpenIPC/coupler/releases/download/latest/00035520_OpenIPC_HI3516EV100_50H20L_S38.bin)
+* [000319AB](https://github.com/OpenIPC/coupler/releases/download/latest/000319AB_OpenIPC_50H20L_SG.bin)
+
+### Hi3516Ev200 + IMX307/SC2315E/SC2239
 * [000559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38.bin)
 * [000559B0](https://github.com/OpenIPC/coupler/releases/download/latest/000559B0_OpenIPC_HI3516EV200_85H30AI_S38.bin)
 * [000559CD](https://github.com/OpenIPC/coupler/releases/download/latest/000559CD_OpenIPC_HI3516EV200_85HF30T_S38.bin)
 
-### Hi3516EV300 +IMX335/SC4236/SC2239
+### Hi3516Ev300 +IMX335/SC4236/SC2239
 * [000529B2](https://github.com/OpenIPC/coupler/releases/download/latest/000529B2_OpenIPC_HI3516EV300_85H50AI.bin)
 * [000529D9](https://github.com/OpenIPC/coupler/releases/download/latest/000529D9_OpenIPC_HI3516EV300_N80050YA.bin)
+* [000529E9](https://github.com/OpenIPC/coupler/releases/download/latest/000529E9_OpenIPC_HI3516EV300_85HF50T.bin)
 * [000589C9](https://github.com/OpenIPC/coupler/releases/download/latest/000589C9_OpenIPC_HI3516EV300_83H50AI_S38.bin)
 
-### GK7205V200 + IMX307/SC2315E/SC2239
+### GK7205v200 + IMX307/SC2315E/SC2239
 * [000659A7](https://github.com/OpenIPC/coupler/releases/download/latest/000659A7_OpenIPC_IPC_GK7205V200_50H20AI_S38.bin)
 * [000659CD](https://github.com/OpenIPC/coupler/releases/download/latest/000659CD_OpenIPC_IPC_GK7205V200_85HF30T_S38.bin)
 
-### GK7205V300 + IMX335
+### GK7205v300 + IMX335
 * [000669H7](https://github.com/OpenIPC/coupler/releases/download/latest/000669H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
 
-### GK7605V100 + SC2239
+### GK7605v100 + SC2239
 * [000669HC](https://github.com/OpenIPC/coupler/releases/download/latest/000669HC_OpenIPC_IPC_GK7605V100_83K50W_S38.bin)
 
 ### XM510/XM530/XM550
