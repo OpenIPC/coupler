@@ -30,7 +30,7 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 * [00018510](https://github.com/OpenIPC/coupler/releases/download/latest/00018510_OpenIPC_50H10L_S38.bin)
 * [00018520](https://github.com/OpenIPC/coupler/releases/download/latest/00018520_OpenIPC_50H20L_18EV200_S38.bin)
 * [00018532](https://github.com/OpenIPC/coupler/releases/download/latest/00018532_OpenIPC_53H20L_16CV200_S38.bin)
-* 
+
 ### Hi3516Cv300/Hi3516Ev100 + IMX291/IMX307/SC2235
 * [00022520](https://github.com/OpenIPC/coupler/releases/download/latest/00022520_OpenIPC_50H20L.bin)
 * [00031520](https://github.com/OpenIPC/coupler/releases/download/latest/00031520_OpenIPC_50H20L.bin)
