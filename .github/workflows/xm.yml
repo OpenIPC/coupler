@@ -36,6 +36,7 @@ jobs:
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm510-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98562-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98566-br.tgz
       - name: Create firmwares
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
