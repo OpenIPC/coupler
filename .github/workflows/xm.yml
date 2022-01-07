@@ -16,7 +16,7 @@ jobs:
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
           echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
       - name: Install dependencies
-        run: sudo apt-get install u-boot-tools zip
+        run: sudo apt-get update; sudo apt-get install u-boot-tools zip
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Fetch OpenIPC release
