@@ -21,6 +21,9 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Fetch OpenIPC release
         run: |
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-br.tgz
@@ -42,6 +45,9 @@ jobs:
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
             export OUTPUTDIR="$GITHUB_WORKSPACE/out"
             chmod +x $RUN
+            SOC="hi3518ev100" TOTALMEM="64M" HARDWARE="HI3518E_50H10L_S39" DEVID="00006510" FLASH_SIZE="0x800000" $RUN
+            SOC="hi3518ev100" TOTALMEM="64M" HARDWARE="HI3518E_53H13_S39" DEVID="00006531" FLASH_SIZE="0x800000" $RUN
+
             SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H10L_S38" DEVID="00018510" FLASH_SIZE="0x800000" $RUN
             SOC="hi3518ev200" TOTALMEM="64M" HARDWARE="50H20L_18EV200_S38" DEVID="00018520" FLASH_SIZE="0x800000" $RUN
             SOC="hi3516cv200" TOTALMEM="64M" HARDWARE="53H20L_16CV200_S38" DEVID="00018532" FLASH_SIZE="0x800000" $RUN

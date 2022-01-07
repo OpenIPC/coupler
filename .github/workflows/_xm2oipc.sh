@@ -38,7 +38,7 @@ IFS=" "
 mkdir -p ${WORKDIR}
 mkdir -p ${OUTPUTDIR}
 
-tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/ --exclude "*.md5sum"
+tar -xvz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
 
 # Check if give files exceed partition boundaries
 [[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A)) ]] && echo "Filesize exceeds boundaries" && exit 1
@@ -87,6 +87,40 @@ EOF
 echo ${JSON} > ${WORKDIR}/InstallDesc
 
 # Generate U-Boot ENV
+ENV_hi3516cv100=$(cat <<-EOF
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
+bootdelay=1
+baudrate=115200
+bootfile="uImage"
+da=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x82000000 ff 1000000;tftp 0x82000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x82000000 ff 1000000;tftp 0x82000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x82000000 ff 1000000;tftp 0x82000000 web-x.cramfs.img;sf probe 0;flwrite
+dl=mw.b 0x82000000 ff 1000000;tftp 0x82000000 logo-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
+tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage; bootm 0x82000000
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} ; sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} ; sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
+dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.255.0
+gatewayip=192.168.1.1
+ethaddr=00:00:23:34:45:66
+bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
 ENV_hi3518ev200=$(cat <<-EOF
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
 bootdelay=1
@@ -108,7 +142,7 @@ ipaddr=192.168.1.10
 serverip=192.168.1.254
 netmask=255.255.255.0
 gatewayip=192.168.1.1
-ethaddr=00:0b:3f:00:00:01
+ethaddr=00:00:23:34:45:66
 bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
@@ -418,6 +452,9 @@ case $SOC in
   *"xm510"*)
     ENV=${ENV_xm510}
     ;;
+  hi3516cv100 | hi3518ev100 | hi3518ev100 )
+    ENV=${ENV_hi3516cv100}
+    ;;
   *"hi3516dv100"*)
     ENV_A="0x40000"
     ENV_E="0x80000"
@@ -431,7 +468,7 @@ case $SOC in
   *"hi3516ev"*)
     ENV=${ENV_hi3516ev200}
     ;;
-  *"hi3516cv200"*)
+  hi3516cv200 | hi3518ev200 )
     ENV=${ENV_hi3518ev200}
     ;;
   *"hi3516cv300"*)
@@ -443,9 +480,6 @@ case $SOC in
     ENV_A="0x20000"
     ENV_E="0x30000"
     ENV=${ENV_hi3516cv300}
-    ;;
-  *"hi3518ev200"*)
-    ENV=${ENV_hi3518ev200}
     ;;
   *"hi3536cv100"*)
     ENV_A="0x40000"
@@ -465,6 +499,10 @@ case $SOC in
     ;;
   *"nt9856"*)
     ENV=${ENV_nt98562}
+    ;;
+  *)
+    echo "Error: no ENV matched!"
+    exit 1
     ;;
 esac
 
