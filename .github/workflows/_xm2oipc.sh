@@ -455,7 +455,7 @@ case $SOC in
   *"xm510"*)
     ENV=${ENV_xm510}
     ;;
-  hi3516cv100 | hi3518ev100 | hi3518ev100 )
+  hi3516cv100 | hi3518cv100 | hi3518ev100 )
     ENV=${ENV_hi3516cv100}
     ;;
   *"hi3516dv100"*)
