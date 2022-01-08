@@ -370,6 +370,9 @@ bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_i
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+sensor=${SENSOR}
+board=${HARDWARE}
+devid=${DEVID}
 stderr=ns16550_serial
 stdin=ns16550_serial
 stdout=ns16550_serial
