@@ -24,7 +24,7 @@ COMPAT="${COMPAT:-2}"
 OSMEM="${OSMEM:-32M}"
 TOTALMEM="${TOTALMEM:-64M}"
 SOC="${SOC:-hi3516ev200}"
-SENSOR="${SENSOR:-}"
+[[ ${SENSOR} ]] && SENSOR="sensor=${SENSOR}"
 
 FLASH_SIZE="${FLASH_SIZE:-0x800000}"
 ROOTFS_DATA="${ROOTFS_DATA:-$(($FLASH_SIZE - $ROOTFS_E ))}"
@@ -88,7 +88,9 @@ echo ${JSON} > ${WORKDIR}/InstallDesc
 
 # Generate U-Boot ENV
 ENV_hi3516cv100=$(cat <<-EOF
-bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
+bootcmd=run setbootargs; run boot
+setbootargs=setenv setargs setenv bootargs \${bootargs}; run setargs
+boot=sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000
 bootdelay=1
 baudrate=115200
 bootfile="uImage"
@@ -101,18 +103,21 @@ dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flw
 up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
 ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
 tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage; bootm 0x82000000
-uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc} ; sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
-ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc} ; sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.\${soc}; sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.\${soc}; sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
 dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
 ipaddr=192.168.1.10
 serverip=192.168.1.254
 netmask=255.255.255.0
 gatewayip=192.168.1.1
 ethaddr=00:00:23:34:45:66
-bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -147,6 +152,9 @@ bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -181,6 +189,9 @@ bootargs=mem=\${osmem} totalmem=\${totalmem} console=ttyAMA0,115200 panic=20 roo
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -220,6 +231,9 @@ gpioval0=0x0
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -255,6 +269,9 @@ bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \$
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -289,6 +306,9 @@ bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'sf probe 0; sf read 0x82000000 ${
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -324,6 +344,9 @@ bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \$
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -370,7 +393,7 @@ bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_i
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
-sensor=${SENSOR}
+${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
 stderr=ns16550_serial
@@ -407,6 +430,9 @@ bootargs=mem=${OSMEM} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfs
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
@@ -440,6 +466,9 @@ bootargs=mem=18M console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=
 osmem=18M
 totalmem=${TOTALMEM}
 soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
 stdin=serial
 stdout=serial
 stderr=serial
