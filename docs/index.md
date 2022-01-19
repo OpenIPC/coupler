@@ -25,6 +25,17 @@ to find out "**System version**"
 For example: V5.00.R02.**000559A7**.10010.040400.0020000
 
 ## Download
+### Hi3516Cv100/Hi3518Av100/Hi3518Cv100/Hi3518Ev100 (Untested!)
+* [00001510](https://github.com/OpenIPC/coupler/releases/download/latest/00001510_OpenIPC_50H10L.bin)
+* [00001520](https://github.com/OpenIPC/coupler/releases/download/latest/00001520_OpenIPC_50H20L.bin)
+* [00001531](https://github.com/OpenIPC/coupler/releases/download/latest/00001531_OpenIPC_53H13.bin)
+* [00001532](https://github.com/OpenIPC/coupler/releases/download/latest/00001532_OpenIPC_53H20L.bin)
+* [00002510](https://github.com/OpenIPC/coupler/releases/download/latest/00002510_OpenIPC_50H10L_S39.bin)
+* [00002520](https://github.com/OpenIPC/coupler/releases/download/latest/00002520_OpenIPC_50H20L_S39.bin)
+* [00002531](https://github.com/OpenIPC/coupler/releases/download/latest/00002531_OpenIPC_53H13_S39.bin)
+* [00002532](https://github.com/OpenIPC/coupler/releases/download/latest/00002532_OpenIPC_53H20L_S39.bin)
+* [00006510](https://github.com/OpenIPC/coupler/releases/download/latest/00006510_OpenIPC_HI3518E_50H10L_S39.bin)
+* [00006531](https://github.com/OpenIPC/coupler/releases/download/latest/00006531_OpenIPC_HI3518E_53H13_S39.bin)
 
 ### Hi3516Cv200/Hi3518Ev200
 * [00018510](https://github.com/OpenIPC/coupler/releases/download/latest/00018510_OpenIPC_50H10L_S38.bin)
@@ -36,6 +47,12 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 * [00031520](https://github.com/OpenIPC/coupler/releases/download/latest/00031520_OpenIPC_50H20L.bin)
 * [00035520](https://github.com/OpenIPC/coupler/releases/download/latest/00035520_OpenIPC_HI3516EV100_50H20L_S38.bin)
 * [000319AB](https://github.com/OpenIPC/coupler/releases/download/latest/000319AB_OpenIPC_50H20L_SG.bin)
+
+### Hi3516Av100/Hi3516Dv100
+* [00014830](https://github.com/OpenIPC/coupler/releases/download/latest/00014830_OpenIPC_HI3516D_83H30.bin)
+* [00014840](https://github.com/OpenIPC/coupler/releases/download/latest/00014840_OpenIPC_HI3516D_83H40.bin)
+* [00014911](https://github.com/OpenIPC/coupler/releases/download/latest/00014911_OpenIPC_HI3516D_83H20.bin)
+* [00014914](https://github.com/OpenIPC/coupler/releases/download/latest/00014914_OpenIPC_HI3516D_N81820.bin)
 
 ### Hi3516Ev200 + IMX307/SC2315E/SC2239
 * [000559A7](https://github.com/OpenIPC/coupler/releases/download/latest/000559A7_OpenIPC_HI3516EV200_50H20AI_S38.bin)
