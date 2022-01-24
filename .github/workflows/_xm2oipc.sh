@@ -118,6 +118,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -155,6 +156,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -192,6 +194,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -234,6 +237,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -272,6 +276,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -309,6 +314,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -347,6 +353,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -396,10 +403,10 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stderr=ns16550_serial
 stdin=ns16550_serial
 stdout=ns16550_serial
-vendor=novatek
 
 EOF
 )
@@ -433,6 +440,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
@@ -469,6 +477,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+vendor=xm
 stdin=serial
 stdout=serial
 stderr=serial
