@@ -80,7 +80,7 @@ JSON=$(cat <<-EOF
   "HardWareVersion": 1,
   "DevID": "${DEVID}XXXXX000000000000",
   "CompatibleVersion" : ${COMPAT},
-  "Vendor": "SkipCheck"
+  "manufacturer": "SkipCheck"
 }
 EOF
 )
@@ -118,7 +118,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -156,7 +156,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -194,7 +194,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -237,7 +237,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -276,7 +276,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -314,7 +314,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -353,7 +353,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -403,10 +403,11 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stderr=ns16550_serial
 stdin=ns16550_serial
 stdout=ns16550_serial
+vendor=novatek
 
 EOF
 )
@@ -440,7 +441,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -477,7 +478,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
-vendor=xm
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
