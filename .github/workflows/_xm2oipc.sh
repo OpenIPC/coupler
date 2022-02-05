@@ -80,7 +80,7 @@ JSON=$(cat <<-EOF
   "HardWareVersion": 1,
   "DevID": "${DEVID}XXXXX000000000000",
   "CompatibleVersion" : ${COMPAT},
-  "manufacturer": "SkipCheck"
+  "Vendor": "SkipCheck"
 }
 EOF
 )
