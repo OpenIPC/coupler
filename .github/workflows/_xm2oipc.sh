@@ -118,6 +118,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -155,6 +156,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -192,6 +194,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -234,6 +237,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -272,6 +276,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -309,6 +314,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -347,6 +353,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -396,6 +403,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stderr=ns16550_serial
 stdin=ns16550_serial
 stdout=ns16550_serial
@@ -433,6 +441,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
@@ -469,6 +478,7 @@ soc=${SOC}
 ${SENSOR}
 hardware=${HARDWARE}
 devid=${DEVID}
+manufacturer=Xiongmai
 stdin=serial
 stdout=serial
 stderr=serial
