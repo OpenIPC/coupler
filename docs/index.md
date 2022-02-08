@@ -70,7 +70,7 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 * [000659CD](https://github.com/OpenIPC/coupler/releases/download/latest/000659CD_OpenIPC_IPC_GK7205V200_85HF30T_S38.bin)
 
 ### GK7205v300 + IMX335
-* [000669H7](https://github.com/OpenIPC/coupler/releases/download/latest/000669H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
+* [000699H7](https://github.com/OpenIPC/coupler/releases/download/latest/000699H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
 
 ### GK7605v100 + SC2239
 * [000669HC](https://github.com/OpenIPC/coupler/releases/download/latest/000669HC_OpenIPC_IPC_GK7605V100_83K50W_S38.bin)
