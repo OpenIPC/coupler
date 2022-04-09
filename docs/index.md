@@ -101,19 +101,27 @@ After reboot camera will get IP from DHCP server, check out [project site ](http
 ## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
 
-Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-automatic mode.
-
-##### Alternative TFTP recovery:
+##### TFTP recovery:
 * Setup a TFTP server
-* Download appropriate recovery.img from Releases page, place it to TFTP root and rename to update.img
+* Make sure that the network to which the camera is connected has internet access.
+* Download appropriate recovery img file for you IPC board from Releases page/Original firmware (https://github.com/OpenIPC/coupler/releases/tag/original), place it to TFTP root folder and rename to update.img
 * ```ipctool printenv (review serverip and ipaddr)```
+In the output of this command, we are looking for the value "serverip" (e.g. serverip=192.168.1.254), set the received IP address on the computer with TFTP and launch the TFTP server.
+
 ###### HiSilicon
-* ```ipctool setenv bootcmd "run up && re; setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 0x50000 0x200000; bootm 0x42000000"```
+* ```ipctool``` 
+This is to download the latest version of ipctool from the repository
+* ```/tmp/ipctool setenv bootcmd "run up && re; setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 0x50000 0x200000; bootm 0x42000000"```
 * ```reboot```
+
 ###### XM530
-* ```ipctool setenv bootargs "mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=cramfs mtdparts=xm_sfc:256K(boot),1536K(kernel),1280K(romfs),4544K(user),256K(custom),320K(mtd)"```
-* ```ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
+* ```ipctool```
+This is to download the latest version of ipctool from the repository
+* ```/tmp/ipctool setenv bootargs "mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=cramfs mtdparts=xm_sfc:256K(boot),1536K(kernel),1280K(romfs),4544K(user),256K(custom),320K(mtd)"```
+* ```/tmp/ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
+
+When rebooting, the camera will download and install the update.ini file from your TFTP server. Most likely, it will be available at 192.168.1.10. Without disconnecting and restarting the camera, you need to update the firmware to the latest factory firmware downloaded from the manufacturer's website via the camera's web interface.
 
 -----
 
