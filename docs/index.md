@@ -101,7 +101,9 @@ After reboot camera will get IP from DHCP server, check out [project site ](http
 ## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
 
-##### TFTP recovery:
+Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-automatic mode.
+
+##### Alternative TFTP recovery:
 * Setup a TFTP server
 * Make sure that the network to which the camera is connected has internet access.
 * Download appropriate recovery img file for you IPC board from Releases page/Original firmware (https://github.com/OpenIPC/coupler/releases/tag/original), place it to TFTP root folder and rename to update.img
