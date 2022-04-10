@@ -121,8 +121,6 @@ This is to download the latest version of ipctool from the repository
 * ```/tmp/ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
 
-When rebooting, the camera will download and install the update.ini file from your TFTP server. Most likely, it will be available at 192.168.1.10. Without disconnecting and restarting the camera, you need to update the firmware to the latest factory firmware downloaded from the manufacturer's website via the camera's web interface.
-
 -----
 
 ### Support
