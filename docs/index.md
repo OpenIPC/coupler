@@ -106,7 +106,7 @@ Our [ExIPCam](https://team.openipc.org/exipcam/) software can do that in semi-au
 ##### Alternative TFTP recovery:
 * Setup a TFTP server
 * Make sure that the network to which the camera is connected has internet access.
-* Download appropriate recovery img file for you IPC board from Releases page/Original firmware (https://github.com/OpenIPC/coupler/releases/tag/original), place it to TFTP root folder and rename to update.img
+* Download appropriate recovery.img file for you IPC board from Releases page/Original firmware (https://github.com/OpenIPC/coupler/releases/tag/original), place it to TFTP root folder and rename to update.img
 * ```ipctool printenv (review serverip and ipaddr)```
 In the output of this command, we are looking for the value "serverip" (e.g. serverip=192.168.1.254), set the received IP address on the computer with TFTP and launch the TFTP server.
 
