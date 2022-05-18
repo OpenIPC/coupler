@@ -5,7 +5,80 @@
 ## Dependencies : u-boot-tools, dd, tr, zip
 #####
 
-###
+case $SOC in
+  *"xm530"*)
+    ENV=ENV_xm530
+    ;;
+  *"xm510"*)
+    ENV=ENV_xm510
+    ;;
+  hi3516cv100 | hi3518cv100 | hi3518ev100 )
+    if [ "$DEVID" = "00001532" ]; then
+        ENV_A="0x40000"
+        ENV_E="0x80000"
+        KERNEL_A="0x80000"
+        KERNEL_E="0x280000"
+        ROOTFS_A="0x280000"
+        ROOTFS_E="0x780000"
+        ENVSIZE="0x40000"
+        ENV=ENV_hi3516cv100_2
+    else
+        ENV=ENV_hi3516cv100
+    fi
+    ;;
+  *"hi3516dv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x80000"
+    KERNEL_A="0x80000"
+    KERNEL_E="0x280000"
+    ROOTFS_A="0x280000"
+    ROOTFS_E="0x780000"
+    ENVSIZE="0x40000"
+    ENV=ENV_hi3516dv100
+    ;;
+  *"hi3516ev"*)
+    ENV=ENV_hi3516ev200
+    ;;
+  hi3516cv200 | hi3518ev200 )
+    ENV_A="0x40000"
+    ENV_E="0x50000"
+    ENV=ENV_hi3518ev200
+    ;;
+  *"hi3516cv300"*)
+    ENV_A="0x20000"
+    ENV_E="0x30000"
+    ENV=ENV_hi3516cv300
+    ;;
+  *"hi3516ev100"*)
+    ENV_A="0x20000"
+    ENV_E="0x30000"
+    ENV=ENV_hi3516cv300
+    ;;
+  *"hi3536cv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x50000"
+    ENV=ENV_hi3536dv100
+    ;;
+  *"hi3536dv100"*)
+    ENV_A="0x40000"
+    ENV_E="0x50000"
+    ENV=ENV_hi3536dv100
+    ;;
+  *"gk7205v"*)
+    ENV=ENV_gk7205v200
+    ;;
+  *"gk7605v"*)
+    ENV=ENV_gk7205v200
+    ;;
+  *"nt9856"*)
+    ENV=ENV_nt98562
+    ;;
+  *)
+    echo "Error: no ENV matched!"
+    exit 1
+    ;;
+esac
+
 TAG=$(date +"%Y-%m-%d %H:%M:%S")
 
 ENV_A="${ENV_A:=0x30000}"
@@ -31,6 +104,7 @@ ROOTFS_DATA="${ROOTFS_DATA:-$(($FLASH_SIZE - $ROOTFS_E ))}"
 
 WORKDIR="workdir"
 OUTPUTDIR="${OUTPUTDIR:-..}"
+
 ###
 
 IFS=" "
@@ -143,8 +217,8 @@ dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flw
 up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
 ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
 tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage; bootm 0x82000000
-uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.${SOC} && sf probe 0;sf erase 0x80000 0x200000; sf write 0x82000000 0x80000 \${filesize}
-ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.${SOC} && sf probe 0;sf erase 0x280000 0x500000; sf write 0x82000000 0x280000 \${filesize}
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.${SOC} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x82000000 ${KERNEL_A} \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.${SOC} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x82000000 ${ROOTFS_A} \${filesize}
 dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
 ipaddr=192.168.1.10
 serverip=192.168.1.254
@@ -527,81 +601,7 @@ verify=n
 EOF
 )
 
-case $SOC in
-  *"xm530"*)
-    ENV=${ENV_xm530}
-    ;;
-  *"xm510"*)
-    ENV=${ENV_xm510}
-    ;;
-  hi3516cv100 | hi3518cv100 | hi3518ev100 )
-    if [ "$DEVID" = "00001532" ]; then
-        ENV_A="0x40000"
-        ENV_E="0x80000"
-        KERNEL_A="0x80000"
-        KERNEL_E="0x280000"
-        ROOTFS_A="0x280000"
-        ROOTFS_E="0x780000"
-        ENVSIZE="0x40000"
-        ENV=${ENV_hi3516cv100_2}
-    else
-        ENV=${ENV_hi3516cv100}
-    fi
-    ;;
-  *"hi3516dv100"*)
-    ENV_A="0x40000"
-    ENV_E="0x80000"
-    KERNEL_A="0x80000"
-    KERNEL_E="0x280000"
-    ROOTFS_A="0x280000"
-    ROOTFS_E="0x780000"
-    ENVSIZE="0x40000"
-    ENV=${ENV_hi3516dv100}
-    ;;
-  *"hi3516ev"*)
-    ENV=${ENV_hi3516ev200}
-    ;;
-  hi3516cv200 | hi3518ev200 )
-    ENV_A="0x40000"
-    ENV_E="0x50000"
-    ENV=${ENV_hi3518ev200}
-    ;;
-  *"hi3516cv300"*)
-    ENV_A="0x20000"
-    ENV_E="0x30000"
-    ENV=${ENV_hi3516cv300}
-    ;;
-  *"hi3516ev100"*)
-    ENV_A="0x20000"
-    ENV_E="0x30000"
-    ENV=${ENV_hi3516cv300}
-    ;;
-  *"hi3536cv100"*)
-    ENV_A="0x40000"
-    ENV_E="0x50000"
-    ENV=${ENV_hi3536dv100}
-    ;;
-  *"hi3536dv100"*)
-    ENV_A="0x40000"
-    ENV_E="0x50000"
-    ENV=${ENV_hi3536dv100}
-    ;;
-  *"gk7205v"*)
-    ENV=${ENV_gk7205v200}
-    ;;
-  *"gk7605v"*)
-    ENV=${ENV_gk7205v200}
-    ;;
-  *"nt9856"*)
-    ENV=${ENV_nt98562}
-    ;;
-  *)
-    echo "Error: no ENV matched!"
-    exit 1
-    ;;
-esac
-
-echo -ne ${ENV} | mkenvimage -s ${ENVSIZE:-0x10000} -o ${WORKDIR}/u-boot.env - &&
+echo -ne ${!ENV} | mkenvimage -s ${ENVSIZE:-0x10000} -o ${WORKDIR}/u-boot.env - &&
   mkimage -A arm -O linux -T kernel -n "uboot_env" -a ${ENV_A} -e ${ENV_E} -d ${WORKDIR}/u-boot.env ${WORKDIR}/u-boot.env.img
 
 # Generate JFFS2 placeholder
