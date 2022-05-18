@@ -8,8 +8,8 @@
 ###
 TAG=$(date +"%Y-%m-%d %H:%M:%S")
 
-ENV_A="0x30000"
-ENV_E="0x40000"
+ENV_A="${ENV_A:=0x30000}"
+ENV_E="${ENV_E:=0x40000}"
 
 KERNEL_A="${KERNEL_A:-0x50000}"
 KERNEL_E="${KERNEL_E:-0x250000}"
@@ -127,6 +127,46 @@ verify=n
 EOF
 )
 
+ENV_hi3516cv100_2=$(cat <<-EOF
+bootcmd=run setbootargs; run boot
+setbootargs=setenv setargs setenv bootargs \${bootargs}; run setargs
+boot=sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000
+bootdelay=1
+baudrate=115200
+bootfile="uImage"
+da=mw.b 0x82000000 ff 1000000;tftp 0x82000000 u-boot.bin.img;sf probe 0;flwrite
+du=mw.b 0x82000000 ff 1000000;tftp 0x82000000 user-x.cramfs.img;sf probe 0;flwrite
+dr=mw.b 0x82000000 ff 1000000;tftp 0x82000000 romfs-x.cramfs.img;sf probe 0;flwrite
+dw=mw.b 0x82000000 ff 1000000;tftp 0x82000000 web-x.cramfs.img;sf probe 0;flwrite
+dl=mw.b 0x82000000 ff 1000000;tftp 0x82000000 logo-x.cramfs.img;sf probe 0;flwrite
+dc=mw.b 0x82000000 ff 1000000;tftp 0x82000000 custom-x.cramfs.img;sf probe 0;flwrite
+up=mw.b 0x82000000 ff 1000000;tftp 0x82000000 update.img;sf probe 0;flwrite
+ua=mw.b 0x82000000 ff 1000000;tftp 0x82000000 upall_verify.img;sf probe 0;flwrite
+tk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage; bootm 0x82000000
+uk=mw.b 0x82000000 ff 1000000;tftp 0x82000000 uImage.${SOC} && sf probe 0;sf erase 0x80000 0x200000; sf write 0x82000000 0x80000 \${filesize}
+ur=mw.b 0x82000000 ff 1000000;tftp 0x82000000 rootfs.squashfs.${SOC} && sf probe 0;sf erase 0x280000 0x500000; sf write 0x82000000 0x280000 \${filesize}
+dd=mw.b 0x82000000 ff 1000000;tftp 0x82000000 mtd-x.jffs2.img;sf probe 0;flwrite
+ipaddr=192.168.1.10
+serverip=192.168.1.254
+netmask=255.255.255.0
+gatewayip=192.168.1.1
+ethaddr=00:00:23:34:45:66
+bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock2 rootfstype=squashfs init=/init mtdparts=hi_sfc:512k(boot),2048k(kernel),5120k(rootfs),-(rootfs_data)
+osmem=${OSMEM}
+totalmem=${TOTALMEM}
+soc=${SOC}
+${SENSOR}
+hardware=${HARDWARE}
+devid=${DEVID}
+manufacturer=Xiongmai
+stdin=serial
+stdout=serial
+stderr=serial
+verify=n
+
+EOF
+)
+
 ENV_hi3518ev200=$(cat <<-EOF
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x82000000 ${KERNEL_A} 0x200000; bootm 0x82000000';sa;re
 bootdelay=1
@@ -149,7 +189,7 @@ serverip=192.168.1.254
 netmask=255.255.255.0
 gatewayip=192.168.1.1
 ethaddr=00:00:23:34:45:66
-bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
@@ -268,7 +308,7 @@ ua=mw.b 0x42000000 ff 1000000;tftp 0x42000000 upall_verify.img;sf probe 0;flwrit
 tk=tftp 0x42000000 uImage;setenv setargs setenv bootargs \${bootargs};run setargs;bootm 0x42000000
 uk=mw.b 0x42000000 ff 1000000;tftp 0x42000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x42000000 ${KERNEL_A} \${filesize}
 ur=mw.b 0x42000000 ff 1000000;tftp 0x42000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x42000000 ${ROOTFS_A} \${filesize}
-bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=hi_sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 ${KERNEL_A} 0x200000; bootm 0x42000000';sa;re
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
@@ -345,7 +385,7 @@ ua=mw.b 0x42000000 ff 1000000;tftp 0x42000000 upall_verify.img;sf probe 0;flwrit
 tk=tftp 0x42000000 uImage;setenv setargs setenv bootargs \${bootargs};run setargs;bootm 0x42000000
 uk=mw.b 0x42000000 ff 1000000;tftp 0x42000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x42000000 ${KERNEL_A} \${filesize}
 ur=mw.b 0x42000000 ff 1000000;tftp 0x42000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x42000000 ${ROOTFS_A} \${filesize}
-bootargs=mem=\${osmem:-32M} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=mem=\${osmem} console=ttyAMA0,115200 panic=20 root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=sfc:256k(boot),64k(wtf),2048k(kernel),5120k(rootfs),-(rootfs_data)
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x42000000 ${KERNEL_A} 0x200000; bootm 0x42000000';sa;re
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
@@ -396,7 +436,7 @@ loadromfs=sf probe 0;sf read 0x02000000 0x40000 0x2E0000;squashfsload;nvt_boot
 uk=mw.b 0x01000000 ff 1000000;tftp 0x01000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x01000000 ${KERNEL_A} \${filesize}
 ur=mw.b 0x01000000 ff 1000000;tftp 0x01000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
 bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x03100000 ${KERNEL_A} 0x200000; nvt_boot';sa;re
-bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem:-32M} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),256k(boot),2048k(kernel),5120k(rootfs),-(rootfs_data)
+bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),256k(boot),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
@@ -495,7 +535,18 @@ case $SOC in
     ENV=${ENV_xm510}
     ;;
   hi3516cv100 | hi3518cv100 | hi3518ev100 )
-    ENV=${ENV_hi3516cv100}
+    if [ "$DEVID" = "00001532" ]; then
+        ENV_A="0x40000"
+        ENV_E="0x80000"
+        KERNEL_A="0x80000"
+        KERNEL_E="0x280000"
+        ROOTFS_A="0x280000"
+        ROOTFS_E="0x780000"
+        ENVSIZE="0x40000"
+        ENV=${ENV_hi3516cv100_2}
+    else
+        ENV=${ENV_hi3516cv100}
+    fi
     ;;
   *"hi3516dv100"*)
     ENV_A="0x40000"
