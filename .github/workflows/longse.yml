@@ -1,0 +1,65 @@
+name: Longse to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          TAG_NAME="herospeed"
+          RELEASE_NAME="OpenIPC Firmware"
+          PRERELEASE=true
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: sudo apt-get update; sudo apt-get install u-boot-tools zip
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC release
+        run: |
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-br.tgz
+      - name: Create firmwares
+        run: |
+            export RUN="$GITHUB_WORKSPACE/.github/workflows/_longse2oipc.sh"
+            export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+            chmod +x *.sh
+            SOC="hi3516av300" SENSOR="IMX415b" NAME="16AV300" $RUN
+
+        continue-on-error: true
+      - name: Create release
+        uses: actions/create-release@v1
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Longse/Herospeed boards
+          draft: false
+          prerelease: ${{ env.PRERELEASE }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: out/*
+          file_glob: true
+          tag: ${{ env.TAG_NAME }}
+          overwrite: true
+#       - name: Setup tmate session
+#         if: ${{ failure() }}
+#         uses: mxschmitt/action-tmate@v3   
