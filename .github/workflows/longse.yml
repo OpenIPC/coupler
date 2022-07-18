@@ -60,6 +60,6 @@ jobs:
           file_glob: true
           tag: ${{ env.TAG_NAME }}
           overwrite: true
-#       - name: Setup tmate session
-#         if: ${{ failure() }}
-#         uses: mxschmitt/action-tmate@v3   
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3   
