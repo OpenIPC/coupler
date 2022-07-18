@@ -13,7 +13,7 @@ Releases contain automatically generated firmware files for transition from stoc
 
 # Supported vendors
 
-## XiongMai
+# XiongMai
 
 It's highly **recommended** to upgrade to latest available stock firmware before transition.
 
@@ -122,6 +122,17 @@ This is to download the latest version of ipctool from the repository
 * ```/tmp/ipctool setenv bootargs "mem=32M console=ttyAMA0,115200 root=/dev/mtdblock2 rootfstype=cramfs mtdparts=xm_sfc:256K(boot),1536K(kernel),1280K(romfs),4544K(user),256K(custom),320K(mtd)"```
 * ```/tmp/ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
+
+# Longse/Herospeed
+## WARNING! BACKUP IS MANDATORY! ROLLBACK IS NOT POSSIBLE!
+## Device ID's 
+
+Obtain stock firmware file and open it in an editor. First 8 bytes are **NAME** and next 8 bytes are **SENSOR**
+
+For example:  ```16AV300 IMX415b```
+
+## Flashing
+Get appropriate [file for your model](https://github.com/OpenIPC/coupler/releases/tag/herospeed) and flash it via web.
 
 -----
 
