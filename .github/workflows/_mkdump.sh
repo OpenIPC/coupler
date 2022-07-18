@@ -19,7 +19,7 @@ OUTPUTFILE="${OUTPUT:-${OUTPUTDIR}/openipc.${SOC}-dump.bin}"
 mkdir -p ${WORKDIR}
 mkdir -p ${OUTPUTDIR}
 
-tar -xz -f openipc.${SOC}-br.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
+tar -xz -f dl/openipc.${SOC}-br.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
 
 # make dump image
 dd if=/dev/zero bs=$((${DUMPSIZE})) count=1 status=none | tr "\000" "\377" > ${OUTPUTFILE}
