@@ -23,7 +23,7 @@ jobs:
         uses: robinraju/release-downloader@v1.4
         with: 
           repository: "OpenIPC/firmware"
-          latest: true
+          tag: latest
           fileName: "*u-boot*.bin"
           out-file-path: ".github/workflows/workdir"
       - name: Fetch OpenIPC release
