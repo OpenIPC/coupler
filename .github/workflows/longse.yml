@@ -19,6 +19,13 @@ jobs:
         run: sudo apt-get update; sudo apt-get install u-boot-tools zip
       - name: Checkout
         uses: actions/checkout@v2.3.4
+      - name: release-downloader
+        uses: robinraju/release-downloader@v1.4
+        with: 
+          repository: "OpenIPC/firmware"
+          latest: true
+          fileName: "*u-boot*.bin"
+          out-file-path: ".github/workflows/workdir"
       - name: Fetch OpenIPC release
         run: |
           mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" ; cd "$_"
@@ -31,6 +38,7 @@ jobs:
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-br.tgz
 
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv200-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
 
@@ -156,6 +164,6 @@ jobs:
           file_glob: true
           tag: ${{ env.TAG_NAME }}
           overwrite: true
-      # - name: Setup tmate session
-      #   if: ${{ failure() }}
-      #   uses: mxschmitt/action-tmate@v3   
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3   
