@@ -23,6 +23,6 @@ tar -xz -f dl/openipc.${SOC}-br.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 
 
 # make dump image
 dd if=/dev/zero bs=$((${DUMPSIZE})) count=1 status=none | tr "\000" "\377" > ${OUTPUTFILE}
-dd if=u-boot-${SOC}-universal.bin of=${OUTPUTFILE} bs=$((${KERNEL_A})) conv=notrunc status=none
+dd if=${WORKDIR}/u-boot-${SOC}-universal.bin of=${OUTPUTFILE} bs=$((${KERNEL_A})) conv=notrunc status=none
 dd if=${WORKDIR}/uImage.${SOC} of=${OUTPUTFILE} bs=$((${KERNEL_A})) seek=1  conv=notrunc status=none
 dd if=${WORKDIR}/rootfs.squashfs.${SOC} of=${OUTPUTFILE} seek=1 bs=$((${ROOTFS_A})) conv=notrunc status=none
