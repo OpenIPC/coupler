@@ -22,17 +22,23 @@ jobs:
       - name: Fetch OpenIPC release
         run: |
           mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" ; cd "$_"
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-br.tgz
+
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
+
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-br.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
+
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
+
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av200-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3519v101-br.tgz
+
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv500-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-br.tgz
       - name: Create firmwares
         run: |
             cd $GITHUB_WORKSPACE/.github/workflows
