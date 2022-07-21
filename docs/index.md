@@ -9,7 +9,7 @@
 
 Releases contain automatically generated firmware files for transition from stock to [OpenIPC](https://openipc.org)
 
-**WARNING**! Development builds! **DO NOT** flash, if you dont have required hardware or skills to do the recovery.
+**WARNING**! Coupler is a work-in-progress. If the firmware update fails, then it will be necessary to [to carry out a tftp recovery process](https://openipc.github.io/wiki/en/installation.html). You are **strongly advised** to **carefully** review the [recovery process documentation](https://openipc.github.io/wiki/en/installation.html) **and** check for any relevant [open issues](https://github.com/OpenIPC/coupler/issues), **before** proceeding.
 
 # Supported vendors
 
@@ -20,9 +20,11 @@ It's highly **recommended** to upgrade to latest available stock firmware before
 ## Device ID's
 
 Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or web (Device Config->Info->Version) 
-to find out "**System version**" 
+to find out the vendor software "**System version**". 
 
 For example: V5.00.R02.**000559A7**.10010.040400.0020000
+
+Select the firmware from the download list which *exactly* matches highlighted portion of **your** device's "**System version**".
 
 ## Download
 ### Hi3516Cv100/Hi3518Av100/Hi3518Cv100/Hi3518Ev100 (Untested!)
@@ -93,10 +95,10 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 * [00000202](https://github.com/OpenIPC/coupler/releases/download/latest/00000202_OpenIPC_NBD8008R-PL.bin)
 
 ## Flashing
-Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
+Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)), or flash the file via the camera's built-in web server (web browser update is not available on vendor firmwares).
 
 ## Usage
-After reboot camera will get IP from DHCP server, check out [project site ](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info
+After reboot camera will request an IP from a DHCP server, check out [project site ](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info.
 
 ## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
