@@ -106,10 +106,10 @@ Many firmwares in the list below are compatible with multiple different image se
 * [00000202](https://github.com/OpenIPC/coupler/releases/download/latest/00000202_OpenIPC_NBD8008R-PL.bin)
 
 ## Flashing
-Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
+Use vendor-specific software (e.g. XiongMai DeviceManager), [IPCam_DMS](https://team.openipc.org/ipcam_dms/), or the camera's built-in web server (n.b. not all vendor firmwares support browser based updates) to install the OpenIPC coupler firmware binary.
 
 ## Usage
-After reboot camera will get IP from DHCP server, check out [project site ](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info
+Check the main [project docs](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info.
 
 ## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
