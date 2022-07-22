@@ -108,6 +108,11 @@ Many firmwares in the list below are compatible with multiple different image se
 ## Flashing
 Use vendor-specific software (e.g. XiongMai DeviceManager), [IPCam_DMS](https://team.openipc.org/ipcam_dms/), or the camera's built-in web server (n.b. not all vendor firmwares support browser based updates) to install the OpenIPC coupler firmware binary.
 
+## Initial configuration
+After flashing and rebooting, the camera will request an IP from a DHCP server. It will listen for web based management on port 85 (e.g. http://w.x.y.z:85/ where the w.x.y.z is replaced with the IP address is the one that your local DHCP server has assigned), and also on ssh. The coupler firmware build may not be the latest, so you may want to upgrade the firmware further at this point.
+
+If no image is available via the web interface, then the sensor may need to be manually configured. This can be checked via ssh with `fw_printenv -n sensor`, which may respond `unknown`. On HiSilicon SoCs, a list of known sensor types can be found in the `/usr/bin/load_hisilicon` script. Once you have a matching sensor type, it can be set with e.g. `fw_setenv sensor imx291_i2c`.
+
 ## Usage
 Check the main [project docs](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info.
 
