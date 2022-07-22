@@ -17,14 +17,27 @@ Releases contain automatically generated firmware files for transition from stoc
 
 It's highly **recommended** to upgrade to latest available stock firmware before transition.
 
-## Device ID's
-
-Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or web (Device Config->Info->Version) 
-to find out "**System version**" 
-
-For example: V5.00.R02.**000559A7**.10010.040400.0020000
-
 ## Download
+
+### Find your Device ID
+
+You can use coupler if a coupler binary is available which matches the "**System version**" for your device.
+
+For example a device running vendor firmware with the version "V5.00.R02.**000059A8**.10010.040400.0020000" has device ID "**000059A8**".
+
+There are several ways to discover the vendor firmware version:
+
+* The IPCam's built-in web interface e.g. "Device Config" → "Info" → "Version".
+* The vendor's management software e.g. XiongMai's DeviceManager.
+* [IPCam_DMS](https://team.openipc.org/ipcam_dms/) management software (Windows binaries, but also run under Wine on Linux).
+* [ipctool](https://openipc.github.io/ipctool/).
+
+Select the firmware from the download list which *exactly* matches **your** device's ID.
+
+### Find your Image Sensor
+
+Many firmwares in the list below are compatible with multiple different image sensor (CCD) types, and must be configured to expect a particular sensor type before images or video can be captured. You should ensure that you know the image sensor (CCD) make/model which your camera uses. This can be found using the methods listed above for determining the device ID, but is also often shown on the item description or model number (e.g. when the item is sold, or on the product packaging).
+
 ### Hi3516Cv100/Hi3518Av100/Hi3518Cv100/Hi3518Ev100 (Untested!)
 * [00001510](https://github.com/OpenIPC/coupler/releases/download/latest/00001510_OpenIPC_50H10L.bin)
 * [00001520](https://github.com/OpenIPC/coupler/releases/download/latest/00001520_OpenIPC_50H20L.bin)
