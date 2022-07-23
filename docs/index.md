@@ -9,7 +9,7 @@
 
 Releases contain automatically generated firmware files for transition from stock to [OpenIPC](https://openipc.org)
 
-**WARNING**! Development builds! **DO NOT** flash, if you dont have required hardware or skills to do the recovery.
+**WARNING**! Coupler is a work-in-progress. If the firmware update fails, then it will be necessary to [to carry out a tftp recovery process](https://openipc.github.io/wiki/en/installation.html). You are **strongly advised** to **carefully** review the [recovery process documentation](https://openipc.github.io/wiki/en/installation.html) **and** check for any relevant [open issues](https://github.com/OpenIPC/coupler/issues), **before** proceeding.
 
 # Supported vendors
 
@@ -17,14 +17,27 @@ Releases contain automatically generated firmware files for transition from stoc
 
 It's highly **recommended** to upgrade to latest available stock firmware before transition.
 
-## Device ID's
-
-Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or web (Device Config->Info->Version) 
-to find out "**System version**" 
-
-For example: V5.00.R02.**000559A7**.10010.040400.0020000
-
 ## Download
+
+### Find your Device ID
+
+You can use coupler if a coupler binary is available which matches the "**System version**" for your device.
+
+For example a device running vendor firmware with the version "V5.00.R02.**000059A8**.10010.040400.0020000" has device ID "**000059A8**".
+
+There are several ways to discover the vendor firmware version:
+
+* The IPCam's built-in web interface e.g. "Device Config" → "Info" → "Version".
+* The vendor's management software e.g. XiongMai's DeviceManager.
+* [IPCam_DMS](https://team.openipc.org/ipcam_dms/) management software (Windows binaries, but also run under Wine on Linux).
+* [ipctool](https://openipc.github.io/ipctool/).
+
+Select the firmware from the download list which *exactly* matches **your** device's ID.
+
+### Find your Image Sensor
+
+Many firmwares in the list below are compatible with multiple different image sensor (CCD) types, and must be configured to expect a particular sensor type before images or video can be captured. You should ensure that you know the image sensor (CCD) make/model which your camera uses. This can be found using the methods listed above for determining the device ID, but is also often shown on the item description or model number (e.g. when the item is sold, or on the product packaging).
+
 ### Hi3516Cv100/Hi3518Av100/Hi3518Cv100/Hi3518Ev100 (Untested!)
 * [00001510](https://github.com/OpenIPC/coupler/releases/download/latest/00001510_OpenIPC_50H10L.bin)
 * [00001520](https://github.com/OpenIPC/coupler/releases/download/latest/00001520_OpenIPC_50H20L.bin)
@@ -93,10 +106,15 @@ For example: V5.00.R02.**000559A7**.10010.040400.0020000
 * [00000202](https://github.com/OpenIPC/coupler/releases/download/latest/00000202_OpenIPC_NBD8008R-PL.bin)
 
 ## Flashing
-Use vendor-specific software (DeviceManager, [IPCam_DMS](https://team.openipc.org/ipcam_dms/)) or flash file via web
+Use vendor-specific software (e.g. XiongMai DeviceManager), [IPCam_DMS](https://team.openipc.org/ipcam_dms/), or the camera's built-in web server (n.b. not all vendor firmwares support browser based updates) to install the OpenIPC coupler firmware binary.
+
+## Initial configuration
+After flashing and rebooting, the camera will request an IP from a DHCP server. It will listen for web based management on port 85 (e.g. http://w.x.y.z:85/ where the w.x.y.z is replaced with the IP address is the one that your local DHCP server has assigned), and also on ssh. The coupler firmware build may not be the latest, so you may want to upgrade the firmware further at this point.
+
+If no image is available via the web interface, then the sensor may need to be manually configured. This can be checked via ssh with `fw_printenv -n sensor`, which may respond `unknown`. On HiSilicon SoCs, a list of known sensor types can be found in the `/usr/bin/load_hisilicon` script. Once you have a matching sensor type, it can be set with e.g. `fw_setenv sensor imx291_i2c`.
 
 ## Usage
-After reboot camera will get IP from DHCP server, check out [project site ](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info
+Check the main [project docs](https://openipc.org/firmware/) and [wiki](https://github.com/OpenIPC/openipc-2.1/wiki) for more info.
 
 ## Rollback
 To rollback firmware to stock, you will have to connect UART console and do TFTP recovery
