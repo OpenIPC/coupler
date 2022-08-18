@@ -88,18 +88,6 @@ Many firmwares in the list below are compatible with multiple different image se
 ### GK7605v100 + SC2239
 * [000669HC](https://github.com/OpenIPC/coupler/releases/download/latest/000669HC_OpenIPC_IPC_GK7605V100_83K50W_S38.bin)
 
-### XM510/XM530/XM550
-**WARNING!** Manual Rollback only !
-* [00023650](https://github.com/OpenIPC/coupler/releases/download/latest/00023650_OpenIPC_50X10_32M.bin)
-* [00023651](https://github.com/OpenIPC/coupler/releases/download/latest/00023651_OpenIPC_53X13_32M.bin)
-
-* [00030678](https://github.com/OpenIPC/coupler/releases/download/latest/00030678_OpenIPC_XM530_80X20_8M.bin)
-* [00030679](https://github.com/OpenIPC/coupler/releases/download/latest/00030679_OpenIPC_XM530_80X50_8M.bin)
-* [0003068b](https://github.com/OpenIPC/coupler/releases/download/latest/0003068b_OpenIPC_XM530_85X20_8M.bin)
-* [00030695](https://github.com/OpenIPC/coupler/releases/download/latest/00030695_OpenIPC_XM530_R80X20-PQ_8M.bin)
-* [000309E5](https://github.com/OpenIPC/coupler/releases/download/latest/000309E5_OpenIPC_XM530_85X20T_8M.bin)
-* [000309ED](https://github.com/OpenIPC/coupler/releases/download/latest/000309ED_OpenIPC_XM530_80X30T_8M.bin)
-
 ### Hi3536CV100 / Hi3536DV100
 **WARNING!** Provides linux rootfs ! Manual Rollback only !
 * [00000197](https://github.com/OpenIPC/coupler/releases/download/latest/00000197_OpenIPC_NBD8008R-U.bin)
