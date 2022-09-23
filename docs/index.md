@@ -81,6 +81,7 @@ Many firmwares in the list below are compatible with multiple different image se
 ### GK7205v200 + IMX307/SC2315E/SC2239
 * [000659A7](https://github.com/OpenIPC/coupler/releases/download/latest/000659A7_OpenIPC_IPC_GK7205V200_50H20AI_S38.bin)
 * [000659CD](https://github.com/OpenIPC/coupler/releases/download/latest/000659CD_OpenIPC_IPC_GK7205V200_85HF30T_S38.bin)
+* [000659I7](https://github.com/OpenIPC/coupler/releases/download/latest/000659I7_OpenIPC_IPC_GK7205V200_85K40T_S38.bin)
 
 ### GK7205v300 + IMX335
 * [000699H7](https://github.com/OpenIPC/coupler/releases/download/latest/000699H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
