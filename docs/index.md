@@ -44,9 +44,9 @@ Many firmwares in the list below are compatible with multiple different image se
 * [00001531](https://github.com/OpenIPC/coupler/releases/download/latest/00001531_OpenIPC_53H13.bin)
 * [00001532](https://github.com/OpenIPC/coupler/releases/download/latest/00001532_OpenIPC_53H20L.bin)
 * [00002510](https://github.com/OpenIPC/coupler/releases/download/latest/00002510_OpenIPC_50H10L_S39.bin)
-* [00002520](https://github.com/OpenIPC/coupler/releases/download/latest/00002520_OpenIPC_50H20L_S39.bin)
+* [00002520](https://github.com/OpenIPC/coupler/releases/download/latest/00002520_OpenIPC_50H20L_S39.bin) (No sensor driver)
 * [00002531](https://github.com/OpenIPC/coupler/releases/download/latest/00002531_OpenIPC_53H13_S39.bin)
-* [00002532](https://github.com/OpenIPC/coupler/releases/download/latest/00002532_OpenIPC_53H20L_S39.bin)
+* [00002532](https://github.com/OpenIPC/coupler/releases/download/latest/00002532_OpenIPC_53H20L_S39.bin) (No sensor driver)
 * [00006510](https://github.com/OpenIPC/coupler/releases/download/latest/00006510_OpenIPC_HI3518E_50H10L_S39.bin)
 * [00006531](https://github.com/OpenIPC/coupler/releases/download/latest/00006531_OpenIPC_HI3518E_53H13_S39.bin)
 
