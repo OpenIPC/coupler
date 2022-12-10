@@ -21,25 +21,25 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Fetch OpenIPC release
         run: |
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536cv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536dv100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v300-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7605v100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm510-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98562-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98566-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536cv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536dv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7605v100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm510-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98562-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98566-nor-lite.tgz
       - name: Create firmwares
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
