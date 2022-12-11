@@ -29,7 +29,7 @@ There are several ways to discover the vendor firmware version:
 
 * The IPCam's built-in web interface e.g. "Device Config" → "Info" → "Version".
 * The vendor's management software e.g. XiongMai's DeviceManager.
-* [IPCam_DMS](https://team.openipc.org/ipcam_dms/) management software (Windows binaries, but also run under Wine on Linux).
+* [IPCam_DMS](https://team.openipc.org/ipcam_dms/IPCam_DMS_20201121_EN.zip) management software (Windows binaries, but also run under Wine on Linux).
 * [ipctool](https://openipc.github.io/ipctool/).
 
 Select the firmware from the download list which *exactly* matches **your** device's ID.
