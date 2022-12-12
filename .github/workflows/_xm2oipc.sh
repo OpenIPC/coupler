@@ -112,7 +112,7 @@ IFS=" "
 mkdir -p ${WORKDIR}
 mkdir -p ${OUTPUTDIR}
 
-tar -xvz -f openipc.${SOC}-nor-lite.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
+tar -xvz -f openipc.${SOC}-nor-${RELEASE:-lite}.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
 
 # Check if give files exceed partition boundaries
 [[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A)) ]] && echo "Filesize exceeds boundaries" && exit 1
@@ -611,5 +611,5 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
 # Generate firmware file
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
-cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_OpenIPC_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd ..
+cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_${RELEASE:-OpenIPC}_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd ..
 rm -rf ${WORKDIR}

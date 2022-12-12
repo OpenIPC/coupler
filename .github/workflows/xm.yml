@@ -34,6 +34,7 @@ jobs:
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536cv100-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536dv100-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-fpv.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v300-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7605v100-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-nor-lite.tgz
@@ -87,6 +88,9 @@ jobs:
 
             SOC="hi3536cv100" TOTALMEM="512M" HARDWARE="NBD8008R-U" DEVID="00000197" FLASH_SIZE="0x1000000" COMPAT="1" $RUN
             SOC="hi3536dv100" TOTALMEM="256M" HARDWARE="NBD8008R-PL" DEVID="00000202" FLASH_SIZE="0x1000000" COMPAT="1" $RUN
+
+            # FPV release
+            SOC="gk7205v200" TOTALMEM="64M" OSMEM="40M" RELEASE=fpv HARDWARE="IPC_GK7205V200_50H20AI_S38" DEVID="000659A7" FLASH_SIZE="0x800000" $RUN
 
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_50H20AI_S38" DEVID="000659A7" FLASH_SIZE="0x800000" $RUN
             SOC="gk7205v200" TOTALMEM="64M" HARDWARE="IPC_GK7205V200_85HF30T_S38" DEVID="000659CD" FLASH_SIZE="0x800000" $RUN
