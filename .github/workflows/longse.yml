@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: release-downloader
         uses: robinraju/release-downloader@v1.4
-        with: 
+        with:
           repository: "OpenIPC/firmware"
           tag: latest
           fileName: "*u-boot*.bin"
@@ -29,119 +29,102 @@ jobs:
       - name: Fetch OpenIPC release
         run: |
           mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" ; cd "$_"
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-nor-lite.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av100-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-nor-lite.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-nor-lite.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-nor-lite.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av200-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3519v101-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3519v101-nor-lite.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv500-br.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-br.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv500-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-nor-lite.tgz
       - name: Create firmwares
         run: |
-            cd $GITHUB_WORKSPACE/.github/workflows
-            export RUN="$GITHUB_WORKSPACE/.github/workflows/_longse2oipc.sh"
-            export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+          cd $GITHUB_WORKSPACE/.github/workflows
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_longse2oipc.sh"
+          export OUTPUTDIR="$GITHUB_WORKSPACE/out"
 
-            SOC="hi3516av100" NAME="HI3516A" SENSOR="IMX178" $RUN
-            SOC="hi3516av200" NAME="16AV200" SENSOR="08A10BD" $RUN
-            SOC="hi3516av200" NAME="16AV200" SENSOR="08A10FD" $RUN
-            SOC="hi3516av200" NAME="16AV200" SENSOR="08A10W" $RUN
-            SOC="hi3516av200" NAME="16aV200" SENSOR="IMX274" $RUN
-            SOC="hi3516av200" NAME="16aV200" SENSOR="IMX274" $RUN
-            SOC="hi3516av200" NAME="16aV200" SENSOR="IMX274B" $RUN
-            SOC="hi3516av200" NAME="16aV200" SENSOR="IMX326" $RUN
-            SOC="hi3516av200" NAME="16aV200" SENSOR="IMX326" $RUN
-            SOC="hi3516av300" NAME="16AV300" SENSOR="IMX415A" $RUN
-            SOC="hi3516av300" NAME="16AV300" SENSOR="IMX415b" $RUN
-            SOC="hi3516av300" NAME="16AV300" SENSOR="IMX415b" $RUN
-            SOC="hi3516cv200" NAME="16CV200" SENSOR="IMX323" $RUN
-            SOC="hi3516cv200" NAME="16CV200" SENSOR="OV2718" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="290MINI" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="307AF" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="307FBD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="307MINI" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="323AF" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="323BBD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="323FBD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="323WBD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="327AF" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="327BD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="327FBD" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX307k" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX307P" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323A" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323N" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323N" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323N" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323N" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323X" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX327g" $RUN
-            SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX327s" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="307" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="307" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="307AL" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX307W" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462A" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462B" $RUN
-            SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462W" $RUN
-            SOC="hi3516dv100" NAME="16DBOX" SENSOR="05A10BD" $RUN
-            SOC="hi3516dv100" NAME="16DBOX" SENSOR="OS05A10" $RUN
-            SOC="hi3516dv100" NAME="16DFEM" SENSOR="IMX326" $RUN
-            SOC="hi3516dv100" NAME="16DSAF" SENSOR="05A10BD" $RUN
-            SOC="hi3516dv100" NAME="16DSAF" SENSOR="OS05A10" $RUN
-            SOC="hi3516dv100" NAME="16DSW" SENSOR="OS05A10" $RUN
-            SOC="hi3516dv100" NAME="16DWBD" SENSOR="OS05A10" $RUN
-            SOC="hi3516dv100" NAME="3516DFE" SENSOR="IMX326" $RUN
-            SOC="hi3516dv100" NAME="3516DFE" SENSOR="IMX326" $RUN
-            SOC="hi3516dv100" NAME="3516DSP" SENSOR="OV4689" $RUN
-            SOC="hi3516dv100" NAME="3516DSP" SENSOR="OV4689" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="05A10BD" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="326FEBD" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX123" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX291" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX335" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="OS05A10" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="OV4689" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="OV4689" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="OV4689" $RUN
-            SOC="hi3516dv100" NAME="HI3516D" SENSOR="OV4689" $RUN
-            SOC="hi3516dv200" NAME="16DV200" SENSOR="335AF10" $RUN
-            SOC="hi3516dv200" NAME="16DV200" SENSOR="335AF5" $RUN
-            SOC="hi3516dv200" NAME="16DV200" SENSOR="IMX335" $RUN
-            SOC="hi3516dv200" NAME="16DV200" SENSOR="IMX335W" $RUN
-            SOC="hi3516ev100" NAME="16EV100" SENSOR="F23" $RUN
-            SOC="hi3516ev100" NAME="16EV100" SENSOR="F23BD" $RUN
-            SOC="hi3516ev200" NAME="16EV200" SENSOR="307AF" $RUN
-            SOC="hi3516ev200" NAME="16EV200" SENSOR="F23" $RUN
-            SOC="hi3516ev200" NAME="16EV200" SENSOR="IMX307" $RUN
-            SOC="hi3518ev200" NAME="18EV200" SENSOR="IMX225" $RUN
-            SOC="hi3518ev200" NAME="18EV200" SENSOR="IMX323" $RUN
-            SOC="hi3518ev200" NAME="18EV200" SENSOR="OV9732" $RUN
-            SOC="hi3518ev200" NAME="18EV200" SENSOR="S3130" $RUN
-            # SOC="hi3519v100" NAME="19V100" SENSOR="IMX274" $RUN
-            # SOC="hi3519v100" NAME="19V100" SENSOR="IMX274" $RUN
-            SOC="hi3519v101" NAME="19V101" SENSOR="226AF" $RUN
-            SOC="hi3519v101" NAME="19V101" SENSOR="226BASE" $RUN
-            SOC="hi3519v101" NAME="19V101" SENSOR="226BOX" $RUN
-            SOC="hi3519v101" NAME="19V101" SENSOR="IMX226" $RUN
-            SOC="hi3519v101" NAME="19V101" SENSOR="IMX226B" $RUN
+          SOC="hi3516av100" NAME="HI3516A" SENSOR="IMX178" $RUN
+          SOC="hi3516av200" NAME="16AV200" SENSOR="08A10BD" $RUN
+          SOC="hi3516av200" NAME="16AV200" SENSOR="08A10FD" $RUN
+          SOC="hi3516av200" NAME="16AV200" SENSOR="08A10W" $RUN
+          SOC="hi3516av200" NAME="16aV200" SENSOR="IMX274" $RUN
+          SOC="hi3516av200" NAME="16aV200" SENSOR="IMX274B" $RUN
+          SOC="hi3516av200" NAME="16aV200" SENSOR="IMX326" $RUN
+          SOC="hi3516av300" NAME="16AV300" SENSOR="IMX415A" $RUN
+          SOC="hi3516av300" NAME="16AV300" SENSOR="IMX415b" $RUN
+          SOC="hi3516cv200" NAME="16CV200" SENSOR="IMX323" $RUN
+          SOC="hi3516cv200" NAME="16CV200" SENSOR="OV2718" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="290MINI" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="307AF" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="307FBD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="307MINI" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="323AF" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="323BBD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="323FBD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="323WBD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="327AF" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="327BD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="327FBD" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX290" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX307k" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX307P" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323A" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323N" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX323X" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX327g" $RUN
+          SOC="hi3516cv300" NAME="16CV300" SENSOR="IMX327s" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="307" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="307AL" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX307W" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462A" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462B" $RUN
+          SOC="hi3516cv500" NAME="16CV500" SENSOR="IMX462W" $RUN
+          SOC="hi3516dv100" NAME="16DBOX" SENSOR="05A10BD" $RUN
+          SOC="hi3516dv100" NAME="16DBOX" SENSOR="OS05A10" $RUN
+          SOC="hi3516dv100" NAME="16DFEM" SENSOR="IMX326" $RUN
+          SOC="hi3516dv100" NAME="16DSAF" SENSOR="05A10BD" $RUN
+          SOC="hi3516dv100" NAME="16DSAF" SENSOR="OS05A10" $RUN
+          SOC="hi3516dv100" NAME="16DSW" SENSOR="OS05A10" $RUN
+          SOC="hi3516dv100" NAME="16DWBD" SENSOR="OS05A10" $RUN
+          SOC="hi3516dv100" NAME="3516DFE" SENSOR="IMX326" $RUN
+          SOC="hi3516dv100" NAME="3516DSP" SENSOR="OV4689" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="05A10BD" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="326FEBD" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX123" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX291" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="IMX335" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="OS05A10" $RUN
+          SOC="hi3516dv100" NAME="HI3516D" SENSOR="OV4689" $RUN
+          SOC="hi3516dv200" NAME="16DV200" SENSOR="335AF10" $RUN
+          SOC="hi3516dv200" NAME="16DV200" SENSOR="335AF5" $RUN
+          SOC="hi3516dv200" NAME="16DV200" SENSOR="IMX335" $RUN
+          SOC="hi3516dv200" NAME="16DV200" SENSOR="IMX335W" $RUN
+          SOC="hi3516ev100" NAME="16EV100" SENSOR="F23" $RUN
+          SOC="hi3516ev100" NAME="16EV100" SENSOR="F23BD" $RUN
+          SOC="hi3516ev200" NAME="16EV200" SENSOR="307AF" $RUN
+          SOC="hi3516ev200" NAME="16EV200" SENSOR="F23" $RUN
+          SOC="hi3516ev200" NAME="16EV200" SENSOR="IMX307" $RUN
+          SOC="hi3518ev200" NAME="18EV200" SENSOR="IMX225" $RUN
+          SOC="hi3518ev200" NAME="18EV200" SENSOR="IMX323" $RUN
+          SOC="hi3518ev200" NAME="18EV200" SENSOR="OV9732" $RUN
+          SOC="hi3518ev200" NAME="18EV200" SENSOR="S3130" $RUN
+          # SOC="hi3519v100" NAME="19V100" SENSOR="IMX274" $RUN
+          SOC="hi3519v101" NAME="19V101" SENSOR="226AF" $RUN
+          SOC="hi3519v101" NAME="19V101" SENSOR="226BASE" $RUN
+          SOC="hi3519v101" NAME="19V101" SENSOR="226BOX" $RUN
+          SOC="hi3519v101" NAME="19V101" SENSOR="IMX226" $RUN
+          SOC="hi3519v101" NAME="19V101" SENSOR="IMX226B" $RUN
 
         continue-on-error: true
       - name: Create release
@@ -166,4 +149,4 @@ jobs:
           overwrite: true
       - name: Setup tmate session
         if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3   
+        uses: mxschmitt/action-tmate@v3
