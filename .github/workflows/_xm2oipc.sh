@@ -39,6 +39,9 @@ case $SOC in
   *"hi3516ev"*)
     ENV=ENV_hi3516ev200
     ;;
+  *"hi3518ev300"*)
+    ENV=ENV_hi3516ev200
+    ;;
   hi3516cv200 | hi3518ev200 )
     ENV_A="0x40000"
     ENV_E="0x50000"
