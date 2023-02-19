@@ -510,9 +510,9 @@ ua=mw.b 0x01000000 ff 0x800000;tftpboot 0x01000000 upall_verify.img;sf probe 0;f
 tk=tftpboot 0x01000000 uImage;setenv setargs setenv bootargs ${bootargs};run setargs;nvt_boot 0x01000000
 loadlogo=sf probe 0;sf read 0x02000000  ;logoload 0x02000000;decjpg 0;bootlogo
 loadromfs=sf probe 0;sf read 0x02000000 0x40000 0x2E0000;squashfsload;nvt_boot
-uk=mw.b 0x01000000 ff 1000000;tftp 0x01000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x01000000 ${KERNEL_A} \${filesize}
-ur=mw.b 0x01000000 ff 1000000;tftp 0x01000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
-bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x03100000 ${KERNEL_A} 0x200000; nvt_boot';sa;re
+uknor8m=mw.b 0x01000000 ff 1000000;tftp 0x01000000 uImage.\${soc} && sf probe 0;sf erase ${KERNEL_A} 0x200000; sf write 0x01000000 ${KERNEL_A} \${filesize}
+urnor8m=mw.b 0x01000000 ff 1000000;tftp 0x01000000 rootfs.squashfs.\${soc} && sf probe 0;sf erase ${ROOTFS_A} 0x500000; sf write 0x01000000 ${ROOTFS_A} \${filesize}
+bootcmd=sf probe 0; sf lock 0; setenv bootcmd 'setenv setargs setenv bootargs \${bootargs}; run setargs; sf probe 0; sf read 0x03100000 ${KERNEL_A} 0x200000; sf read 0x03500000 ${KERNEL_A} 0x200000; nvt_boot';sa;re
 bootargs=earlyprintk console=ttyS0,115200 mem=\${osmem} panic=20 nprofile_irq_duration=on root=/dev/mtdblock3 rootfstype=squashfs init=/init mtdparts=spi_nor.0:64k(loader),256k(boot),2048k(kernel),5120k(rootfs),-(rootfs_data)
 osmem=${OSMEM}
 totalmem=${TOTALMEM}
