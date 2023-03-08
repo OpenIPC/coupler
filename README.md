@@ -9,7 +9,7 @@
 
 Releases contain automatically generated firmware files for transition from stock to [OpenIPC](https://openipc.org)
 
-**WARNING**! Coupler is a work-in-progress. If the firmware update fails, then it will be necessary to [to carry out a tftp recovery process](https://openipc.github.io/wiki/en/installation.html). You are **strongly advised** to **carefully** review the [recovery process documentation](https://openipc.github.io/wiki/en/installation.html) **and** check for any relevant [open issues](https://github.com/OpenIPC/coupler/issues), **before** proceeding.
+**WARNING**! Coupler is a work-in-progress. If the firmware update fails, then it will be necessary to [to carry out a tftp recovery process](https://github.com/OpenIPC/wiki/blob/master/en/installation.md). You are **strongly advised** to **carefully** review the [recovery process documentation](https://github.com/OpenIPC/wiki/blob/master/en/installation.md) **and** check for any relevant [open issues](https://github.com/OpenIPC/coupler/issues), **before** proceeding.
 
 # Supported vendors
 
