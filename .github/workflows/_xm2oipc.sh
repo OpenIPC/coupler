@@ -158,7 +158,7 @@ JSON=$(cat <<-EOF
   "DevID": "${DEVID}XXXXX000000000000",
   "CompatibleVersion" : ${COMPAT},
   "Vendor": "SkipCheck",
-  "Mx8Q: "0"
+  "Mx8Q": "0"
 }
 EOF
 )
