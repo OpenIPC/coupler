@@ -1,0 +1,63 @@
+name: Tiandy to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          TAG_NAME="tiandy"
+          RELEASE_NAME="OpenIPC Firmware"
+          PRERELEASE=true
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+          echo "OUTPUTDIR=$GITHUB_WORKSPACE/.github/workflows/out" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: sudo apt-get update; sudo apt-get install -y u-boot-tools zip xxd
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: release-downloader
+        uses: robinraju/release-downloader@v1.4
+        with:
+          repository: "OpenIPC/firmware"
+          tag: latest
+          fileName: "*u-boot*.bin"
+          out-file-path: ".github/workflows/dl"
+      - name: Fetch OpenIPC release
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" ; cd "$_"
+          wget -q https://github.com/OpenIPC/builder/releases/download/latest/ssc337_lite_tiandy-tc-c321n-v2-nor.tgz
+
+      - name: Create firmwares
+        run: |
+          cd $GITHUB_WORKSPACE/.github/workflows
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_tiandy2oipc.sh"
+
+          MODEL="TC-C321N-V2" PRODUCTMODEL="528527" HARDINFO="300502" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+          MODEL="TC-C131N" PRODUCTMODEL="528527" HARDINFO="900501" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+
+        continue-on-error: true
+      - name: Create release
+        uses: actions/create-release@v1
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Tiandy boards
+          draft: false
+          prerelease: ${{ env.PRERELEASE }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.OUTPUTDIR }}/*
+          file_glob: true
+          tag: ${{ env.TAG_NAME }}
+          overwrite: true
