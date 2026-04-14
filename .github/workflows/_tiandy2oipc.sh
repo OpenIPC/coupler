@@ -34,7 +34,7 @@ create_prodmodule() {
 prodmodule=$(cat << EOF
 [start]
 [mediadevice]
-productmodel=${MODEL};
+productmodel=${PRODUCTMODEL};
 videoinput=1;
 sensortype=${SNS_TYPE};
 videooutport=1;
