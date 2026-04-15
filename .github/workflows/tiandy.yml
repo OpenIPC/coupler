@@ -38,7 +38,7 @@ jobs:
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_tiandy2oipc.sh"
 
           MODEL="TC-C321N-V2" PRODUCTMODEL="528527" HARDINFO="300502" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
-          MODEL="TC-C131N" PRODUCTMODEL="528527" HARDINFO="900501" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+          MODEL="TC-C131N" PRODUCTMODEL="528527" HARDINFO="9005" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
 
         continue-on-error: true
       - name: Create release
