@@ -38,12 +38,14 @@ jobs:
           cd $GITHUB_WORKSPACE/.github/workflows
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_tiandy2oipc.sh"
 
-          MODEL="TC-C321N-V2" PRODUCTMODEL="528527" HARDINFO="300502" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
           MODEL="TC-C131N" PRODUCTMODEL="528527" HARDINFO="9005" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+          MODEL="TC-C241N" PRODUCTMODEL="5285" HARDINFO="a00501" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+          MODEL="TC-C320N-V2" PRODUCTMODEL="528527" HARDINFO="002501" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
+          MODEL="TC-C321N-V2" PRODUCTMODEL="528527" HARDINFO="300502" SNS_TYPE="70" SOC="ssc337" UBOOT="u-boot-ssc337-nor.bin" FIRMWARE="ssc337_lite_tiandy-tc-c321n-v2-nor.tgz" $RUN
 
-          MODEL="TC-C32QN" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-universal.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
           MODEL="TC-C320N" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-universal.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
           MODEL="TC-C321N" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-universal.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
+          MODEL="TC-C32QN" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-universal.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
 
         continue-on-error: true
       - name: Create release
