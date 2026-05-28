@@ -54,7 +54,7 @@ create_box_data() {
         IMGFILE="$SRCDIR/${FILENAME}.img"
         LOAD_ADDR=0
         ENTRY_ADDR=${HARDID}
-        mkimage -A arm -T kernel -C none -O linux -a "$LOAD_ADDR" -e "$ENTRY_ADDR" \
+        mkimage -A arm -T firmware -C none -O linux -a "$LOAD_ADDR" -e "$ENTRY_ADDR" \
                 -n "$FILENAME" -d $SRCDIR/${FILENAME} $IMGFILE
     else
         IMGFILE="$SRCDIR/${FILENAME}"
