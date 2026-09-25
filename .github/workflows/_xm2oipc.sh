@@ -67,7 +67,7 @@ case $SOC in
     ENV_E="0x50000"
     ENV=ENV_hi3536dv100
     ;;
-  *"gk7205v"*)
+  *"gk7205v"* | *"gk7201v"*)
     ENV=ENV_gk7205v200
     ;;
   *"gk7605v"*)
