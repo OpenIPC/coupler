@@ -15,8 +15,10 @@
 ##
 ## Dependencies: u-boot-tools (mkimage), zip, dd, python3 (json only).
 ##
-## STATUS: scaffold. Blocked end-to-end on an upstream OpenIPC **gk7205v510-NAND**
-## artifact (upstream currently ships only an 8 MiB NOR config). Two things must
+## STATUS: scaffold. Uses the OpenIPC **gk7205v500-family NAND (ultimate)** build
+## (gk7205v510 is SoC FAMILY gk7205v500 — same kernel config + osdrv, so the family
+## rootfs.ubi/uImage run on v510). Blocked end-to-end only on that NAND artifact
+## being published upstream (CI currently ships gk7205v500_lite NOR). Two things must
 ## be pinned on the bench before this is trustworthy (see docs/openipc-transition.md):
 ##   1. whether the stock XMedia `bootk` u-boot boots an OpenIPC kernel+rootfs
 ##      written to the vendor `kernel`/`root` partitions (else a u-boot swap is
@@ -29,6 +31,8 @@ set -e
 
 # ---- target identity (the DEVID analogue is Cpu + Vendor + model/hw-version) ---
 SOC="${SOC:-gk7205v510}"
+FAMILY="${FAMILY:-gk7205v500}"       # OpenIPC SoC FAMILY — gk7205v510 is family gk7205v500,
+                                     #   so the NAND artifact is the shared family build.
 CPU="${CPU:-GK7205V510}"                 # Install "Cpu" gate (SoC string)
 VENDOR="${VENDOR:-Rostelecom}"           # Install "Vendor" gate — MUST match the
                                          #   unit's OEM (e.g. Rostelecom); there is
@@ -51,8 +55,8 @@ mkdir -p "${WORKDIR}" "${OUTPUTDIR}"
 # Expected members inside openipc.<soc>-nand-<release>.tgz: uImage.<soc> and a
 # NAND rootfs (ubi/ubifs) image. Adjust the rootfs glob once the upstream NAND
 # artifact format is fixed.
-tar -xvz -f "openipc.${SOC}-nand-${RELEASE:-lite}.tgz" -C "${WORKDIR}/" --exclude "*.md5sum" || {
-  echo "Error: openipc.${SOC}-nand-*.tgz not found — upstream NAND artifact missing (see header)"; exit 1; }
+tar -xvz -f "openipc.${FAMILY}-nand-${RELEASE:-ultimate}.tgz" -C "${WORKDIR}/" --exclude "*.md5sum" || {
+  echo "Error: openipc.${FAMILY}-nand-*.tgz not found — upstream NAND artifact missing (see header)"; exit 1; }
 
 # ---- wrap kernel + rootfs as vendor-style uImages (load/entry = partition bounds)
 mkimage -A arm -O linux -T kernel -n "kernel" -a "${KERNEL_A}" -e "${KERNEL_E}" \

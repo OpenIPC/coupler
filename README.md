@@ -183,8 +183,9 @@ XiongMai approach — it repackages OpenIPC's kernel + rootfs into the vendor's
 own **Dahua "zzip"** upgrade container and **does not touch u-boot**, so the stock
 bootloader (and TFTP recovery) always survives.
 
-> **WORK IN PROGRESS — not yet flashable.** Blocked on an upstream OpenIPC
-> **gk7205v510 NAND** build (upstream currently ships only an 8 MiB NOR config).
+> **WORK IN PROGRESS — not yet flashable.** Uses the OpenIPC **gk7205v500-family
+> NAND (ultimate)** build (gk7205v510 is SoC family gk7205v500), blocked only on that
+> NAND artifact being published upstream (CI currently ships gk7205v500_lite NOR).
 > Two things must still be validated on the bench: whether the stock XMedia
 > `bootk` u-boot can boot an OpenIPC kernel+rootfs from the vendor `kernel`/`root`
 > partitions, and the exact on-NAND rootfs format the vendor `burn` expects.
