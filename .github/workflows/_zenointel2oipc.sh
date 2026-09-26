@@ -15,16 +15,17 @@
 ##
 ## Dependencies: u-boot-tools (mkimage), zip, dd, python3 (json only).
 ##
-## STATUS: scaffold. Uses the OpenIPC **gk7205v500-family NAND (ultimate)** build
-## (gk7205v510 is SoC FAMILY gk7205v500 — same kernel config + osdrv, so the family
-## rootfs.ubi/uImage run on v510). Blocked end-to-end only on that NAND artifact
-## being published upstream (CI currently ships gk7205v500_lite NOR). Two things must
-## be pinned on the bench before this is trustworthy (see docs/openipc-transition.md):
-##   1. whether the stock XMedia `bootk` u-boot boots an OpenIPC kernel+rootfs
-##      written to the vendor `kernel`/`root` partitions (else a u-boot swap is
-##      needed and this keep-u-boot strategy does not apply);
-##   2. the exact on-NAND rootfs format `burn rootfs.img rootfs` expects
-##      (raw UBI image vs ubifs vs squashfs-in-UBI).
+## STATUS: VALIDATED on hardware. This script's output was flashed over DHIP with
+## python-dhip onto a GK7205V510 SD-2N-4G and booted OpenIPC keeping stock u-boot
+## (see the zenointel project's docs/openipc-transition.md). Uses the OpenIPC
+## **gk7205v500-family NAND (ultimate)** build (gk7205v510 is SoC FAMILY gk7205v500 —
+## same kernel config + osdrv, so the family rootfs.ubi/uImage run on v510).
+## Confirmed on the bench: (1) the stock XMedia `bootk` u-boot boots the OpenIPC
+## kernel+rootfs written to the vendor `kernel`/`root` partitions (no u-boot swap
+## needed); (2) the on-NAND rootfs is UBIFS in a UBI volume `rootfs` (OpenIPC
+## rootfs.ubi) — matches the stock cmdLine. The only remaining gap is upstream CI:
+## the gk7205v500-family NAND-ultimate artifact is not published yet (CI ships only
+## gk7205v500_lite NOR), so build it locally with `make BOARD=gk7205v500_ultimate`.
 #####
 
 set -e
@@ -52,9 +53,9 @@ OUTPUTDIR="${OUTPUTDIR:-..}"
 mkdir -p "${WORKDIR}" "${OUTPUTDIR}"
 
 # ---- OpenIPC payload (NAND build) --------------------------------------------
-# Expected members inside openipc.<soc>-nand-<release>.tgz: uImage.<soc> and a
-# NAND rootfs (ubi/ubifs) image. Adjust the rootfs glob once the upstream NAND
-# artifact format is fixed.
+# Members inside openipc.<soc>-nand-<release>.tgz: uImage.<soc> (the OpenIPC
+# kernel uImage) and rootfs.ubi (UBIFS-in-UBI). Both were flashed and booted on a
+# GK7205V510; the globs below match them.
 tar -xvz -f "openipc.${FAMILY}-nand-${RELEASE:-ultimate}.tgz" -C "${WORKDIR}/" --exclude "*.md5sum" || {
   echo "Error: openipc.${FAMILY}-nand-*.tgz not found — upstream NAND artifact missing (see header)"; exit 1; }
 

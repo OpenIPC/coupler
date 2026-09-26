@@ -30,10 +30,15 @@ jobs:
         uses: actions/checkout@v2.3.4
       - name: Fetch OpenIPC release
         run: |
-          # TODO: replace with the real upstream artifact once the gk7205v500-family NAND
-          # build exists, e.g.
-          # wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v500-nand-ultimate.tgz
-          echo "gk7205v500-family NAND (ultimate) OpenIPC artifact not yet published upstream" && exit 1
+          # gk7205v510 is OpenIPC SoC family gk7205v500; use the family NAND-ultimate
+          # build. Not published upstream yet (CI ships only gk7205v500_lite NOR), so
+          # this fetch fails until it is — build locally with `make BOARD=gk7205v500_ultimate`.
+          url=https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v500-nand-ultimate.tgz
+          wget -q "$url" || {
+            echo "::error::openipc.gk7205v500-nand-ultimate.tgz not published upstream yet"
+            echo "Build it locally: make BOARD=gk7205v500_ultimate (see docs/openipc-transition.md)"
+            exit 1
+          }
       - name: Create firmwares
         run: |
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_zenointel2oipc.sh"
