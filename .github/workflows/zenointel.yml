@@ -1,0 +1,60 @@
+name: Zenointel to OpenIPC
+
+# Builds Zenointel / GK7205 "hunter" (Dahua-derived) OpenIPC upgrade packages and
+# publishes them to the `zenointel` release tag. Mirrors xm.yml. The push to a
+# camera is external: ~/git/python-dhip over Dahua DHIP (TCP 5000) — see the
+# zenointel project's docs/openipc-transition.md.
+#
+# The builder + packaging + DHIP flash are VALIDATED on hardware (GK7205V510
+# SD-2N-4G booted OpenIPC keeping stock u-boot). The one CI blocker: the fetch
+# step needs an upstream OpenIPC **gk7205v500-family NAND (ultimate)** artifact that
+# is not published yet (upstream ships only an 8 MiB NOR config). Until it is
+# published this workflow's fetch fails; build the artifact locally with
+# `make BOARD=gk7205v500_ultimate` to run the packaging + flash by hand.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          echo "TAG_NAME=zenointel" >> $GITHUB_ENV
+          echo "RELEASE_NAME=OpenIPC Firmware (Zenointel)" >> $GITHUB_ENV
+          echo "PRERELEASE=true" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: sudo apt-get update; sudo apt-get install -y u-boot-tools zip
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC release
+        run: |
+          # gk7205v510 is OpenIPC SoC family gk7205v500; use the family NAND-ultimate
+          # build. Not published upstream yet (CI ships only gk7205v500_lite NOR), so
+          # this fetch fails until it is — build locally with `make BOARD=gk7205v500_ultimate`.
+          url=https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v500-nand-ultimate.tgz
+          wget -q "$url" || {
+            echo "::error::openipc.gk7205v500-nand-ultimate.tgz not published upstream yet"
+            echo "Build it locally: make BOARD=gk7205v500_ultimate (see docs/openipc-transition.md)"
+            exit 1
+          }
+      - name: Create firmwares
+        run: |
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_zenointel2oipc.sh"
+          export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+          chmod +x $RUN
+          # One line per supported unit. Identity gate = CPU + VENDOR + MODEL/HWVER
+          # (the DEVID analogue). Keep VENDOR matched to the unit's OEM.
+          SOC="gk7205v510" FAMILY="gk7205v500" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2200_DL_4G-4" HWVER="2.00" $RUN
+          SOC="gk7205v510" FAMILY="gk7205v500" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2400_DL_4G-4" HWVER="2.00" $RUN
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: out/*
+          tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          prerelease: ${{ env.PRERELEASE }}
+          overwrite: true
+          file_glob: true

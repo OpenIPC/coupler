@@ -174,6 +174,49 @@ is going to be the most stable, flexible, and open IP Network Camera Framework f
 
 You can make a financial contribution to the project at [Open Collective](https://opencollective.com/openipc/contribute/backer-14335/checkout).
 
+# Zenointel
+
+Zenointel (Hangzhou Zenointel) OEM cameras (e.g. **SD-2N-4G** / `NC-IPTC2200_DL_4G-4`,
+Goke **GK7205V510**, 128 MiB SPI-NAND) run a Dahua-derived `hunter` userland and
+speak **Dahua DHIP** (TCP 5000), not XiongMai DVRIP. The build here mirrors the
+XiongMai approach — it repackages OpenIPC's kernel + rootfs into the vendor's
+own **Dahua "zzip"** upgrade container and **does not touch u-boot**, so the stock
+bootloader (and TFTP recovery) always survives.
+
+> **VALIDATED on hardware — one upstream blocker for CI.** The full flow was proven
+> end-to-end on a GK7205V510 SD-2N-4G: the locally-built OpenIPC **gk7205v500-family
+> NAND (ultimate)** artifact (gk7205v510 is SoC family gk7205v500), wrapped by this
+> builder and pushed over DHIP with `python-dhip`, booted OpenIPC keeping the stock
+> u-boot. The stock XMedia `bootk` boots the OpenIPC kernel+rootfs from the vendor
+> `kernel`/`root` partitions, and `hunter` accepts the partial (kernel+rootfs-only)
+> package. The one remaining blocker is CI: the gk7205v500-family **NAND-ultimate**
+> artifact is not published upstream yet (CI currently ships gk7205v500_lite NOR),
+> so the fetch step here fails until it is. Build it locally in the meantime
+> (`make BOARD=gk7205v500_ultimate`). **Back up the full NAND and keep a UART
+> console ready before attempting anything.**
+
+## Download
+
+There is no XiongMai-style Device ID. The upgrade package is gated on **`Cpu`**
+(SoC, `GK7205V510`), **`Vendor`** (the unit's OEM, e.g. `Rostelecom`) and a
+**`Devices`** allow-list of `[model, hardware-version]` pairs. Match all three to
+your unit. Read them over DHIP with [`python-dhip`](https://github.com/OpenIPC/python-dhip)
+(`magicBox.getSystemInfo` / `getSoftwareVersion`), or from the web UI's version page.
+
+## Flashing
+
+The package is a Dahua zzip (a ZIP with the first `PK` mangled to `ZL`); inspect
+it with the zenointel project's `tools/zzip.py verify`. Push it over DHIP with
+`python-dhip` (`DahuaClient.upgrade_firmware(pkg, confirm=True)` on port 5000),
+mirroring how XiongMai uses `python-dvr`. Full recipe:
+`~/projects/cameras/zenointel/docs/openipc-transition.md`.
+
+## Rollback
+
+Fully recoverable — u-boot is never touched. Interrupt the stock u-boot over UART
+(console password `zenotech`) and TFTP the stock partitions back, or restore the
+full NAND backup taken before flashing.
+
 Thank you.
 
 <p align="center">
