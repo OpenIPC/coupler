@@ -183,13 +183,17 @@ XiongMai approach — it repackages OpenIPC's kernel + rootfs into the vendor's
 own **Dahua "zzip"** upgrade container and **does not touch u-boot**, so the stock
 bootloader (and TFTP recovery) always survives.
 
-> **WORK IN PROGRESS — not yet flashable.** Uses the OpenIPC **gk7205v500-family
-> NAND (ultimate)** build (gk7205v510 is SoC family gk7205v500), blocked only on that
-> NAND artifact being published upstream (CI currently ships gk7205v500_lite NOR).
-> Two things must still be validated on the bench: whether the stock XMedia
-> `bootk` u-boot can boot an OpenIPC kernel+rootfs from the vendor `kernel`/`root`
-> partitions, and the exact on-NAND rootfs format the vendor `burn` expects.
-> **Back up the full NAND and keep a UART console ready before attempting anything.**
+> **VALIDATED on hardware — one upstream blocker for CI.** The full flow was proven
+> end-to-end on a GK7205V510 SD-2N-4G: the locally-built OpenIPC **gk7205v500-family
+> NAND (ultimate)** artifact (gk7205v510 is SoC family gk7205v500), wrapped by this
+> builder and pushed over DHIP with `python-dhip`, booted OpenIPC keeping the stock
+> u-boot. The stock XMedia `bootk` boots the OpenIPC kernel+rootfs from the vendor
+> `kernel`/`root` partitions, and `hunter` accepts the partial (kernel+rootfs-only)
+> package. The one remaining blocker is CI: the gk7205v500-family **NAND-ultimate**
+> artifact is not published upstream yet (CI currently ships gk7205v500_lite NOR),
+> so the fetch step here fails until it is. Build it locally in the meantime
+> (`make BOARD=gk7205v500_ultimate`). **Back up the full NAND and keep a UART
+> console ready before attempting anything.**
 
 ## Download
 

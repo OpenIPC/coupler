@@ -5,10 +5,12 @@ name: Zenointel to OpenIPC
 # camera is external: ~/git/python-dhip over Dahua DHIP (TCP 5000) — see the
 # zenointel project's docs/openipc-transition.md.
 #
-# BLOCKED: the fetch step needs an upstream OpenIPC **gk7205v510-NAND** artifact
-# that does not exist yet (upstream ships only an 8 MiB NOR config). Until it is
-# published this workflow cannot produce a real image; the builder + packaging
-# are validated offline with a stub tarball.
+# The builder + packaging + DHIP flash are VALIDATED on hardware (GK7205V510
+# SD-2N-4G booted OpenIPC keeping stock u-boot). The one CI blocker: the fetch
+# step needs an upstream OpenIPC **gk7205v500-family NAND (ultimate)** artifact that
+# is not published yet (upstream ships only an 8 MiB NOR config). Until it is
+# published this workflow's fetch fails; build the artifact locally with
+# `make BOARD=gk7205v500_ultimate` to run the packaging + flash by hand.
 
 on:
   workflow_dispatch:
