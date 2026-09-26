@@ -40,8 +40,8 @@ VENDOR="${VENDOR:-Rostelecom}"           # Install "Vendor" gate — MUST match 
                                          #   no XiongMai-style "SkipCheck" here.
 MODEL="${MODEL:-NC-IPTC2200_DL_4G-4}"    # Install "Devices" model
 HWVER="${HWVER:-2.00}"                    # Install "Devices" hardware version
-# RELEASE = the OpenIPC build flavour (lite/ultimate/fpv); unset => "lite" for the
-# input tarball and "OpenIPC" in the output name (same convention as _xm2oipc.sh).
+# RELEASE = the OpenIPC build flavour (lite/ultimate/fpv); unset => "ultimate" for
+# the input tarball and "OpenIPC" in the output name (same convention as _xm2oipc.sh).
 
 # ---- NAND partition map (from the stock mtdparts / the reference package's
 #      uImage load/entry fields): kernel @0x240000..0x600000, root @0x600000..0x3000000
@@ -51,6 +51,10 @@ ROOTFS_A="${ROOTFS_A:-0x600000}"; ROOTFS_E="${ROOTFS_E:-0x3000000}"
 WORKDIR="workdir"
 OUTPUTDIR="${OUTPUTDIR:-..}"
 mkdir -p "${WORKDIR}" "${OUTPUTDIR}"
+# Absolutise: the ZIP is created from inside WORKDIR (subshell cd) but dd mangles
+# it from the original cwd — a relative OUTPUTDIR (e.g. the default "..") would
+# resolve to two different files and the build would fail.
+OUTPUTDIR="$(cd "${OUTPUTDIR}" && pwd)"
 
 # ---- OpenIPC payload (NAND build) --------------------------------------------
 # Members inside openipc.<soc>-nand-<release>.tgz: uImage.<soc> (the OpenIPC
