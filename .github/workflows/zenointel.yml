@@ -1,0 +1,53 @@
+name: Zenointel to OpenIPC
+
+# Builds Zenointel / GK7205 "hunter" (Dahua-derived) OpenIPC upgrade packages and
+# publishes them to the `zenointel` release tag. Mirrors xm.yml. The push to a
+# camera is external: ~/git/python-dhip over Dahua DHIP (TCP 5000) — see the
+# zenointel project's docs/openipc-transition.md.
+#
+# BLOCKED: the fetch step needs an upstream OpenIPC **gk7205v510-NAND** artifact
+# that does not exist yet (upstream ships only an 8 MiB NOR config). Until it is
+# published this workflow cannot produce a real image; the builder + packaging
+# are validated offline with a stub tarball.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          echo "TAG_NAME=zenointel" >> $GITHUB_ENV
+          echo "RELEASE_NAME=OpenIPC Firmware (Zenointel)" >> $GITHUB_ENV
+          echo "PRERELEASE=true" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: sudo apt-get update; sudo apt-get install -y u-boot-tools zip
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC release
+        run: |
+          # TODO: replace with the real upstream artifact once a gk7205v510 NAND
+          # build exists, e.g.
+          # wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v510-nand-lite.tgz
+          echo "gk7205v510-NAND OpenIPC artifact not yet published upstream" && exit 1
+      - name: Create firmwares
+        run: |
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_zenointel2oipc.sh"
+          export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+          chmod +x $RUN
+          # One line per supported unit. Identity gate = CPU + VENDOR + MODEL/HWVER
+          # (the DEVID analogue). Keep VENDOR matched to the unit's OEM.
+          SOC="gk7205v510" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2200_DL_4G-4" HWVER="2.00" $RUN
+          SOC="gk7205v510" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2400_DL_4G-4" HWVER="2.00" $RUN
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: out/*
+          tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          prerelease: ${{ env.PRERELEASE }}
+          overwrite: true
+          file_glob: true
