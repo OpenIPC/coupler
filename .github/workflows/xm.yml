@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: setenv
         run: |
@@ -47,6 +50,7 @@ jobs:
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
             export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+            export MANIFEST="$GITHUB_WORKSPACE/coupler-manifest.tsv"
             chmod +x $RUN
             SOC="hi3518cv100" TOTALMEM="64M" HARDWARE="50H10L" DEVID="00001510" FLASH_SIZE="0x1000000" $RUN
             SOC="hi3516cv100" TOTALMEM="128M" HARDWARE="50H20L" DEVID="00001520" FLASH_SIZE="0x1000000" $RUN
@@ -161,6 +165,13 @@ jobs:
           file_glob: true
           tag: ${{ env.TAG_NAME }}
           overwrite: true
+      - name: Tell openipc.org
+        # Its board catalogue offers these images per device ID and marks the
+        # boards they fit as supported by OpenIPC. It never polls GitHub: this
+        # pushes what the release now holds (_push_openipc_org.py).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/workflows/_push_openipc_org.py "$TAG_NAME" coupler-manifest.tsv
 #       - name: Setup tmate session
 #         if: ${{ failure() }}
 #         uses: mxschmitt/action-tmate@v3   
