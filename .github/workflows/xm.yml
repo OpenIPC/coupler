@@ -3,6 +3,12 @@ name: XM to OpenIPC
 on:
   workflow_dispatch:
 
+# One run at a time: a run reads the release after its upload and pushes that
+# list to openipc.org, and an overlapping run could push an older list last.
+concurrency:
+  group: xm-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest

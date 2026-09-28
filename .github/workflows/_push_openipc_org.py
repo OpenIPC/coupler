@@ -72,9 +72,12 @@ def main():
             socs[name] = soc
     rel = get(f"https://api.github.com/repos/{REPO}/releases/tags/{tag}", os.environ.get("GH_TOKEN"))
     body = {"schema": 1, "source": "coupler", "items": items(rel["assets"], socs)}
+    if not body["items"]:
+        # The release holds no image now: say so, and the site withdraws them.
+        body["empty"] = True
     data = gzip.compress(json.dumps(body).encode())
     print(f"{len(body['items'])} images, {len(data)} bytes gzipped")
-    if "--dry-run" in sys.argv or not body["items"]:
+    if "--dry-run" in sys.argv:
         return
     token = oidc_token()
     for attempt in range(5):
