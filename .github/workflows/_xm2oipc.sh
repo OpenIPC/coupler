@@ -615,5 +615,7 @@ dd if=/dev/zero count=${ROOTFS_DATA} ibs=1 | tr "\000" "\377" > ${WORKDIR}/mtd-x
 # Generate firmware file
 mkimage -A arm -O linux -T kernel -n "kernel" -a ${KERNEL_A} -e ${KERNEL_E} -d ${WORKDIR}/uImage* ${WORKDIR}/uImage.img &&
 mkimage -A arm -O linux -T kernel -n "rootfs" -a ${ROOTFS_A} -e ${ROOTFS_E} -d ${WORKDIR}/rootfs* ${WORKDIR}/rootfs.img &&
-cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_${RELEASE:-OpenIPC}_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd ..
+cd ${WORKDIR} && zip ${OUTPUTDIR}/${DEVID}_${RELEASE:-OpenIPC}_${HARDWARE}.bin u-boot.env.img rootfs.img uImage.img mtd-x.jffs2.img InstallDesc Readme.txt && cd .. &&
+# One line per image for openipc.org's push (_push_openipc_org.py): the chip it is for.
+if [ -n "${MANIFEST}" ]; then printf '%s\t%s\t%s\n' "${DEVID}_${RELEASE:-OpenIPC}_${HARDWARE}.bin" "${SOC}" "${DEVID}" >> "${MANIFEST}"; fi
 rm -rf ${WORKDIR}
