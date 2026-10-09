@@ -1,0 +1,57 @@
+name: camhi to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          TAG_NAME="camhi"
+          RELEASE_NAME="OpenIPC Firmware"
+          PRERELEASE=true
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y u-boot-tools python3 zip
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Self-test PIHC packer
+        run: |
+          cd "$GITHUB_WORKSPACE"
+          python3 tests/test_pihc_pack.py
+
+      - name: Fetch OpenIPC release
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" && cd "$_"
+          # Hi3516CV610 is published under the cv6xx tag in OpenIPC/firmware's
+          # `latest` release. Only the `ultimate` flavor is currently built.
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv6xx-nor-ultimate.tgz
+
+      - name: Build firmware
+        run: |
+          cd "$GITHUB_WORKSPACE/.github/workflows/dl"
+          export OUTPUTDIR="$GITHUB_WORKSPACE/out"
+          mkdir -p "$OUTPUTDIR"
+          # A single generic build. Sensor identity is left to OpenIPC's
+          # boot-time autodetection or a manual post-flash `fw_setenv sensor`.
+          SOC=hi3516cv6xx RELEASE=ultimate HARDWARE=CAMHI_CV610 \
+            bash "$GITHUB_WORKSPACE/.github/workflows/_camhi2oipc.sh"
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.TAG_NAME }}
+          name: ${{ env.RELEASE_NAME }}
+          prerelease: ${{ env.PRERELEASE }}
+          files: out/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -144,6 +144,42 @@ For example:  ```16AV300 IMX415b```
 ## Flashing
 Get appropriate [file for your model](https://github.com/OpenIPC/coupler/releases/tag/herospeed) and flash it via web.
 
+# camhi / Hichip (Hi3516CV610) — (Untested!)
+
+**WARNING: this target has not yet been validated on hardware.** The
+firmware container is reverse-engineered and the builder is unit-tested, but
+no end-to-end conversion has been confirmed to boot OpenIPC. Only attempt on a
+spare unit with UART access for recovery. See
+[`.github/workflows/camhi-NOTES.md`](.github/workflows/camhi-NOTES.md) for the
+verified facts and the list of open questions.
+
+CamHi-app cameras on the **Hisilicon Hi3516CV610** SoC, using the proprietary
+"PIHC" firmware container. Reference unit: vendor MPP
+`HI3516CV610_MPP_V1.0.1.0 B040 Release`, 16 MB SPI NOR laid out as
+`192K(boot) 64K(env) 2112K(kernel) 3456K(rootfs) 10560K(ipc)`.
+
+## Identifying the device
+The web UI answers `http://CAM/cgi-bin/hi3510/getsysinfo.cgi` and reports
+`Server: Hipcam`. The web realm default credentials are `admin` / `admin`.
+
+## Flashing
+POST the `.pkg` to the admin-authenticated upgrade endpoint:
+
+```sh
+curl -u admin:admin -F "upload=@openipc.hi3516cv6xx.CAMHI_CV610.pkg" \
+     http://CAM/cgi-bin/upgrade.cgi
+```
+
+The camera stages the image, runs its own flash sequence, and reboots. Sensor
+identity is not baked in — if video is absent after the first boot, set it
+with `fw_setenv sensor <name>` (known names live in `/usr/bin/load_hisilicon`
+on the running OpenIPC image).
+
+## Rollback
+The build leaves the vendor u-boot in place (no `boot.img` component), so
+standard TFTP-from-u-boot recovery applies. UART is required for the safest
+rollback.
+
 -----
 
 ### Support
