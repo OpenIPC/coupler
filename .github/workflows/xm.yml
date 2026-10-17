@@ -48,6 +48,7 @@ jobs:
           # wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-fpv.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v300-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7605v100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v500-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm510-nor-lite.tgz
           wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98562-nor-lite.tgz
@@ -127,6 +128,11 @@ jobs:
 
             SOC="gk7605v100" TOTALMEM="128M" HARDWARE="IPC_GK7605V100_83K50W_S38" DEVID="000669HC" FLASH_SIZE="0x800000" $RUN
             SOC="gk7605v100" TOTALMEM="128M" HARDWARE="IPC_GK7605V100_G5E" DEVID="000829N6" FLASH_SIZE="0x800000" $RUN
+
+            SOC="gk7205v500" TOTALMEM="64M" HARDWARE="IPC_GK7205V500_G4SF" DEVID="000889S2" FLASH_SIZE="0x1000000" $RUN
+            SOC="gk7205v500" TOTALMEM="64M" HARDWARE="IPC_GK7205V500_G5SF" DEVID="000889S3" FLASH_SIZE="0x1000000" $RUN
+            SOC="gk7205v500" TOTALMEM="64M" HARDWARE="IPC_GK7205V500_G4SH" DEVID="000889ZW" FLASH_SIZE="0x1000000" $RUN
+            SOC="gk7205v500" TOTALMEM="64M" HARDWARE="IPC_GK7205V500_G5SH" DEVID="000889ZX" FLASH_SIZE="0x1000000" $RUN
 
             SOC="xm530" OSMEM="35M" TOTALMEM="64M" HARDWARE="XM530_50X20-SW_8M" DEVID="00030674" FLASH_SIZE="0x800000" COMPAT="3" $RUN
             SOC="xm530" OSMEM="35M" TOTALMEM="64M" HARDWARE="XM530_50X20-WG_8M" DEVID="000309C1" FLASH_SIZE="0x800000" COMPAT="3" $RUN
