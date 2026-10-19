@@ -18,7 +18,7 @@ Releases contain automatically generated firmware files for transition from stoc
 # Supported vendors
 
 * [XiongMai](#xiongmai) → [XiongMai](https://github.com/OpenIPC/coupler/releases/tag/xiongmai); stock firmware and recovery files → [XiongMai (original)](https://github.com/OpenIPC/coupler/releases/tag/xiongmai-original)
-* [Longse/Herospeed/Cantonk](#longseherospeedcantonk) → [Longse/Herospeed/Cantonk](https://github.com/OpenIPC/coupler/releases/tag/longse)
+* [Longse/Cantonk/Herospeed](#longsecantonkherospeed) → [Longse/Cantonk/Herospeed](https://github.com/OpenIPC/coupler/releases/tag/longse)
 * [Tiandy](#tiandy) → [Tiandy](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
 * Anjoy → [Anjoy](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
 * [Zenointel](#zenointel) → [Zenointel](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
@@ -144,7 +144,7 @@ This is to download the latest version of ipctool from the repository
 * ```/tmp/ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
 
-# Longse/Herospeed/Cantonk
+# Longse/Cantonk/Herospeed
 ## WARNING! BACKUP IS MANDATORY! ROLLBACK IS NOT POSSIBLE!
 ## Device ID's 
 
