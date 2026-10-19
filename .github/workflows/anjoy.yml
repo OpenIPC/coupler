@@ -46,5 +46,7 @@ jobs:
           release_name: ${{ env.RELEASE_NAME }}
           body: |
             Transition firmware for Anjoy boards
+
+            Instructions: https://github.com/OpenIPC/coupler#anjoy
           prerelease: ${{ env.PRERELEASE }}
           overwrite: true
