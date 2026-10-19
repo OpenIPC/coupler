@@ -20,9 +20,9 @@ Releases contain automatically generated firmware files for transition from stoc
 * [XiongMai](#xiongmai) → [XiongMai](https://github.com/OpenIPC/coupler/releases/tag/xiongmai); stock firmware and recovery files → [XiongMai (original)](https://github.com/OpenIPC/coupler/releases/tag/xiongmai-original)
 * [Longse/Cantonk/Herospeed](#longsecantonkherospeed) → [Longse/Cantonk/Herospeed](https://github.com/OpenIPC/coupler/releases/tag/longse)
 * [Tiandy](#tiandy) → [Tiandy](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
-* Anjoy → [Anjoy](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
+* [Anjoy](#anjoy) → [Anjoy](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
 * [Zenointel](#zenointel) → [Zenointel](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
-* CamHi/HiChip/Xin → [CamHi/HiChip/Xin](https://github.com/OpenIPC/coupler/releases/tag/camhi)
+* [CamHi/HiChip/Xin](#camhihichipxin) → [CamHi/HiChip/Xin](https://github.com/OpenIPC/coupler/releases/tag/camhi)
 
 # XiongMai
 
@@ -215,6 +215,10 @@ mirroring how XiongMai uses `python-dvr`. Full recipe:
 Fully recoverable — u-boot is never touched. Interrupt the stock u-boot over UART
 (console password `zenotech`) and TFTP the stock partitions back, or restore the
 full NAND backup taken before flashing.
+
+# Anjoy
+
+# CamHi/HiChip/Xin
 
 -----
 
