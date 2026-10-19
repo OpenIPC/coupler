@@ -10,7 +10,7 @@ jobs:
       - name: setenv
         run: |
           TAG_NAME="tiandy"
-          RELEASE_NAME="OpenIPC Firmware"
+          RELEASE_NAME="Tiandy"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -48,23 +48,19 @@ jobs:
           MODEL="TC-C32QN" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-universal.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
 
         continue-on-error: true
-      - name: Create release
-        uses: actions/create-release@v1
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: ${{ env.RELEASE_NAME }}
-          body: |
-            Transition firmware for Tiandy boards
-          draft: false
-          prerelease: ${{ env.PRERELEASE }}
       - name: Upload binaries to release
+        # Creates the release on the first run; on later runs overwrite: true
+        # also brings its title and description back to the ones below.
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.OUTPUTDIR }}/*
           file_glob: true
           tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Tiandy boards
+
+            Instructions: https://github.com/OpenIPC/coupler#tiandy
+          prerelease: ${{ env.PRERELEASE }}
           overwrite: true

@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: setenv
         run: |
-          TAG_NAME="herospeed"
-          RELEASE_NAME="OpenIPC Firmware"
+          TAG_NAME="longse"
+          RELEASE_NAME="Longse/Herospeed/Cantonk"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -127,25 +127,21 @@ jobs:
           SOC="hi3519v101" NAME="19V101" SENSOR="IMX226B" $RUN
 
         continue-on-error: true
-      - name: Create release
-        uses: actions/create-release@v1
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: ${{ env.RELEASE_NAME }}
-          body: |
-            Transition firmware for Longse/Herospeed boards
-          draft: false
-          prerelease: ${{ env.PRERELEASE }}
       - name: Upload binaries to release
+        # Creates the release on the first run; on later runs overwrite: true
+        # also brings its title and description back to the ones below.
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: out/*
           file_glob: true
           tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Longse/Herospeed/Cantonk boards
+
+            Instructions: https://github.com/OpenIPC/coupler#longseherospeedcantonk
+          prerelease: ${{ env.PRERELEASE }}
           overwrite: true
       - name: Setup tmate session
         if: ${{ failure() }}

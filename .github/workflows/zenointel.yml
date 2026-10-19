@@ -22,7 +22,7 @@ jobs:
       - name: setenv
         run: |
           echo "TAG_NAME=zenointel" >> $GITHUB_ENV
-          echo "RELEASE_NAME=OpenIPC Firmware (Zenointel)" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Zenointel" >> $GITHUB_ENV
           echo "PRERELEASE=true" >> $GITHUB_ENV
       - name: Install dependencies
         run: sudo apt-get update; sudo apt-get install -y u-boot-tools zip
@@ -49,12 +49,18 @@ jobs:
           SOC="gk7205v510" FAMILY="gk7205v500" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2200_DL_4G-4" HWVER="2.00" $RUN
           SOC="gk7205v510" FAMILY="gk7205v500" CPU="GK7205V510" VENDOR="Rostelecom" MODEL="NC-IPTC2400_DL_4G-4" HWVER="2.00" $RUN
       - name: Upload binaries to release
+        # Creates the release on the first run; on later runs overwrite: true
+        # also brings its title and description back to the ones below.
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: out/*
           tag: ${{ env.TAG_NAME }}
           release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Zenointel boards
+
+            Instructions: https://github.com/OpenIPC/coupler#zenointel
           prerelease: ${{ env.PRERELEASE }}
           overwrite: true
           file_glob: true
