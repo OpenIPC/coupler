@@ -1,4 +1,4 @@
-name: Herospeed to OpenIPC
+name: Longse to OpenIPC
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: setenv
         run: |
-          TAG_NAME="herospeed"
-          RELEASE_NAME="Herospeed/Longse"
+          TAG_NAME="longse"
+          RELEASE_NAME="Longse/Herospeed/Cantonk"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -50,7 +50,7 @@ jobs:
       - name: Create firmwares
         run: |
           cd $GITHUB_WORKSPACE/.github/workflows
-          export RUN="$GITHUB_WORKSPACE/.github/workflows/_herospeed2oipc.sh"
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_longse2oipc.sh"
           export OUTPUTDIR="$GITHUB_WORKSPACE/out"
 
           SOC="hi3516av100" NAME="HI3516A" SENSOR="IMX178" $RUN
@@ -138,9 +138,9 @@ jobs:
           tag: ${{ env.TAG_NAME }}
           release_name: ${{ env.RELEASE_NAME }}
           body: |
-            Transition firmware for Herospeed/Longse boards
+            Transition firmware for Longse/Herospeed/Cantonk boards
 
-            Instructions: https://github.com/OpenIPC/coupler#herospeedlongse
+            Instructions: https://github.com/OpenIPC/coupler#longseherospeedcantonk
           prerelease: ${{ env.PRERELEASE }}
           overwrite: true
       - name: Setup tmate session

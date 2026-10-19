@@ -2,7 +2,7 @@
 
 # Coupler
 [![XM to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/xm.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/xiongmai)
-[![Herospeed to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/herospeed.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/herospeed)
+[![Longse to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/longse.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/longse)
 [![Tiandy to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/tiandy.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
 [![Anjoy to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/anjoy.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
 [![Zenointel to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/zenointel.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
@@ -18,7 +18,7 @@ Releases contain automatically generated firmware files for transition from stoc
 # Supported vendors
 
 * [XiongMai](#xiongmai) → [XiongMai](https://github.com/OpenIPC/coupler/releases/tag/xiongmai); stock firmware and recovery files → [XiongMai (original)](https://github.com/OpenIPC/coupler/releases/tag/xiongmai-original)
-* [Herospeed/Longse](#herospeedlongse) → [Herospeed/Longse](https://github.com/OpenIPC/coupler/releases/tag/herospeed)
+* [Longse/Herospeed/Cantonk](#longseherospeedcantonk) → [Longse/Herospeed/Cantonk](https://github.com/OpenIPC/coupler/releases/tag/longse)
 * [Tiandy](#tiandy) → [Tiandy](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
 * Anjoy → [Anjoy](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
 * [Zenointel](#zenointel) → [Zenointel](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
@@ -144,7 +144,7 @@ This is to download the latest version of ipctool from the repository
 * ```/tmp/ipctool setenv bootcmd "run up;sf probe 0;sf read 80007fc0 40000 180000;bootm 80007fc0" ```
 * ```reboot```
 
-# Herospeed/Longse
+# Longse/Herospeed/Cantonk
 ## WARNING! BACKUP IS MANDATORY! ROLLBACK IS NOT POSSIBLE!
 ## Device ID's 
 
@@ -153,7 +153,7 @@ Obtain stock firmware file and open it in an editor. First 8 bytes are **NAME** 
 For example:  ```16AV300 IMX415b```
 
 ## Flashing
-Get appropriate [file for your model](https://github.com/OpenIPC/coupler/releases/tag/herospeed) and flash it via web.
+Get appropriate [file for your model](https://github.com/OpenIPC/coupler/releases/tag/longse) and flash it via web.
 
 # Tiandy
 
