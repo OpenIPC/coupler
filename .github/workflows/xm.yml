@@ -18,8 +18,8 @@ jobs:
     steps:
       - name: setenv
         run: |
-          TAG_NAME="latest"
-          RELEASE_NAME="OpenIPC Firmware"
+          TAG_NAME="xiongmai"
+          RELEASE_NAME="XiongMai"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -157,25 +157,21 @@ jobs:
             SOC="nt98566" SENSOR="sc501ai" TOTALMEM="128M" HARDWARE="IPC_NT98566_85N80_S38" DEVID="000639I2" FLASH_SIZE="0x800000" $RUN
 
         continue-on-error: true
-      - name: Create release
-        uses: actions/create-release@v1
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: ${{ env.RELEASE_NAME }}
-          body: |
-            Transition firmware for XiongMai-based boards
-          draft: false
-          prerelease: ${{ env.PRERELEASE }}
       - name: Upload binaries to release
+        # Creates the release on the first run; on later runs overwrite: true
+        # also brings its title and description back to the ones below.
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: out/*
           file_glob: true
           tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for XiongMai boards
+
+            Instructions: https://github.com/OpenIPC/coupler#xiongmai
+          prerelease: ${{ env.PRERELEASE }}
           overwrite: true
       - name: Tell openipc.org
         # Its board catalogue offers these images per device ID and marks the

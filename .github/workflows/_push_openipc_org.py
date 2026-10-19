@@ -64,7 +64,7 @@ def oidc_token():
 
 def main():
     args = [a for a in sys.argv[1:] if a != "--dry-run"]
-    tag = args[0] if args else "latest"
+    tag = args[0] if args else "xiongmai"
     socs = {}
     if len(args) > 1 and os.path.exists(args[1]):
         for line in open(args[1]):

@@ -10,7 +10,7 @@ jobs:
       - name: setenv
         run: |
           TAG_NAME="anjoy"
-          RELEASE_NAME="OpenIPC Firmware"
+          RELEASE_NAME="Anjoy"
           PRERELEASE=true
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
@@ -34,23 +34,17 @@ jobs:
           $RUN --uboot-size 0x30000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin
 
         continue-on-error: true
-      - name: Create release
-        uses: actions/create-release@v1
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.TAG_NAME }}
-          release_name: ${{ env.RELEASE_NAME }}
-          body: |
-            Transition firmware for Anjoy boards
-          draft: false
-          prerelease: ${{ env.PRERELEASE }}
       - name: Upload binaries to release
+        # Creates the release on the first run; on later runs overwrite: true
+        # also brings its title and description back to the ones below.
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ env.OUTPUTDIR }}/*
           file_glob: true
           tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Anjoy boards
+          prerelease: ${{ env.PRERELEASE }}
           overwrite: true

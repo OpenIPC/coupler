@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 #####
-## Creates Longse-compatible firmware file
+## Creates Herospeed/Longse-compatible firmware file
 ## Dependencies : u-boot-tools, dd, tr, zip
 #####
 
