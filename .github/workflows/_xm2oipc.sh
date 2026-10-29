@@ -106,7 +106,6 @@ SOC="${SOC:-hi3516ev200}"
 [[ ${SENSOR} ]] && SENSOR="sensor=${SENSOR}"
 
 FLASH_SIZE="${FLASH_SIZE:-0x800000}"
-ROOTFS_DATA="${ROOTFS_DATA:-$(($FLASH_SIZE - $ROOTFS_E ))}"
 
 WORKDIR="workdir"
 OUTPUTDIR="${OUTPUTDIR:-..}"
@@ -118,10 +117,44 @@ IFS=" "
 mkdir -p ${WORKDIR}
 mkdir -p ${OUTPUTDIR}
 
-tar -xvz -f openipc.${SOC}-nor-${RELEASE:-lite}.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
+PACKAGE=openipc.${SOC}-nor-${RELEASE:-lite}
+if [ -f ${PACKAGE}.tgz ]; then
+  tar -xvz -f ${PACKAGE}.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
 
-# Check if give files exceed partition boundaries
-[[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A)) ]] && echo "Filesize exceeds boundaries" && exit 1
+  # Check if give files exceed partition boundaries
+  [[ $(stat --printf="%s" ${WORKDIR}/rootfs*) -gt $(($ROOTFS_E - $ROOTFS_A)) ]] || [[ $(stat --printf="%s" ${WORKDIR}/uImage*) -gt $(($KERNEL_E - $KERNEL_A)) ]] && echo "Filesize exceeds boundaries" && exit 1
+elif [ -f ${PACKAGE}-split.tgz ]; then
+  # The split NOR layout (OpenIPC/firmware#2668): firmware.bin is the uImage,
+  # padded to 64 KiB, then the squashfs, written whole at the kernel's address.
+  # The kernel finds the squashfs after itself and takes rootfs_data from the
+  # rest of the chip, whatever mtdparts and root= the env below passes, so a
+  # board ships this once its rootfs outgrows the fixed slot. It is burned as
+  # the same two images as the fixed slots, cut at the squashfs, which lands
+  # firmware.bin on the flash byte for byte; only the boundaries move.
+  tar -xvz -f ${PACKAGE}-split.tgz -C ${WORKDIR}/ --exclude "*.md5sum" || exit 1
+  FIRMWARE=$(ls ${WORKDIR}/firmware.bin*)
+  FIRMWARE_SIZE=$(stat --printf="%s" ${FIRMWARE})
+  # The uImage header's data size (bytes 12..15, big-endian), plus the 64-byte
+  # header, in whole 64 KiB blocks: where the squashfs starts.
+  [ "$(od -An -tx1 -N4 ${FIRMWARE} | tr -d ' \n')" = "27051956" ] || { echo "${FIRMWARE} does not start with a uImage"; exit 1; }
+  KERNEL_BLOCKS=$(( (64 + 0x$(od -An -tx1 -j12 -N4 ${FIRMWARE} | tr -d ' \n') + 0xFFFF) / 0x10000 ))
+  # The bootcmd reads 2 MiB from the kernel's address; the firmware build
+  # checks the uImage against that, and so does this.
+  [ $((KERNEL_BLOCKS * 0x10000)) -le $(($KERNEL_E - $KERNEL_A)) ] || { echo "Filesize exceeds boundaries"; exit 1; }
+  ROOTFS_A=$(printf "0x%x" $(($KERNEL_A + KERNEL_BLOCKS * 0x10000)))
+  KERNEL_E=${ROOTFS_A}
+  ROOTFS_E=$(printf "0x%x" $(( ($KERNEL_A + FIRMWARE_SIZE + 0xFFFF) / 0x10000 * 0x10000 )))
+  # The firmware build leaves at least 256 KiB of rootfs_data; so does this.
+  [ $(($ROOTFS_E + 0x40000)) -le $(($FLASH_SIZE)) ] || { echo "Filesize exceeds boundaries"; exit 1; }
+  head -c $((KERNEL_BLOCKS * 0x10000)) ${FIRMWARE} > ${WORKDIR}/uImage
+  tail -c +$((KERNEL_BLOCKS * 0x10000 + 1)) ${FIRMWARE} > ${WORKDIR}/rootfs.squashfs
+  rm -f ${FIRMWARE}
+else
+  echo "Neither ${PACKAGE}.tgz nor ${PACKAGE}-split.tgz is here"
+  exit 1
+fi
+
+ROOTFS_DATA="${ROOTFS_DATA:-$(($FLASH_SIZE - $ROOTFS_E ))}"
 
 # Generate Readme
 README=$(cat <<-EOF

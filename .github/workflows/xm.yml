@@ -29,30 +29,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.4
       - name: Fetch OpenIPC release
+        # A board whose rootfs outgrows its fixed slot publishes only the
+        # -split package (OpenIPC/firmware#2666); _xm2oipc.sh takes whichever
+        # of the two is here, the fixed-slot one first.
         run: |
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518cv100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev300-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536cv100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3536dv100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7201v200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-lite.tgz
+          for soc in hi3516cv100 \
+            hi3518cv100 \
+            hi3518ev100 \
+            hi3516cv200 \
+            hi3516dv100 \
+            hi3518ev200 \
+            hi3516cv300 \
+            hi3516ev100 \
+            hi3516ev300 \
+            hi3518ev300 \
+            hi3516ev200 \
+            hi3536cv100 \
+            hi3536dv100 \
+            gk7201v200 \
+            gk7205v200 \
+            gk7205v300 \
+            gk7605v100 \
+            gk7205v500 \
+            xm530 \
+            xm510 \
+            nt98562 \
+            nt98566; do
+            wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.$soc-nor-lite.tgz ||
+              echo "openipc.$soc-nor-lite.tgz is not published"
+            wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.$soc-nor-lite-split.tgz || true
+          done
           # wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v200-nor-fpv.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v300-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7605v100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.gk7205v500-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm530-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.xm510-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98562-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.nt98566-nor-lite.tgz
       - name: Create firmwares
         run: |
             export RUN="$GITHUB_WORKSPACE/.github/workflows/_xm2oipc.sh"
