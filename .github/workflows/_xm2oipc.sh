@@ -104,6 +104,10 @@ OSMEM="${OSMEM:-32M}"
 TOTALMEM="${TOTALMEM:-64M}"
 SOC="${SOC:-hi3516ev200}"
 [[ ${SENSOR} ]] && SENSOR="sensor=${SENSOR}"
+# The /etc/wireless profile that brings up a Wi-Fi-only board's radio
+# (S40network loads it when wlandev is set). The network to join, wlanssid
+# and wlanpass, is the owner's to set, so it is never written here.
+[[ ${WLANDEV} ]] && WLANDEV="wlandev=${WLANDEV}"
 
 FLASH_SIZE="${FLASH_SIZE:-0x800000}"
 
@@ -230,6 +234,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -270,6 +275,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -308,6 +314,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -346,6 +353,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -389,6 +397,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -428,6 +437,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -466,6 +476,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -505,6 +516,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -555,6 +567,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -593,6 +606,7 @@ osmem=${OSMEM}
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
@@ -630,6 +644,7 @@ osmem=18M
 totalmem=${TOTALMEM}
 soc=${SOC}
 ${SENSOR}
+${WLANDEV}
 hardware=${HARDWARE}
 devid=${DEVID}
 manufacturer=Xiongmai
