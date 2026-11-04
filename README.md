@@ -21,6 +21,7 @@ Releases contain automatically generated firmware files for transition from stoc
 * [Longse/Cantonk/Herospeed](#longsecantonkherospeed) → [Longse/Cantonk/Herospeed](https://github.com/OpenIPC/coupler/releases/tag/longse)
 * [Tiandy](#tiandy) → [Tiandy](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
 * [Anjoy](#anjoy) → [Anjoy](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
+* [Huishi](#huishi) → [Huishi](https://github.com/OpenIPC/coupler/releases/tag/huishi)
 * [Zenointel](#zenointel) → [Zenointel](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
 * [CamHi/HiChip/Xin](#camhihichipxin) → [CamHi/HiChip/Xin](https://github.com/OpenIPC/coupler/releases/tag/camhi)
 
@@ -217,6 +218,14 @@ Fully recoverable — u-boot is never touched. Interrupt the stock u-boot over U
 full NAND backup taken before flashing.
 
 # Anjoy
+
+Transition firmware for Anjoy/Anjvision boards is available on the
+[Anjoy release page](https://github.com/OpenIPC/coupler/releases/tag/anjoy).
+
+# Huishi
+
+Transition firmware for Huishi boards is available on the
+[Huishi release page](https://github.com/OpenIPC/coupler/releases/tag/huishi).
 
 # CamHi/HiChip/Xin
 
