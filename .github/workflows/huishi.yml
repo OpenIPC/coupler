@@ -1,0 +1,59 @@
+name: Huishi to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          TAG_NAME="huishi"
+          RELEASE_NAME="Huishi"
+          PRERELEASE=true
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+          echo "OUTPUTDIR=$GITHUB_WORKSPACE/.github/workflows/out" >> $GITHUB_ENV
+          echo "DLDIR=$GITHUB_WORKSPACE/.github/workflows/dl" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC release
+        run: |
+          mkdir -p "$DLDIR" ; cd "$_"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv608/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv610-ddr2-64m/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+
+      - name: Create firmwares
+        run: |
+          mkdir -p $OUTPUTDIR; cd "$_"
+          export RUN="$GITHUB_WORKSPACE/.github/workflows/_huishi2oipc.py"
+
+          $RUN --soc hi3516cv608 --product P23H \
+               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
+               "${DLDIR}/openipc-hi3516cv608-nor-lite-8mb.bin"
+
+          $RUN --soc hi3516cv610 --product P21H \
+               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
+               "${DLDIR}/openipc-hi3516cv610-ddr2-64m-nor-lite-8mb.bin"
+
+          $RUN --soc hi3516cv610 --product P21H \
+               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
+               "${DLDIR}/openipc-hi3516cv610-ddr2-64m-nor-lite-8mb.bin"
+
+        continue-on-error: true
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.OUTPUTDIR }}/*
+          file_glob: true
+          tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for Huishi boards
+
+            Instructions: https://github.com/OpenIPC/coupler#huishi
+          prerelease: ${{ env.PRERELEASE }}
+          overwrite: true
