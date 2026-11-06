@@ -1,0 +1,60 @@
+name: SMTSEC to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          echo "TAG_NAME=smtsec"      >> $GITHUB_ENV
+          echo "RELEASE_NAME=SMTSEC"  >> $GITHUB_ENV
+          echo "PRERELEASE=true"      >> $GITHUB_ENV
+          echo "OUTPUTDIR=$GITHUB_WORKSPACE/.github/workflows/out" >> $GITHUB_ENV
+          echo "DLDIR=$GITHUB_WORKSPACE/.github/workflows/dl"      >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC release
+        run: |
+          mkdir -p "$DLDIR" ; cd "$_"
+          # K662C6S is Hi3516CV610 + 128 MB DDR3, 16 MB NOR. IMX662 driver and
+          # profile are ultimate-only, so fetch the 16 MB ultimate image.
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv610-ddr3-128m/download_full_image?flash_size=16&flash_type=nor&fw_release=ultimate"
+      - name: Create firmwares
+        run: |
+          mkdir -p "$OUTPUTDIR"; cd "$_"
+          RUN="$GITHUB_WORKSPACE/.github/workflows/_smtsec2oipc.py"
+
+          # One line per model. --dev-type/--sdk-type/--platform-type is the
+          # device code the updater checks, read from the camera's
+          # /appfs/fconfigs/param/updatetype.ini; --mtdN-size are the board's
+          # stock partition sizes in order (sum == the image).
+          # SIP-K662C6S: Hi3516CV610 + IMX662, 16 MB NOR, 128 MB DDR3.
+          python3 "$RUN" --dev-type 21 --sdk-type 10 --platform-type 49 \
+            --mtd0-size 320k --mtd1-size 3m --mtd2-size 4m \
+            --mtd3-size 8384k --mtd4-size 512k \
+            "${DLDIR}/openipc-hi3516cv610-ddr3-128m-nor-ultimate-16mb.bin" \
+            SIP-K662C6S-openipc.bin
+
+          # Siblings (K675C6S, K415C6S, K664G6): add a line once its device code
+          # and stock mtdparts are read from a dump.
+          # python3 "$RUN" --dev-type <d> --sdk-type <s> --platform-type <p> \
+          #   --mtd0-size <..> --mtd1-size <..> ... "${DLDIR}/<image>.bin" <MODEL>-openipc.bin
+
+        continue-on-error: true
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.OUTPUTDIR }}/*
+          file_glob: true
+          tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          body: |
+            Transition firmware for SMTSEC boards
+
+            Instructions: https://github.com/OpenIPC/coupler#smtsec
+          prerelease: ${{ env.PRERELEASE }}
+          overwrite: true
