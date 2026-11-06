@@ -24,23 +24,126 @@ jobs:
           mkdir -p "$DLDIR" ; cd "$_"
           wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv608/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
           wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv610-ddr2-64m/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/hisilicon/socs/hi3516cv610-ddr3-128m/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/sigmastar/socs/ssc377/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/sigmastar/socs/ssc378de/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
 
       - name: Create firmwares
         run: |
           mkdir -p $OUTPUTDIR; cd "$_"
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_huishi2oipc.py"
 
+          # --soc, --product and the partition sizes must equal the vendor header:
+          # the updater rejects a ROM unless they match the running firmware.
+          # hi3516cv610 boot images are per DDR topology, so pick by the vendor
+          # U-Boot: P21H is DDR2 64M, P22H is DDR3 128M.
+          $RUN --soc hi3516cv610 --product P21H \
+               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
+               "${DLDIR}/openipc-hi3516cv610-ddr2-64m-nor-lite-8mb.bin" \
+               P21H_H54_H5A-openipc.rom
+
+          $RUN --soc hi3516cv610 --product P22H \
+               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
+               "${DLDIR}/openipc-hi3516cv610-ddr3-128m-nor-lite-8mb.bin" \
+               P22H_H82_H80-openipc.rom
+
           $RUN --soc hi3516cv608 --product P23H \
                --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
-               "${DLDIR}/openipc-hi3516cv608-nor-lite-8mb.bin"
+               "${DLDIR}/openipc-hi3516cv608-nor-lite-8mb.bin" \
+               P23H_H44_HC41_H46-openipc.rom
 
-          $RUN --soc hi3516cv610 --product P21H \
+          $RUN --soc hi3516cv608 --product PY23H \
                --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
-               "${DLDIR}/openipc-hi3516cv610-ddr2-64m-nor-lite-8mb.bin"
+               "${DLDIR}/openipc-hi3516cv608-nor-lite-8mb.bin" \
+               PY23H_H55_H55Y-openipc.rom
 
-          $RUN --soc hi3516cv610 --product P21H \
-               --uboot-size 0x30000 --kernel-size 0x280000 --appfs-size 0x4e0000 \
-               "${DLDIR}/openipc-hi3516cv610-ddr2-64m-nor-lite-8mb.bin"
+          $RUN --soc ssc377 --product P11H \
+               --uboot-size 0x30000 --kernel-size 0x2a0000 --appfs-size 0x4c0000 \
+               "${DLDIR}/openipc-ssc377-nor-lite-8mb.bin" \
+               P11H_H2D_H53_H5B-openipc.rom
+
+          $RUN --soc ssc378de --product P12H \
+               --uboot-size 0x30000 --kernel-size 0x2a0000 --appfs-size 0x4c0000 \
+               "${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin" \
+               P12H_H8D_H81-openipc.rom
+
+          # No OpenIPC image to build from yet. Values are from the vendor headers.
+          # Fullhan: openipc.org publishes no full image (no bootloader); the
+          # OpenIPC U-Boot has not run on silicon.
+          # fh8852v201, fh8852v310, fh8626v200: no OpenIPC target at all.
+          #
+          # $RUN --soc fh8626v200 --product P01H \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4f0000 \
+          #      "${DLDIR}/openipc-fh8626v200-nor-lite-8mb.bin" \
+          #      P01H_H2C_H30_H31-openipc.rom
+          #
+          # $RUN --soc fh8626v200 --product W01T \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4f0000 \
+          #      "${DLDIR}/openipc-fh8626v200-nor-lite-8mb.bin" \
+          #      W01T_T30Y_T32Q-openipc.rom
+          #
+          # $RUN --soc fh8626v100 --product IF26C \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x400000 \
+          #      "${DLDIR}/openipc-fh8626v100-nor-lite-8mb.bin" \
+          #      IF26C-openipc.rom
+          #
+          # $RUN --soc fh8852v200 --product PA \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x440000 \
+          #      "${DLDIR}/openipc-fh8852v200-nor-lite-8mb.bin" \
+          #      PA_PA2_PA4-openipc.rom
+          #
+          # $RUN --soc fh8852v210 --product P02H \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x440000 \
+          #      "${DLDIR}/openipc-fh8852v210-nor-lite-8mb.bin" \
+          #      P02H_H2S_H4H_H4P-openipc.rom
+          #
+          # $RUN --soc fh8852v201 --product P03H \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4a0000 \
+          #      "${DLDIR}/openipc-fh8852v201-nor-lite-8mb.bin" \
+          #      P03H_H41_H40-openipc.rom
+          #
+          # $RUN --soc fh8852v201 --product PS03H \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4a0000 \
+          #      "${DLDIR}/openipc-fh8852v201-nor-lite-8mb.bin" \
+          #      PS03H_H41-openipc.rom
+          #
+          # $RUN --soc fh8852v201 --product P05H \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4f0000 \
+          #      "${DLDIR}/openipc-fh8852v201-nor-lite-8mb.bin" \
+          #      P05H_H42_H43-openipc.rom
+          #
+          # $RUN --soc fh8852v201 --product W03T \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4f0000 \
+          #      "${DLDIR}/openipc-fh8852v201-nor-lite-8mb.bin" \
+          #      W03T_T40Q_T40Y_T40N-openipc.rom
+          #
+          # $RUN --soc fh8852v201 --product WS03T \
+          #      --uboot-size 0x40000 --kernel-size 0x240000 --appfs-size 0x4f0000 \
+          #      "${DLDIR}/openipc-fh8852v201-nor-lite-8mb.bin" \
+          #      WS03T_T41Q_T41Y_T41N-openipc.rom
+          #
+          # $RUN --soc fh8852v310 --product P06H \
+          #      --uboot-size 0x50000 --kernel-size 0x240000 --appfs-size 0x4e0000 \
+          #      "${DLDIR}/openipc-fh8852v310-nor-lite-8mb.bin" \
+          #      P06H_H62-openipc.rom
+          #
+          # $RUN --soc fh8856 --product IF56N \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x400000 \
+          #      "${DLDIR}/openipc-fh8856v100-nor-lite-8mb.bin" \
+          #      IF56N_PB1-openipc.rom
+          #
+          # $RUN --soc fh8856v200 --product PB \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x440000 \
+          #      "${DLDIR}/openipc-fh8856v200-nor-lite-8mb.bin" \
+          #      PB_PB4-openipc.rom
+          #
+          # $RUN --soc fh8858v200 --product P04H \
+          #      --uboot-size 0x50000 --kernel-size 0x280000 --appfs-size 0x440000 \
+          #      "${DLDIR}/openipc-fh8858v200-nor-lite-8mb.bin" \
+          #      P04H_H8S-openipc.rom
+          #
+          # IF52A2 (PA1, fh8852) has a fourth partition, which _huishi2oipc.py cannot
+          # write yet: uboot 0x50000, kernel 0x200000, rootfs 0x100000, appfs 0x380000.
 
         continue-on-error: true
       - name: Upload binaries to release
