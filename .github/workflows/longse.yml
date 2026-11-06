@@ -22,31 +22,31 @@ jobs:
       - name: release-downloader
         uses: robinraju/release-downloader@v1.4
         with:
-          repository: "OpenIPC/firmware"
-          tag: latest
-          fileName: "*u-boot*.bin"
+          repository: "OpenIPC/u-boot"
+          tag: hisilicon
+          fileName: "u-boot-*-nor.bin"
           out-file-path: ".github/workflows/workdir"
       - name: Fetch OpenIPC release
         run: |
           mkdir -p "$GITHUB_WORKSPACE/.github/workflows/dl" ; cd "$_"
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv200-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3518ev200-nor-lite-split.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av100-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av100-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv100-nor-lite-split.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv300-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev100-nor-lite-split.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516dv200-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev200-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516ev300-nor-lite-split.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av200-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3519v101-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av200-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3519v101-nor-lite-split.tgz
 
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv500-nor-lite.tgz
-          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-nor-lite.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516cv500-nor-lite-split.tgz
+          wget -q https://github.com/OpenIPC/firmware/releases/download/latest/openipc.hi3516av300-nor-lite-split.tgz
       - name: Create firmwares
         run: |
           cd $GITHUB_WORKSPACE/.github/workflows
