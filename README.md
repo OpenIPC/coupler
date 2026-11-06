@@ -6,6 +6,7 @@
 [![Tiandy to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/tiandy.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/tiandy)
 [![Anjoy to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/anjoy.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/anjoy)
 [![Zenointel to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/zenointel.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
+[![SMTSEC to OpenIPC](https://github.com/OpenIPC/coupler/actions/workflows/smtsec.yml/badge.svg)](https://github.com/OpenIPC/coupler/releases/tag/smtsec)
 ![GitHub repo size](https://img.shields.io/github/repo-size/OpenIPC/coupler)
 ![GitHub issues](https://img.shields.io/github/issues/OpenIPC/coupler)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/OpenIPC/coupler)
@@ -24,6 +25,7 @@ Releases contain automatically generated firmware files for transition from stoc
 * [Huishi](#huishi) → [Huishi](https://github.com/OpenIPC/coupler/releases/tag/huishi)
 * [Zenointel](#zenointel) → [Zenointel](https://github.com/OpenIPC/coupler/releases/tag/zenointel)
 * [CamHi/HiChip/Xin](#camhihichipxin) → [CamHi/HiChip/Xin](https://github.com/OpenIPC/coupler/releases/tag/camhi)
+* [SMTSEC](#smtsec) → [SMTSEC](https://github.com/OpenIPC/coupler/releases/tag/smtsec)
 
 # XiongMai
 
@@ -230,6 +232,15 @@ Transition firmware for Huishi boards is available on the
 # CamHi/HiChip/Xin
 
 -----
+
+# SMTSEC
+
+Transition firmware for SMTSEC (Shenzhen Shimaite) camera modules is on the
+[SMTSEC release page](https://github.com/OpenIPC/coupler/releases/tag/smtsec).
+
+## WARNING! A full manual flash backup is mandatory before flashing. Revert is not possible.
+
+Supported: **SIP-K662C6S** (Hi3516CV610 + Sony IMX662, 16 MB NOR, 128 MB DDR3).
 
 # Support
 
