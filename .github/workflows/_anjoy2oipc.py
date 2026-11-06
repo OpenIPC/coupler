@@ -9,6 +9,11 @@ Usage:
         --uboot-size 0x30000 --kernel-size 0x200000 --rootfs-size 0xcd0000 \
         --kernel-version MSTAR_I6C_LINUX_378DE \
         --rootfs-version MCJ86_V0-A-H5_V3.2.5.6
+
+Stock firmware writes the uboot part at flash 0x12000 and refuses more than
+--uboot-max-size bytes, then flashes kernel and rootfs anyway. Pass
+--uboot-image-offset to ship the U-Boot uImage alone. The slices still advance
+by --uboot-size, so kernel and rootfs keep their place in the image.
 """
 
 import argparse
@@ -19,6 +24,9 @@ import zlib
 HEADER_FORMAT = '<8sIIIIII256sII256sIIIIIIIIII964x'
 HEADER_SIZE = struct.calcsize(HEADER_FORMAT)
 MAGIC = b"ANJOY888"
+
+UIMAGE_MAGIC = 0x27051956
+UIMAGE_HEADER_SIZE = 64
 
 
 class AnjoyFirmware:
@@ -79,11 +87,22 @@ def pad_field(s, size=256):
     return s[:size].ljust(size, b'\x00')
 
 
+def extract_uimage(data, offset):
+    magic, _, _, size = struct.unpack_from(">IIII", data, offset)
+    if magic != UIMAGE_MAGIC:
+        sys.exit(f"[!] No uImage at 0x{offset:x}")
+    return data[offset:offset + UIMAGE_HEADER_SIZE + size]
+
+
 def main():
     ap = argparse.ArgumentParser(description="Split raw MCJ86 dump into ANJOY888 package")
     ap.add_argument("input", help="Raw firmware dump")
     ap.add_argument("output", nargs="?", default=None, help="Output package file (optional)")
     ap.add_argument("--uboot-size", type=lambda x: int(x, 0), default=0, help="Uboot max partition size")
+    ap.add_argument("--uboot-image-offset", type=lambda x: int(x, 0), default=None,
+                    help="U-Boot uImage offset in the input; ship it as the uboot part")
+    ap.add_argument("--uboot-max-size", type=lambda x: int(x, 0), default=0x1C000,
+                    help="Largest uboot part the stock updater writes")
     ap.add_argument("--kernel-size", type=lambda x: int(x, 0), default=0, help="Kernel max partition size")
     ap.add_argument("--rootfs-size", type=lambda x: int(x, 0), default=0, help="Rootfs max partition size")
     ap.add_argument("--kernel-version", default="", help="Kernel version string (256 byte field)")
@@ -115,6 +134,12 @@ def main():
             print(f"[+] {name}: 0x{offset:x} .. 0x{offset + take:x} ({take} B data + {max_sz - take} B padding)")
         else:
             print(f"[+] {name}: 0x{offset:x} .. 0x{offset + take:x} ({take} bytes)")
+        if name == "uboot":
+            if args.uboot_image_offset is not None:
+                chunk = extract_uimage(data, args.uboot_image_offset)
+            if len(chunk) > args.uboot_max_size:
+                sys.exit(f"[!] uboot part is 0x{len(chunk):x} bytes, stock limit is "
+                         f"0x{args.uboot_max_size:x}: the board would be bricked")
         parts.append((name, chunk))
         offset += take
 
