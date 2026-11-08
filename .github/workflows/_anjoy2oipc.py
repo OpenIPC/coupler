@@ -11,12 +11,16 @@ Usage:
         --rootfs-version MCJ86_V0-A-H5_V3.2.5.6
 
 Stock firmware writes the uboot part at flash 0x12000 and refuses more than
---uboot-max-size bytes, then flashes kernel and rootfs anyway. Pass
---uboot-image-offset to ship the U-Boot uImage alone. The slices still advance
-by --uboot-size, so kernel and rootfs keep their place in the image.
+--uboot-max-size bytes, then flashes kernel and rootfs anyway. The uboot part is
+therefore the U-Boot uImage alone, taken from the OpenIPC/u-boot release file
+u-boot-<soc>-<flash>.bin next to the input (openipc-<soc>-<flash>-*.bin). The
+slices still advance by --uboot-size, so kernel and rootfs keep their place in
+the image.
 """
 
 import argparse
+import os
+import re
 import struct
 import sys
 import zlib
@@ -94,13 +98,41 @@ def extract_uimage(data, offset):
     return data[offset:offset + UIMAGE_HEADER_SIZE + size]
 
 
+def release_uboot(input_path):
+    """U-Boot uImage from the OpenIPC/u-boot release file next to the input."""
+    name = os.path.basename(input_path)
+    m = re.match(r"openipc-([a-z0-9]+)-(nor|nand)-", name)
+    if not m:
+        sys.exit(f"[!] No SoC and flash type in {name}")
+    path = os.path.join(os.path.dirname(input_path), "u-boot-%s-%s.bin" % m.groups())
+    if not os.path.isfile(path):
+        sys.exit(f"[!] No {path}")
+    with open(path, "rb") as f:
+        data = f.read()
+
+    # The offset differs between SoCs: take the one valid U-Boot header
+    found = []
+    for offset in range(0, len(data) - UIMAGE_HEADER_SIZE, 0x200):
+        magic, header_crc = struct.unpack_from(">II", data, offset)
+        if magic != UIMAGE_MAGIC:
+            continue
+        header = bytearray(data[offset:offset + UIMAGE_HEADER_SIZE])
+        header[4:8] = b"\0\0\0\0"
+        if zlib.crc32(header) & 0xFFFFFFFF != header_crc:
+            continue
+        if b"UBT" in header[32:] or b"U-Boot" in header[32:]:
+            found.append(offset)
+    if len(found) != 1:
+        sys.exit(f"[!] {path}: expected one U-Boot uImage, found {len(found)}")
+    print(f"[+] uboot: {path} uImage at 0x{found[0]:x}")
+    return extract_uimage(data, found[0])
+
+
 def main():
     ap = argparse.ArgumentParser(description="Split raw MCJ86 dump into ANJOY888 package")
     ap.add_argument("input", help="Raw firmware dump")
     ap.add_argument("output", nargs="?", default=None, help="Output package file (optional)")
     ap.add_argument("--uboot-size", type=lambda x: int(x, 0), default=0, help="Uboot max partition size")
-    ap.add_argument("--uboot-image-offset", type=lambda x: int(x, 0), default=None,
-                    help="U-Boot uImage offset in the input; ship it as the uboot part")
     ap.add_argument("--uboot-max-size", type=lambda x: int(x, 0), default=0x1C000,
                     help="Largest uboot part the stock updater writes")
     ap.add_argument("--kernel-size", type=lambda x: int(x, 0), default=0, help="Kernel max partition size")
@@ -135,8 +167,7 @@ def main():
         else:
             print(f"[+] {name}: 0x{offset:x} .. 0x{offset + take:x} ({take} bytes)")
         if name == "uboot":
-            if args.uboot_image_offset is not None:
-                chunk = extract_uimage(data, args.uboot_image_offset)
+            chunk = release_uboot(args.input)
             if len(chunk) > args.uboot_max_size:
                 sys.exit(f"[!] uboot part is 0x{len(chunk):x} bytes, stock limit is "
                          f"0x{args.uboot_max_size:x}: the board would be bricked")
