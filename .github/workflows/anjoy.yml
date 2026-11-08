@@ -21,6 +21,13 @@ jobs:
         run: sudo apt-get update; sudo apt-get install -y u-boot-tools zip xxd
       - name: Checkout
         uses: actions/checkout@v2.3.4
+      - name: Fetch OpenIPC U-Boot
+        uses: robinraju/release-downloader@v1.4
+        with:
+          repository: "OpenIPC/u-boot"
+          tag: sigmastar
+          fileName: "u-boot-*.bin"
+          out-file-path: ".github/workflows/dl"
       - name: Fetch OpenIPC release
         run: |
           mkdir -p "$DLDIR" ; cd "$_"
@@ -31,7 +38,7 @@ jobs:
           mkdir -p $OUTPUTDIR; cd "$_"
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_anjoy2oipc.py"
 
-          $RUN --uboot-size 0x30000 --uboot-image-offset 0x20000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin
+          $RUN --uboot-size 0x30000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin
 
           # ===================================================================
           # AUTOMATICALLY GENERATED CONTENT - DO NOT TRUST SIZES BLINDLY.
