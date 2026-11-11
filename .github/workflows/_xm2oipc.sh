@@ -13,7 +13,7 @@ case $SOC in
     ENV=ENV_xm510
     ;;
   hi3516cv100 | hi3518cv100 | hi3518ev100 )
-    if [ "$DEVID" = "00001532" ]; then
+    if [ "$DEVID" = "00001532" ] || [ "$DEVID" = "00001905" ]; then
         ENV_A="0x40000"
         ENV_E="0x80000"
         KERNEL_A="0x80000"
