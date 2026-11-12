@@ -1,0 +1,31 @@
+name: tests
+
+on:
+  push:
+    paths:
+      - '.github/workflows/pihc_pack.py'
+      - '.github/workflows/uboot_env.py'
+      - '.github/workflows/_camhi2oipc.sh'
+      - '.github/workflows/camhi.yml'
+      - '.github/workflows/tests.yml'
+      - 'tests/**'
+  pull_request:
+    paths:
+      - '.github/workflows/pihc_pack.py'
+      - '.github/workflows/uboot_env.py'
+      - '.github/workflows/_camhi2oipc.sh'
+      - '.github/workflows/camhi.yml'
+      - '.github/workflows/tests.yml'
+      - 'tests/**'
+
+jobs:
+  pihc-packer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests (PIHC packer)
+        run: python3 tests/test_pihc_pack.py
+      - name: End-to-end build smoke test
+        # Exercises _camhi2oipc.sh end to end with a synthetic OpenIPC tarball
+        # and the pure-Python uboot_env.py fallback (no u-boot-tools needed).
+        run: bash tests/test_build_e2e.sh
