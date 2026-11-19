@@ -3,9 +3,18 @@ name: Huishi to OpenIPC
 on:
   workflow_dispatch:
 
+# One run at a time: a run pushes the release's list to openipc.org after its
+# upload, and an overlapping run could push an older list last.
+concurrency:
+  group: huishi-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: setenv
         run: |
@@ -66,6 +75,14 @@ jobs:
                --uboot-size 0x30000 --kernel-size 0x2a0000 --appfs-size 0x4c0000 \
                "${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin" \
                P12H_H8D_H81-openipc.rom
+
+          # asset, SoC, and the board openipc.org files it under
+          printf 'P21H_H54_H5A-openipc.rom\thi3516cv610\tP21H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          printf 'P22H_H82_H80-openipc.rom\thi3516cv610\tP22H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          printf 'P23H_H44_HC41_H46-openipc.rom\thi3516cv608\tP23H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          printf 'PY23H_H55_H55Y-openipc.rom\thi3516cv608\tPY23H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          printf 'P11H_H2D_H53_H5B-openipc.rom\tssc377\tP11H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          printf 'P12H_H8D_H81-openipc.rom\tssc378de\tP12H\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
 
           # No OpenIPC image to build from yet. Values are from the vendor headers.
           # Fullhan: openipc.org publishes no full image (no bootloader); the
@@ -160,3 +177,9 @@ jobs:
             Instructions: https://github.com/OpenIPC/coupler#huishi
           prerelease: ${{ env.PRERELEASE }}
           overwrite: true
+      - name: Tell openipc.org
+        # Its board catalogue offers each image on the board it is for and
+        # marks that board as supported by OpenIPC (_push_openipc_org.py).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/workflows/_push_openipc_org.py "$TAG_NAME" coupler-manifest.tsv --source coupler-huishi

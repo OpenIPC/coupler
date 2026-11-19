@@ -3,9 +3,18 @@ name: Tiandy to OpenIPC
 on:
   workflow_dispatch:
 
+# One run at a time: a run pushes the release's list to openipc.org after its
+# upload, and an overlapping run could push an older list last.
+concurrency:
+  group: tiandy-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: setenv
         run: |
@@ -47,6 +56,12 @@ jobs:
           MODEL="TC-C321N" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-nor.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
           MODEL="TC-C32QN" PRODUCTMODEL="528531" HARDINFO="300502" SNS_TYPE="64" SOC="gk7205v210" UBOOT="u-boot-gk7205v200-nor.bin" FIRMWARE="gk7205v210_lite_tiandy-tc-c32qn-nor.tgz" $RUN
 
+          # asset, SoC, and the board openipc.org files it under: <MODEL>-<PRODUCTMODEL>-<SOC>.box
+          for f in "$OUTPUTDIR"/*.box; do
+            n=$(basename "$f"); s=${n%.box}; soc=${s##*-}; m=${s%-*}
+            printf '%s\t%s\t%s\n' "$n" "$soc" "${m%-*}" >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
+          done
+
         continue-on-error: true
       - name: Upload binaries to release
         # Creates the release on the first run; on later runs overwrite: true
@@ -64,3 +79,9 @@ jobs:
             Instructions: https://github.com/OpenIPC/coupler#tiandy
           prerelease: ${{ env.PRERELEASE }}
           overwrite: true
+      - name: Tell openipc.org
+        # Its board catalogue offers each image on the board it is for and
+        # marks that board as supported by OpenIPC (_push_openipc_org.py).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/workflows/_push_openipc_org.py "$TAG_NAME" coupler-manifest.tsv --source coupler-tiandy
