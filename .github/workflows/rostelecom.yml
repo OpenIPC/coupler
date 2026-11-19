@@ -3,9 +3,18 @@ name: Rostelecom/Uniview to OpenIPC
 on:
   workflow_dispatch:
 
+# One run at a time: a run pushes the release's list to openipc.org after its
+# upload, and an overlapping run could push an older list last.
+concurrency:
+  group: rostelecom-release
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - name: setenv
         run: |
@@ -43,6 +52,8 @@ jobs:
             --outdir "$OUTPUTDIR/ipc8232swc-we" --soc hi3516ev300
           cd "$OUTPUTDIR/ipc8232swc-we"
           zip -j "$OUTPUTDIR/rostelecom-ipc8232swc-we-openipc-sd.zip" boot tech kernel app README.txt
+          # asset, SoC, and the board openipc.org files it under
+          printf 'rostelecom-ipc8232swc-we-openipc-sd.zip\thi3516ev300\tIPC8232SWC-WE\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
         continue-on-error: true
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -66,3 +77,9 @@ jobs:
             remove the card. No UART, no network.
 
             **Back up your stock NAND first — recovery needs UART.**
+      - name: Tell openipc.org
+        # Its board catalogue offers the image on the board it is for and
+        # marks that board as supported by OpenIPC (_push_openipc_org.py).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 .github/workflows/_push_openipc_org.py "$TAG_NAME" coupler-manifest.tsv --source coupler-rostelecom

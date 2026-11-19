@@ -12,10 +12,16 @@ The list is read from the release itself, not from the build: a build that
 failed for one board leaves that board's previous image on the release, and
 the site should keep offering it.
 
-  python3 _push_openipc_org.py <release tag> [manifest.tsv] [--dry-run]
+  python3 _push_openipc_org.py <release tag> [manifest.tsv] [--source <name>] [--dry-run]
+
+The manifest's lines are `<asset>\t<soc>[\t<board>]`. A camera with no XM
+device ID (Rostelecom's) is pushed as its own source, `--source
+coupler-rostelecom`: its images are the manifest's assets that name a board,
+and openipc.org files each under that board's code.
 
 Needs `permissions: id-token: write` (a GitHub Actions OIDC token, audience
-https://openipc.org, from xm.yml on main) and GH_TOKEN to read the release.
+https://openipc.org, from xm.yml or rostelecom.yml on main) and GH_TOKEN to
+read the release.
 """
 
 import gzip
@@ -39,14 +45,21 @@ def get(url, token=None):
         return json.load(r)
 
 
-def items(assets, socs):
+def items(assets, socs, boards):
     out = []
     for a in assets:
-        m = IMAGE.match(a["name"])
-        if not m:
-            continue
-        it = {"key": a["name"], "device_id": m.group(1).upper(), "version": a["updated_at"][:10],
-              "build": m.group(2), "asset_url": a["browser_download_url"], "size": a["size"], "published_at": a["updated_at"]}
+        if boards:
+            board = boards.get(a["name"])
+            if not board:
+                continue
+            it = {"key": a["name"], "device_type": board, "app": "public", "category": "camera", "build": board}
+        else:
+            m = IMAGE.match(a["name"])
+            if not m:
+                continue
+            it = {"key": a["name"], "device_id": m.group(1).upper(), "build": m.group(2)}
+        it.update({"version": a["updated_at"][:10], "asset_url": a["browser_download_url"], "size": a["size"],
+                   "published_at": a["updated_at"]})
         if (a.get("digest") or "").startswith("sha256:"):
             it["sha256"] = a["digest"][7:]
         if socs.get(a["name"]):
@@ -63,15 +76,25 @@ def oidc_token():
 
 
 def main():
-    args = [a for a in sys.argv[1:] if a != "--dry-run"]
+    argv = sys.argv[1:]
+    source = "coupler"
+    if "--source" in argv:
+        i = argv.index("--source")
+        source = argv[i + 1]
+        del argv[i:i + 2]
+    args = [a for a in argv if a != "--dry-run"]
     tag = args[0] if args else "xiongmai"
-    socs = {}
+    socs, boards = {}, {}
     if len(args) > 1 and os.path.exists(args[1]):
         for line in open(args[1]):
-            name, soc, *_ = line.rstrip("\n").split("\t") + [""]
+            name, soc, board, *_ = line.rstrip("\n").split("\t") + ["", ""]
             socs[name] = soc
+            if board:
+                boards[name] = board
+    if source != "coupler" and not boards:
+        sys.exit(f"{source} files its images under boards: the manifest names none")
     rel = get(f"https://api.github.com/repos/{REPO}/releases/tags/{tag}", os.environ.get("GH_TOKEN"))
-    body = {"schema": 1, "source": "coupler", "items": items(rel["assets"], socs)}
+    body = {"schema": 1, "source": source, "items": items(rel["assets"], socs, boards if source != "coupler" else {})}
     if not body["items"]:
         # The release holds no image now: say so, and the site withdraws them.
         body["empty"] = True
