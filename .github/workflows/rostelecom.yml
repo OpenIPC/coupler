@@ -37,7 +37,7 @@ jobs:
         run: |
           mkdir -p "$OUTPUTDIR"
           RUN="$GITHUB_WORKSPACE/.github/workflows/_rostelecom2oipc.py"
-          # IPC8232SWC-WE-B (Uniview C1L-2WN): boot 1M, tech 1M, kernel 8M, app 16M
+          # IPC8232SWC-WE (Uniview C1L-2WN-G-RU): boot 1M, tech 1M, kernel 8M, app 16M
           python3 "$RUN" \
             "$DLDIR/u-boot-hi3516ev300-nand.bin" "$DLDIR/rootfs.ubi.hi3516ev300" \
             --outdir "$OUTPUTDIR/ipc8232swc-we" --soc hi3516ev300
@@ -58,7 +58,7 @@ jobs:
             OpenIPC transition images for Rostelecom / Uniview "VideoComfort" (VC)
             cameras that update from an SD card via the stock U-Boot `fwupdate`.
 
-            **ipc8232swc-we** — Rostelecom IPC8232SWC-WE-B (Uniview C1L-2WN,
+            **ipc8232swc-we** — Rostelecom IPC8232SWC-WE (Uniview C1L-2WN-G-RU,
             HiSilicon hi3516ev300 + SP2305).
 
             Install: format an SD card FAT32, extract the zip to its root (files

@@ -3,7 +3,7 @@
 Rostelecom / Uniview "VideoComfort" (VC) → OpenIPC transition, via the stock
 U-Boot's on-board SD-card auto-updater.
 
-These cameras (e.g. Rostelecom IPC8232SWC-WE-B = Uniview C1L-2WN, HiSilicon
+These cameras (e.g. Rostelecom IPC8232SWC-WE = Uniview C1L-2WN-G-RU, HiSilicon
 hi3516ev300 + SP2305) ship a stock U-Boot whose bootcmd, on every power-on, runs
 `fwupdate mmc 0:1 ...` — it reads files named after each NAND partition from the
 first FAT partition of an SD card, erases that partition and writes the file to
@@ -53,7 +53,7 @@ def main():
     ap.add_argument("rootfs_ubi", help="OpenIPC rootfs.ubi.<soc>")
     ap.add_argument("--outdir", default="out", help="output directory")
     ap.add_argument("--soc", default="hi3516ev300")
-    # stock partition sizes (defaults match the IPC8232SWC-WE-B map)
+    # stock partition sizes (defaults match the IPC8232SWC-WE map)
     ap.add_argument("--boot-size", type=hx, default=0x100000, help="boot part size (1 MiB)")
     ap.add_argument("--tech-size", type=hx, default=0x100000, help="tech part size (1 MiB)")
     ap.add_argument("--kernel-size", type=hx, default=0x800000, help="kernel part size (8 MiB)")
