@@ -1,0 +1,68 @@
+name: Rostelecom/Uniview to OpenIPC
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setenv
+        run: |
+          TAG_NAME="rostelecom"
+          RELEASE_NAME="Rostelecom / Uniview (VideoComfort)"
+          PRERELEASE=true
+          echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+          echo "OUTPUTDIR=$GITHUB_WORKSPACE/.github/workflows/out" >> $GITHUB_ENV
+          echo "DLDIR=$GITHUB_WORKSPACE/.github/workflows/dl" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: sudo apt-get update; sudo apt-get install -y zip
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+      - name: Fetch device-specific OpenIPC build
+        run: |
+          mkdir -p "$DLDIR" ; cd "$_"
+          # Generic hi3516ev300 U-Boot (not device-specific):
+          FW="https://github.com/OpenIPC/firmware/releases/download/latest"
+          wget -q -O u-boot-hi3516ev300-nand.bin "$FW/u-boot-hi3516ev300-nand.bin"
+          # Device-specific rootfs from the OpenIPC builder profile
+          # 'hi3516ev300_ultimate_rostelecom-ipc8232swc-we' (SP2305 sensor, the
+          # GPIO38 SD-slot-power fix, LED map, RTL8188FU Wi-Fi):
+          BLD="https://github.com/OpenIPC/builder/releases/download/latest"
+          wget -q -O ipc8232-nand.tgz "$BLD/hi3516ev300_ultimate_rostelecom-ipc8232swc-we-nand.tgz"
+          tar xzf ipc8232-nand.tgz rootfs.ubi.hi3516ev300
+      - name: Create SD transition files
+        run: |
+          mkdir -p "$OUTPUTDIR"
+          RUN="$GITHUB_WORKSPACE/.github/workflows/_rostelecom2oipc.py"
+          # IPC8232SWC-WE-B (Uniview C1L-2WN): boot 1M, tech 1M, kernel 8M, app 16M
+          python3 "$RUN" \
+            "$DLDIR/u-boot-hi3516ev300-nand.bin" "$DLDIR/rootfs.ubi.hi3516ev300" \
+            --outdir "$OUTPUTDIR/ipc8232swc-we" --soc hi3516ev300
+          cd "$OUTPUTDIR/ipc8232swc-we"
+          zip -j "$OUTPUTDIR/rostelecom-ipc8232swc-we-openipc-sd.zip" boot tech kernel app README.txt
+        continue-on-error: true
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.OUTPUTDIR }}/*.zip
+          file_glob: true
+          tag: ${{ env.TAG_NAME }}
+          release_name: ${{ env.RELEASE_NAME }}
+          prerelease: ${{ env.PRERELEASE }}
+          overwrite: true
+          body: |
+            OpenIPC transition images for Rostelecom / Uniview "VideoComfort" (VC)
+            cameras that update from an SD card via the stock U-Boot `fwupdate`.
+
+            **ipc8232swc-we** — Rostelecom IPC8232SWC-WE-B (Uniview C1L-2WN,
+            HiSilicon hi3516ev300 + SP2305).
+
+            Install: format an SD card FAT32, extract the zip to its root (files
+            `boot` `tech` `kernel` `app`), insert, power on ~1 min, power off,
+            remove the card. No UART, no network.
+
+            **Back up your stock NAND first — recovery needs UART.**
