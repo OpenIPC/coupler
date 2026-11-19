@@ -101,6 +101,7 @@ Many firmwares in the list below are compatible with multiple different image se
 
 ### GK7205v300 + IMX335
 * [000699H7](https://github.com/OpenIPC/coupler/releases/download/xiongmai/000699H7_OpenIPC_IPC_GK7205V300_85K50T.bin)
+* [K40699Q3](https://github.com/OpenIPC/coupler/releases/download/xiongmai/K40699Q3_OpenIPC_IPC_GK7205V300_G6S.bin) (G6S with the 20x zoom block, IVG-G5S-20X)
 
 ### GK7605v100 + SC2239
 * [000669HC](https://github.com/OpenIPC/coupler/releases/download/xiongmai/000669HC_OpenIPC_IPC_GK7605V100_83K50W_S38.bin)
