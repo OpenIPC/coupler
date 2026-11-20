@@ -67,7 +67,7 @@ case $SOC in
     ENV_E="0x50000"
     ENV=ENV_hi3536dv100
     ;;
-  *"gk7205v"* | *"gk7201v"*)
+  *"gk7205v"* | *"gk7201v"* | *"gk7206"*)
     ENV=ENV_gk7205v200
     ;;
   *"gk7605v"*)
@@ -198,6 +198,7 @@ JSON=$(cat <<-EOF
   "DevID": "${DEVID}XXXXX000000000000",
   "CompatibleVersion" : ${COMPAT},
   "Vendor": "SkipCheck",
+  "Mx8QCheck": "SkipCheck",
   "Mx8Q": "0"
 }
 EOF
