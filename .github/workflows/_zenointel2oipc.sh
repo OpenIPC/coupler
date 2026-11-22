@@ -57,17 +57,80 @@ mkdir -p "${WORKDIR}" "${OUTPUTDIR}"
 OUTPUTDIR="$(cd "${OUTPUTDIR}" && pwd)"
 
 # ---- OpenIPC payload (NAND build) --------------------------------------------
-# Members inside openipc.<soc>-nand-<release>.tgz: uImage.<soc> (the OpenIPC
-# kernel uImage) and rootfs.ubi (UBIFS-in-UBI). Both were flashed and booted on a
-# GK7205V510; the globs below match them.
-tar -xvz -f "openipc.${FAMILY}-nand-${RELEASE:-ultimate}.tgz" -C "${WORKDIR}/" --exclude "*.md5sum" || {
-  echo "Error: openipc.${FAMILY}-nand-*.tgz not found — upstream NAND artifact missing (see header)"; exit 1; }
+# Two artifact generations are supported:
+#   * OLD (<= 2026-09, validated on hardware): openipc.<family>-nand-<release>.tgz
+#     containing a ready-made legacy uImage.<soc> + rootfs.ubi.
+#   * NEW (>= 2026-11 nightlies, OpenIPC/builder first-class devices): the tgz is
+#     named per model (e.g. gk7205v510_ultimate_zenointel-sd-2n-4g-nand.tgz, pass
+#     ARTIFACT=<file>) and ships fitImage.<family> (FDT, d00dfeed) instead of the
+#     legacy uImage. The stock XMedia `bootk` REJECTS FIT at bootm (validated on
+#     the QEMU twin: "Bad FIT kernel image format!" -> U-Boot prompt, i.e. a
+#     fleet brick), and hunter's `burn` requires every member to be a legacy
+#     uImage whose load/entry equal the target partition bounds -- so the kernel
+#     member is rebuilt here: zImage + fdt are extracted from the fitImage,
+#     concatenated (gk7205v500 kernels are CONFIG_ARM_APPENDED_DTB=y: the zImage
+#     decompressor finds the appended dtb) and wrapped via mkimage.
+#     Twin-validated end-to-end 2026-11-22: this burn + boot chain reaches
+#     "Welcome to OpenIPC".
+# Both generations also burn rootfs.ubi (UBIFS-in-UBI; NOT rootfs.ubifs).
+ARTIFACT="${ARTIFACT:-openipc.${FAMILY}-nand-${RELEASE:-ultimate}.tgz}"
+tar -xvz -f "${ARTIFACT}" -C "${WORKDIR}/" --exclude "*.md5sum" || {
+  echo "Error: ${ARTIFACT} not found -- upstream NAND artifact missing (see header)"; exit 1; }
+
+# ---- kernel member: legacy uImage (the outer wrap below only re-headers it) ---
+if ls "${WORKDIR}"/uImage* >/dev/null 2>&1; then
+  KERN_SRC=$(ls "${WORKDIR}"/uImage* | head -1)
+elif ls "${WORKDIR}"/fitImage* >/dev/null 2>&1; then
+  FIT=$(ls "${WORKDIR}"/fitImage* | head -1)
+  python3 - "$FIT" "${WORKDIR}/zImage" "${WORKDIR}/board.dtb" <<'PY'
+import struct, sys
+fit, zpath, dpath = sys.argv[1:4]
+f = open(fit, "rb").read()
+magic, total, off_struct, off_strings = struct.unpack(">IIII", f[:16])
+assert magic == 0xD00DFEED, "not a FIT"
+def u32(o): return struct.unpack(">I", f[o:o+4])[0]
+def cstr(o):
+    e = f.index(b"\x00", o); return f[o:e].decode()
+def node(o):
+    props, kids = {}, {}
+    while True:
+        t = u32(o)
+        if t == 4: o += 4; continue                     # NOP
+        if t == 1:                                      # BEGIN_NODE
+            n = cstr(o+4); o = (o+4+len(n)+1+3) & ~3
+            k, o = node(o); kids[n] = k
+        elif t == 3:                                    # PROP (v16: no trailing pad)
+            ln, no = u32(o+4), u32(o+8)
+            props[cstr(off_strings+no)] = f[o+12:o+12+ln]; o = (o+12+ln+3) & ~3
+        else:                                           # END_NODE / END
+            return (props, kids), o+4
+    assert False
+assert u32(off_struct) == 1
+rn = cstr(off_struct+4); o = (off_struct+4+len(rn)+1+3) & ~3
+tree, _ = node(o)
+img = tree[1]["images"][1]        # -> {"kernel": (props,kids), "fdt": (props,kids)}
+open(zpath, "wb").write(img["kernel"][0]["data"])
+open(dpath, "wb").write(img["fdt"][0]["data"])
+PY
+  cat "${WORKDIR}/zImage" "${WORKDIR}/board.dtb" > "${WORKDIR}/inner-kernel.bin"
+  mkimage -A arm -O linux -T kernel -C none -n "OpenIPC ${SOC}" \
+          -a 0x40008000 -e 0x40008000 -d "${WORKDIR}/inner-kernel.bin" \
+          "${WORKDIR}/uImage.${SOC}"
+  KERN_SRC="${WORKDIR}/uImage.${SOC}"
+else
+  echo "Error: neither uImage* nor fitImage* in ${ARTIFACT}"; exit 1
+fi
+
+# ---- rootfs member: rootfs.ubi (UBI image), never the bare *.ubifs blob -------
+# NB: a plain `rootfs*` glob also matches rootfs.ubifs, and under en_* locale
+# collation `rootfs.ubi*` can even list it FIRST (dots ignored: "ubifs" sorts
+# before "ubi.g") -- burning the bare UBIFS blob yields an unbootable root.
+ROOTFS_SRC=$(ls -1 "${WORKDIR}"/rootfs.ubi "${WORKDIR}"/rootfs.ubi.* 2>/dev/null | head -1)
+[ -n "${ROOTFS_SRC}" ] || { echo "Error: no rootfs.ubi in ${ARTIFACT}"; exit 1; }
 
 # ---- wrap kernel + rootfs as vendor-style uImages (load/entry = partition bounds)
 mkimage -A arm -O linux -T kernel -n "kernel" -a "${KERNEL_A}" -e "${KERNEL_E}" \
-        -d "${WORKDIR}"/uImage* "${WORKDIR}/kernel.img"
-ROOTFS_SRC=$(ls "${WORKDIR}"/rootfs* 2>/dev/null | head -1)
-[ -n "${ROOTFS_SRC}" ] || { echo "Error: no rootfs* in the OpenIPC tarball"; exit 1; }
+        -d "${KERN_SRC}" "${WORKDIR}/kernel.img"
 mkimage -A arm -O linux -T filesystem -n "rootfs" -a "${ROOTFS_A}" -e "${ROOTFS_E}" \
         -d "${ROOTFS_SRC}" "${WORKDIR}/rootfs.img"
 
