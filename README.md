@@ -178,46 +178,66 @@ The camera will set the original MAC address of the device, perform all necessar
 
 # Zenointel
 
-Zenointel (Hangzhou Zenointel) OEM cameras (e.g. **SD-2N-4G** / `NC-IPTC2200_DL_4G-4`,
-Goke **GK7205V510**, 128 MiB SPI-NAND) run a Dahua-derived `hunter` userland and
-speak **Dahua DHIP** (TCP 5000), not XiongMai DVRIP. The build here mirrors the
-XiongMai approach — it repackages OpenIPC's kernel + rootfs into the vendor's
-own **Dahua "zzip"** upgrade container and **does not touch u-boot**, so the stock
-bootloader (and TFTP recovery) always survives.
+Transition firmware for Zenointel (Hangzhou Zenointel) OEM cameras (e.g.
+**SD-2N-4G** / `NC-IPTC2200_DL_4G-4`, Goke **GK7205V510**, 128 MiB SPI-NAND)
+is available on the [Zenointel release page](https://github.com/OpenIPC/coupler/releases/tag/zenointel):
 
-> **VALIDATED on hardware — one upstream blocker for CI.** The full flow was proven
-> end-to-end on a GK7205V510 SD-2N-4G: the locally-built OpenIPC **gk7205v500-family
-> NAND (ultimate)** artifact (gk7205v510 is SoC family gk7205v500), wrapped by this
-> builder and pushed over DHIP with `python-dhip`, booted OpenIPC keeping the stock
-> u-boot. The stock XMedia `bootk` boots the OpenIPC kernel+rootfs from the vendor
-> `kernel`/`root` partitions, and `hunter` accepts the partial (kernel+rootfs-only)
-> package. The one remaining blocker is CI: the gk7205v500-family **NAND-ultimate**
-> artifact is not published upstream yet (CI currently ships gk7205v500_lite NOR),
-> so the fetch step here fails until it is. Build it locally in the meantime
-> (`make BOARD=gk7205v500_ultimate`). **Back up the full NAND and keep a UART
-> console ready before attempting anything.**
+* [NC-IPTC2200_DL_4G-4](https://github.com/OpenIPC/coupler/releases/download/zenointel/NC-IPTC2200_DL_4G-4_OpenIPC_gk7205v510.bin)
+
+These cameras run a Dahua-derived `hunter` userland and speak Dahua DHIP
+(TCP 5000), not XiongMai DVRIP. The package is the vendor's own Dahua "zzip"
+upgrade container (a ZIP with the leading `PK` mangled to `ZL`; repair the
+magic with a hex editor to list it) and carries only the `kernel` and `root`
+partitions, so u-boot and its TFTP recovery always survive the flash.
+
+## Back up the full NAND first (no soldering required)
+
+Before flashing, back up the stock partitions over the network with
+[`python-dhip`](https://github.com/OpenIPC/python-dhip). It enables the
+camera's built-in telnet server via DHIP, then reads every raw MTD partition
+through the vendor shell (`dd | base64`) and verifies each file against the
+size declared in `/proc/mtd` -- no UART, TFTP or disassembly needed:
+
+```bash
+pip install "git+https://github.com/OpenIPC/python-dhip.git"
+dhip 192.168.1.10 -u admin -P <web-password> nanddump ./stock-backup --shell-pass ivideo
+```
+
+* `-u/-P` are the camera's web admin credentials; `--shell-pass` is the root
+  shell account password (stock units observed with `root` / `ivideo`).
+* The output directory gets one `mtdN-<name>.bin` per raw partition (about
+  128 MiB in total); store it somewhere safe -- it is your way back to stock.
 
 ## Download
 
-There is no XiongMai-style Device ID. The upgrade package is gated on **`Cpu`**
-(SoC, `GK7205V510`), **`Vendor`** (the unit's OEM, e.g. `Rostelecom`) and a
-**`Devices`** allow-list of `[model, hardware-version]` pairs. Match all three to
-your unit. Read them over DHIP with [`python-dhip`](https://github.com/OpenIPC/python-dhip)
-(`magicBox.getSystemInfo` / `getSoftwareVersion`), or from the web UI's version page.
+There is no XiongMai-style Device ID. The upgrade package is gated on `Cpu`
+(`GK7205V510`), `Vendor` (the unit's OEM, e.g. `Rostelecom`) and a `Devices`
+allow-list of `[model, hardware-version]` pairs; match all three against your
+unit before flashing. Read them over DHIP:
+
+```bash
+dhip 192.168.1.10 -u admin -P <web-password> call magicBox.getSystemInfo
+```
 
 ## Flashing
 
-The package is a Dahua zzip (a ZIP with the first `PK` mangled to `ZL`); inspect
-it with the zenointel project's `tools/zzip.py verify`. Push it over DHIP with
-`python-dhip` (`DahuaClient.upgrade_firmware(pkg, confirm=True)` on port 5000),
-mirroring how XiongMai uses `python-dvr`. Full recipe:
-`~/projects/cameras/zenointel/docs/openipc-transition.md`.
+Push the downloaded package over DHIP with the same tool:
+
+```bash
+dhip 192.168.1.10 -u admin -P <web-password> upgrade NC-IPTC2200_DL_4G-4_OpenIPC_gk7205v510.bin --confirm
+```
+
+The upgrade is asynchronous: `upgrader.execute` replies as soon as the upload
+is accepted, then `hunter` writes both partitions and reboots the camera into
+OpenIPC (about a minute on 128 MiB NAND). The camera keeps its DHCP network
+settings; OpenIPC answers on SSH and RTSP with the default OpenIPC passwords.
 
 ## Rollback
 
-Fully recoverable — u-boot is never touched. Interrupt the stock u-boot over UART
-(console password `zenotech`) and TFTP the stock partitions back, or restore the
-full NAND backup taken before flashing.
+u-boot is never touched. Restore the backup by UART: interrupt u-boot (the
+console password is `zenotech` on stock units) and `tftpboot` + `nand write`
+the saved `mtdN-<name>.bin` files back, or flash the stock `kernel`/`root`
+partitions from the OpenIPC shell with `dd`.
 
 # Anjoy
 
