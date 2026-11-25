@@ -3,7 +3,7 @@
 Rostelecom / Uniview "VideoComfort" (VC) → OpenIPC transition, via the stock
 U-Boot's on-board SD-card auto-updater.
 
-These cameras (e.g. Rostelecom IPC8232SWC-WE = Uniview C1L-2WN-G-RU, HiSilicon
+These cameras (e.g. Rostelecom IPC8232SWC-WE = Uniview C1L-2WN, HiSilicon
 hi3516ev300 + SP2305) ship a stock U-Boot whose bootcmd, on every power-on, runs
 `fwupdate mmc 0:1 ...` — it reads files named after each NAND partition from the
 first FAT partition of an SD card, erases that partition and writes the file to
