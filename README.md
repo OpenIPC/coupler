@@ -256,7 +256,7 @@ Transition firmware for Huishi boards is available on the
 # Rostelecom/Uniview (VideoComfort)
 
 Rostelecom / Uniview cameras built on the "VideoComfort" (VC) stack — e.g. the
-**Rostelecom IPC8232SWC-WE** (Uniview **C1L-2WN-G-RU**, HiSilicon **hi3516ev300** +
+**Rostelecom IPC8232SWC-WE** (Uniview **C1L-2WN**, HiSilicon **hi3516ev300** +
 SP2305 sensor) — can be moved to OpenIPC **from an SD card, with no UART and no
 network**. The stock U-Boot runs an on-board SD auto-updater on every power-on:
 it reads files named after each NAND partition from the first FAT partition of
