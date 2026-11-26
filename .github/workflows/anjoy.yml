@@ -41,13 +41,15 @@ jobs:
         run: |
           mkdir -p "$DLDIR" ; cd "$_"
           wget -q --content-disposition "https://openipc.org/cameras/vendors/sigmastar/socs/ssc378de/download_full_image?flash_size=8&flash_type=nor&fw_release=lite&layout=8"
+          wget -q --content-disposition "https://openipc.org/cameras/vendors/sigmastar/socs/ssc378de/download_full_image?flash_size=16&flash_type=nor&fw_release=ultimate&layout=16"
 
       - name: Create firmwares
         run: |
           mkdir -p $OUTPUTDIR; cd "$_"
           export RUN="$GITHUB_WORKSPACE/.github/workflows/_anjoy2oipc.py"
 
-          $RUN --uboot-size 0x30000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin
+          #$RUN --uboot-size 0x30000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-lite-8mb.bin
+          $RUN --uboot-size 0x30000 --kernel-size 0x200000 --kernel-version MSTAR_I6C_LINUX_378DE --rootfs-size 0xcd0000 --rootfs-version MCJ86_V0-A-H5_V3.2.5.6 ${DLDIR}/openipc-ssc378de-nor-ultimate-16mb.bin
           # asset, SoC, and the board openipc.org files it under
           printf 'MCJ86_V0-A-H5_V3.2.5.6-openipc.bin\tssc378de\tMC-J86\n' >> "$GITHUB_WORKSPACE/coupler-manifest.tsv"
 
